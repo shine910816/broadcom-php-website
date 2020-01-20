@@ -23,7 +23,9 @@
   </div>
 </div>
 <div class="bottom-panel">
-  <div class="left-panel"></div>
+  <div class="left-panel">
+    <div style="width:10px; height:1000px; background-color:#F60;"></div>
+  </div>
   <div class="main-panel">
     <div class="bread-crumbs-bar">
       <ul>
