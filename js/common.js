@@ -6,7 +6,6 @@ var adjustWindow = function(){
     var windowHeight = $(window).height();
     var option = {
         bodyMinWidth:1000,
-        bodyMinHeight:500,
         topHeight:70,
         leftWidth:200,
         bottomPadding:10
