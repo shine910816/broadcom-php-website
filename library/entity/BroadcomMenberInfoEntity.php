@@ -38,7 +38,7 @@ class BroadcomMenberInfoEntity
             self::POSITION_LEVEL_MANAGER => "学管",
             self::POSITION_LEVEL_TEACH_MANAGER => "教学主管",
             self::POSITION_LEVEL_TEACHER => "教师",
-            self::POSITION_LEVEL_HR_FINANCE> = "财务人事"
+            self::POSITION_LEVEL_HR_FINANCE => "财务人事"
         );
     }
 }
