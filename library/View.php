@@ -105,11 +105,11 @@ class View
         $this->_smarty->assign("page_title", SYSTEM_DEFAULT_TITLE);
         $this->_smarty->assign("max_page", "0");
         $this->_smarty->assign("this_year", date("Y"));
-        $this->_smarty->assign("comheader_file", SRC_PATH . "/menu/Common/tpl/LustoCommon_ComHeaderView.tpl");
-        $this->_smarty->assign("comfooter_file", SRC_PATH . "/menu/Common/tpl/LustoCommon_ComFooterView.tpl");
-        $this->_smarty->assign("usererror_file", SRC_PATH . "/menu/Common/tpl/LustoCommon_ErrorBoxView.tpl");
-        $this->_smarty->assign("comnaviga_file", SRC_PATH . "/menu/Common/tpl/LustoCommon_ComNavigaView.tpl");
-        $this->_smarty->assign("compagina_file", SRC_PATH . "/menu/Common/tpl/LustoCommon_ComPaginaView.tpl");
+        $this->_smarty->assign("comheader_file", SRC_PATH . "/menu/Common/tpl/BroadcomCommon_ComHeaderView.tpl");
+        $this->_smarty->assign("comfooter_file", SRC_PATH . "/menu/Common/tpl/BroadcomCommon_ComFooterView.tpl");
+        $this->_smarty->assign("usererror_file", SRC_PATH . "/menu/Common/tpl/BroadcomCommon_ErrorBoxView.tpl");
+        $this->_smarty->assign("comnaviga_file", SRC_PATH . "/menu/Common/tpl/BroadcomCommon_ComNavigaView.tpl");
+        $this->_smarty->assign("compagina_file", SRC_PATH . "/menu/Common/tpl/BroadcomCommon_ComPaginaView.tpl");
         return;
     }
 
