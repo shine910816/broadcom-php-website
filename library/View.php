@@ -130,23 +130,24 @@ class View
             $user_err_flg = true;
             $user_err_list = $request->getError();
         }
-        $subpanel_file = "";
-        if ($request->hasAttribute("subpanel_file")) {
-            $subpanel_file = $request->getAttribute("subpanel_file");
-        }
+        //$subpanel_file = "";
+        //if ($request->hasAttribute("subpanel_file")) {
+        //    $subpanel_file = $request->getAttribute("subpanel_file");
+        //}
         $this->_smarty->assign('current_menu', $current_menu);
         $this->_smarty->assign('current_act', $current_act);
         $this->_smarty->assign('current_page', $request->current_page);
         $this->_smarty->assign('current_level', $request->current_level);
         $this->_smarty->assign('sys_app_host', SYSTEM_APP_HOST);
         $this->_smarty->assign('user_login_flg', $user->isLogin());
-        $this->_smarty->assign('display_custom_nick', $user->getCustomNick());
         $this->_smarty->assign('user_admin_flg', $user->isAdmin());
+        $this->_smarty->assign('user_member_name', $user->getMemberName());
+        $this->_smarty->assign('user_member_position', $user->getMemberPosition());
         $this->_smarty->assign('user_err_flg', $user_err_flg);
         $this->_smarty->assign('user_err_list', $user_err_list);
         $this->_smarty->assign($request->getAttributes());
         $this->_smarty->assign('remote_addr', $user->getRemoteAddr());
-        $this->_smarty->assign('subpanel_file', $subpanel_file);
+        //$this->_smarty->assign('subpanel_file', $subpanel_file);
     }
 
     /**

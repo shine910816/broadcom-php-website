@@ -1,6 +1,4 @@
-/**
- * 主样式表
-*/
+/* 主样式表 */
 * {
   margin:0;
   padding:0;
@@ -90,4 +88,45 @@ div.main-nav-bar ul li a:hover {
 div.main-nav-bar ul li a.selected {
   color:#FFFFFF;
   font-size:1.4em;
+}
+
+/* 模块样式 */
+.text_field {
+  width:auto;
+  height:29px;
+  padding:0 0.5em;
+  text-align:left;
+  line-height:29px;
+  border-bottom:1px solid #000;
+  transition:.3s;
+  display:block;
+}
+.text_field:focus {
+  border-bottom:1px solid #0BF;
+}
+.text_field:disabled {
+  border-bottom:1px solid #AAA;
+  color:#AAA;
+  background-color:#FFF;
+}
+.button_field {
+  width:auto;
+  height:30px;
+  padding:0 0.5em;
+  text-align:center;
+  line-height:2em;
+  transition:.3s;
+  background-color:#046;
+  color:#FFF;
+  border-radius:5px;
+  display:block;
+}
+.button_field:hover {
+  background-color:#6AD;
+}
+.button_field:active {
+  background-color:#0BF;
+}
+.button_field:disabled {
+  background-color:#AAA;
 }

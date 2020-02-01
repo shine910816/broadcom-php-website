@@ -14,8 +14,8 @@ class User
     public function __construct()
     {
         session_start();
-        if (!$this->hasVariable("custom_id")) {
-            $this->setVariable("custom_id", "0");
+        if (!$this->hasVariable("member_id")) {
+            $this->setVariable("member_id", "0");
         }
         if (!$this->hasVariable("admin_lvl")) {
             $this->setVariable("admin_lvl", "0");
@@ -29,7 +29,7 @@ class User
      */
     public function isLogin()
     {
-        return $this->getVariable("custom_id") != "0";
+        return $this->getVariable("member_id") != "0";
     }
 
     /**
@@ -42,19 +42,37 @@ class User
         return $this->getVariable("admin_lvl") != "0";
     }
 
-    public function getCustomId()
+    public function getMemberId()
     {
         if ($this->isLogin()) {
-            return $this->getVariable("custom_id");
+            return $this->getVariable("member_id");
         } else {
             return "0";
         }
     }
 
-    public function getCustomNick()
+    public function getMemberName()
     {
         if ($this->isLogin()) {
-            return $this->getVariable("custom_nick");
+            return $this->getVariable("member_name");
+        } else {
+            return "";
+        }
+    }
+
+    public function getMemberPosition()
+    {
+        if ($this->isLogin()) {
+            return $this->getVariable("member_position");
+        } else {
+            return "";
+        }
+    }
+
+    public function getPositionLevel()
+    {
+        if ($this->isLogin()) {
+            return $this->getVariable("member_position_level");
         } else {
             return "";
         }

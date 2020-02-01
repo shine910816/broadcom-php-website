@@ -53,6 +53,11 @@ class Database
             return $error;
         }
         $now_date = date("Y-m-d H:i:s");
+        $operated_by = "0";
+        if (isset($_SESSION["member_id"])) {
+            $operated_by = $_SESSION["member_id"];
+        }
+        $insertData['operated_by'] = $operated_by;
         $insertData['insert_date'] = $now_date;
         $insertData['update_date'] = $now_date;
         $insertData['del_flg'] = 0;
@@ -65,7 +70,7 @@ class Database
         }
         $sql_key = implode(", ", $this->quote(array_keys($insertData), true));
         $sql_val = implode(", ", $insertData);
-        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->quote($tableName, true), $sql_key, $sql_val);
+        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s);", $this->quote($tableName, true), $sql_key, $sql_val);
         return $this->_query($sql);
     }
 
@@ -91,7 +96,7 @@ class Database
             $update[] = sprintf('%s = %s', $this->quote($dk, true), ($dv === null) ? "NULL" : $this->quote($dv));
         }
         $update_list = implode(", ", $update);
-        $sql = sprintf("UPDATE %s SET %s WHERE %s", $this->quote($tableName, true), $update_list, $where);
+        $sql = sprintf("UPDATE %s SET %s WHERE %s;", $this->quote($tableName, true), $update_list, $where);
         return $this->_query($sql);
     }
 
@@ -110,7 +115,7 @@ class Database
             $error->setPos(__FILE__, __LINE__);
             return $error;
         }
-        $sql = sprintf("DELETE FROM %s WHERE %s", $this->quote($tableName, true), $where);
+        $sql = sprintf("DELETE FROM %s WHERE %s;", $this->quote($tableName, true), $where);
         return $this->_query($sql);
     }
 
@@ -135,7 +140,7 @@ class Database
      */
     public function begin()
     {
-        return $this->_query("BEGIN");
+        return $this->_query("BEGIN;");
     }
 
     /**
@@ -145,7 +150,7 @@ class Database
      */
     public function rollback()
     {
-        return $this->_query("ROLLBACK");
+        return $this->_query("ROLLBACK;");
     }
 
     /**
@@ -155,7 +160,7 @@ class Database
      */
     public function commit()
     {
-        return $this->_query("COMMIT");
+        return $this->_query("COMMIT;");
     }
 
     /**
@@ -215,19 +220,26 @@ class Database
             $error->raiseError(ERROR_CODE_DATABASE_RESULT, mysqli_error($this->con) . ", the sql text: " . $sql);
             return $error;
         }
-        if (TEST_MODE_FLAG) {
-            $this->_logSqlText($sql);
-        }
         $do_main = substr($sql, 0, 6);
         switch ($do_main) {
             case "INSERT":
+                $this->_logSqlText($sql, true);
                 $tmp_res = mysqli_query($this->con, "SELECT LAST_INSERT_ID()");
                 $res = $tmp_res->fetch_row();
                 return $res[0];
             case "UPDATE":
             case "DELETE":
+                $this->_logSqlText($sql, true);
                 return mysqli_affected_rows($this->con);
+            case "BEGIN;":
+            case "ROLLBA":
+            case "COMMIT":
+                $this->_logSqlText($sql, true);
+                return $result;
             default:
+                if (TEST_MODE_FLAG) {
+                    $this->_logSqlText($sql);
+                }
                 return $result;
         }
     }
@@ -238,13 +250,18 @@ class Database
      * @access private
      * @param string $sql SQL语句
      */
-    private function _logSqlText($sql)
+    private function _logSqlText($sql, $log_flg = false)
     {
         $file_path = SRC_PATH . "/temp/log";
         if (!file_exists($file_path)) {
             mkdir($file_path, 0777, true);
         }
-        $fo = fopen($file_path . '/sqltext.log', "a");
+        if ($log_flg) {
+            $file_name = "/" . date("oW") . ".sql";
+            $fo = fopen($file_path . $file_name, "a");
+        } else {
+            $fo = fopen($file_path . "/sqltext.log", "a");
+        }
         $text = $sql . "\n";
         fwrite($fo, $text);
         fclose($fo);

@@ -10,42 +10,10 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-01-21 18:36:36
+Date: 2020-02-01 19:54:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for custom_info
--- ----------------------------
-DROP TABLE IF EXISTS `custom_info`;
-CREATE TABLE `custom_info` (
-  `custom_id` int(11) NOT NULL AUTO_INCREMENT,
-  `insert_date` datetime NOT NULL,
-  `update_date` datetime NOT NULL,
-  `del_flg` tinyint(4) NOT NULL,
-  PRIMARY KEY (`custom_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of custom_info
--- ----------------------------
-
--- ----------------------------
--- Table structure for custom_login
--- ----------------------------
-DROP TABLE IF EXISTS `custom_login`;
-CREATE TABLE `custom_login` (
-  `custom_id` int(11) NOT NULL AUTO_INCREMENT,
-  `insert_date` datetime NOT NULL,
-  `update_date` datetime NOT NULL,
-  `del_flg` tinyint(4) NOT NULL,
-  PRIMARY KEY (`custom_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of custom_login
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for member_info
@@ -80,3 +48,27 @@ CREATE TABLE `member_info` (
 -- ----------------------------
 -- Records of member_info
 -- ----------------------------
+INSERT INTO `member_info` VALUES ('100', '陈国欣', '000000199108160000', '13800000000', 'xxxxxx@163.com', '1', '1991-08-16', '0', '天津', '天津外国语大学滨海外事学院', '日语', '2010-09-01', '2014-06-30', '0', '0', null, null, '0', '100', '2020-01-29 20:21:47', '2020-01-29 20:21:47', '0');
+
+-- ----------------------------
+-- Table structure for member_login
+-- ----------------------------
+DROP TABLE IF EXISTS `member_login`;
+CREATE TABLE `member_login` (
+  `member_id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_login_name` varchar(50) DEFAULT NULL,
+  `member_login_password` varchar(32) DEFAULT NULL,
+  `member_login_salt` varchar(6) DEFAULT NULL,
+  `member_level` tinyint(4) NOT NULL,
+  `member_position_level` tinyint(4) NOT NULL,
+  `operated_by` int(11) NOT NULL,
+  `insert_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  `del_flg` tinyint(4) NOT NULL,
+  PRIMARY KEY (`member_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of member_login
+-- ----------------------------
+INSERT INTO `member_login` VALUES ('100', 'chenguoxin', '7858bf06b8f2ab9ccf68aa68c8d04d7e', 'kn88y6', '2', '100', '100', '2020-01-29 20:21:47', '2020-01-29 20:21:47', '0');
