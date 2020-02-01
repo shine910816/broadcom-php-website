@@ -87,6 +87,10 @@ class BroadcomMember_LoginAction extends ActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
+        if ($user->isLogin()) {
+            $controller->redirect("../");
+            return VIEW_NONE;
+        }
         return VIEW_DONE;
     }
 
@@ -135,7 +139,7 @@ class BroadcomMember_LoginAction extends ActionBase
         }
         $user->setVariable("member_id", $member_id);
         $user->setVariable("admin_lvl", $admin_lvl);
-        $user->setVariable("member_name", $member_info["member_name"]);
+        $user->setVariable("member_name", $member_info["m_name"]);
         $user->setVariable("member_position", $member_position);
         $user->setVariable("member_position_level", $login_info["member_position_level"]);
         $redirect_url = "../";

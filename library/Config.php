@@ -14,6 +14,7 @@ class Config
         $result = array();
         $result["home"]["top"] = SYSTEM_AUTH_LOGIN;
         $result["member"]["login"] = SYSTEM_AUTH_COMMON;
+        $result["member"]["top"] = SYSTEM_AUTH_LOGIN;
         $list_data["php"] = $result;
         $result = array();
         $list_data["api"] = $result;
@@ -25,6 +26,7 @@ class Config
         $result = array();
         $result["home"]["top"] = array();
         $result["member"]["login"] = array("成员登录");
+        $result["member"]["top"] = array("个人设定");
         return $result;
     }
 

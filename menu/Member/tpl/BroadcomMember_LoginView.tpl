@@ -10,19 +10,21 @@
 .login_box {
   width:500px;
   height:350px;
-  border:1px solid #000;
-  border-radius:5px;
+  /*border:1px solid #000;*/
+  border-radius:10px 10px 5px 5px;
   margin:30px auto;
+  background-color:#FFF;
 }
 .login_title {
   width:100%;
   height:50px;
   text-align:center;
   line-height:50px;
-  background-color:#06F;
+  background-color:#2C4C60;
   color:#FFF;
   font-size:1.5em;
   font-weight:bold;
+  border-radius:5px 5px 0 0;
 }
 .colspan_field {
   width:100%;
@@ -60,9 +62,9 @@
 }
 </style>
 </head>
-<body>
+<body style="background-color:#4C637B;">
 <form action="./" method="post" class="login_box">
-  <div class="login_title">成员登录</div>
+  <div class="login_title">教务管理系统</div>
   <div class="colspan_field"></div>
   <div class="colspan_field">
     <div class="colspan_name">登录名</div>

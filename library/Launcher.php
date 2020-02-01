@@ -104,6 +104,11 @@ class Launcher
         if ($controller->isError($res_execute)) {
             return $res_execute;
         }
+        // 执行左边栏
+        $res_content = $action->doLeftContent($controller, $user, $request);
+        if ($controller->isError($res_content)) {
+            return $res_content;
+        }
         // 主程序返回VIEW_NONE则终止
         return $res_execute;
     }

@@ -20,6 +20,45 @@ div.left-panel {
   background-color:#4C637B;
   float:left;
 }
+div.left-logo-box {
+  width:72px;
+  height:72px;
+  background-color:#CCCCCC;
+  border:4px #626262 solid;
+  border-radius:40px;
+  margin:15px auto;
+}
+div.left-logo-box img {
+  width:72px;
+  height:72px;
+}
+ul.left-item-box {
+  width:180px;
+  height:auto;
+  padding-top:10px;
+  list-style:none;
+  margin:0 auto;
+}
+ul.left-item-box li {
+  width:180px;
+  height:35px;
+  text-align:center;
+  line-height:35px;
+  background-color:#4C637B;
+  color:#FFF!important;
+  margin-top:10px;
+  border-radius:5px;
+  display:block;
+}
+ul.left-item-box a {
+  text-decoration:none;
+}
+ul.left-item-box li:hover {
+  background-color:#607FA0!important;
+}
+ul.left-item-box li.selected {
+  background-color:#639AC1;
+}
 div.main-panel {
   height:auto;
   float:left;
@@ -59,7 +98,7 @@ div.logo-box {
   float:left;
 }
 div.main-nav-bar {
-  width:50%;
+  width:500px;
   height:70px;
   float:left;
 }
@@ -88,6 +127,20 @@ div.main-nav-bar ul li a:hover {
 div.main-nav-bar ul li a.selected {
   color:#FFFFFF;
   font-size:1.4em;
+}
+div.login-status-bar {
+  width:293px;
+  height:70px;
+  padding-right:20px;
+  text-align:right;
+  line-height:70px;
+  float:right;
+}
+div.login-status-bar a {
+  color:#FFF;
+}
+div.login-status-bar a:hover {
+  text-decoration:none;
 }
 
 /* 模块样式 */

@@ -147,7 +147,7 @@ class View
         $this->_smarty->assign('user_err_list', $user_err_list);
         $this->_smarty->assign($request->getAttributes());
         $this->_smarty->assign('remote_addr', $user->getRemoteAddr());
-        //$this->_smarty->assign('subpanel_file', $subpanel_file);
+        $this->_smarty->assign("left_content", $request->getAttribute("left_content"));
     }
 
     /**

@@ -31,5 +31,17 @@ class ActionBase
     {
         return VIEW_NONE;
     }
+
+    /**
+     * 左边栏
+     *
+     * @param object $controller Controller对象
+     * @param object $user User对象
+     * @param object $request Request对象
+     */
+    public function doLeftContent(Controller $controller, User $user, Request $request)
+    {
+        return array();
+    }
 }
 ?>
