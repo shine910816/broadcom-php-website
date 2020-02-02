@@ -26,7 +26,7 @@ class Config
         $result = array();
         $result["home"]["top"] = array();
         $result["member"]["login"] = array("成员登录");
-        $result["member"]["top"] = array("个人设定");
+        $result["member"]["top"] = array("个人信息管理");
         return $result;
     }
 

@@ -57,8 +57,11 @@ class BroadcomMember_TopAction extends BroadcomMemberActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-        $member_info = $request->getAttribute("member_info");
-//Utility::testVariable($member_info);
+        $request->setAttribute("educated_list", BroadcomMemberEntity::getEducatedList());
+        $request->setAttribute("educated_type_list", BroadcomMemberEntity::getEducatedTypeList());
+        $request->setAttribute("married_type_list", BroadcomMemberEntity::getMarriedTypeList());
+        $request->setAttribute("contact_relationship_list", BroadcomMemberEntity::getContactRelationshipList());
+Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 }

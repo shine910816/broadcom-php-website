@@ -132,7 +132,7 @@ class BroadcomMember_LoginAction extends ActionBase
         if ($login_info["member_position_level"] == "100") {
             $member_position = "管理员";
         } else {
-            $position_level_list = BroadcomMemberLoginEntity::getPositionLevelList();
+            $position_level_list = BroadcomMemberEntity::getPositionLevelList();
             if (isset($position_level_list[$login_info["member_position_level"]])) {
                 $member_position = $position_level_list[$login_info["member_position_level"]];
             }
