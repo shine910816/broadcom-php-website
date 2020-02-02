@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-02-01 19:54:06
+Date: 2020-02-03 00:14:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,8 +27,8 @@ CREATE TABLE `member_info` (
   `m_mail_address` varchar(100) DEFAULT NULL,
   `m_gender` tinyint(4) NOT NULL,
   `m_birthday` date NOT NULL,
-  `m_married_flg` tinyint(4) NOT NULL,
-  `m_address` varchar(20) DEFAULT NULL,
+  `m_married_type` tinyint(4) NOT NULL,
+  `m_address` text,
   `m_college` varchar(50) DEFAULT NULL,
   `m_major` varchar(50) DEFAULT NULL,
   `m_college_start_date` date NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE `member_info` (
 -- ----------------------------
 -- Records of member_info
 -- ----------------------------
-INSERT INTO `member_info` VALUES ('100', '陈国欣', '000000199108160000', '13800000000', 'xxxxxx@163.com', '1', '1991-08-16', '0', '天津', '天津外国语大学滨海外事学院', '日语', '2010-09-01', '2014-06-30', '0', '0', null, null, '0', '100', '2020-01-29 20:21:47', '2020-01-29 20:21:47', '0');
+INSERT INTO `member_info` VALUES ('100', '陈国欣', '000000199108160000', '13800000000', 'xxxxxx@163.com', '1', '1991-08-16', '1', '天津市河北区胜利路', '天津外国语大学滨海外事学院', '日语', '2010-09-01', '2014-06-30', '3', '1', '王', '13843838438', '5', '100', '2020-01-29 20:21:47', '2020-01-29 20:21:47', '0');
 
 -- ----------------------------
 -- Table structure for member_login
