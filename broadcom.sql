@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-02-03 00:14:06
+Date: 2020-02-03 17:27:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,7 +28,7 @@ CREATE TABLE `member_info` (
   `m_gender` tinyint(4) NOT NULL,
   `m_birthday` date NOT NULL,
   `m_married_type` tinyint(4) NOT NULL,
-  `m_address` text,
+  `m_address` varchar(200) DEFAULT NULL,
   `m_college` varchar(50) DEFAULT NULL,
   `m_major` varchar(50) DEFAULT NULL,
   `m_college_start_date` date NOT NULL,
@@ -60,7 +60,6 @@ CREATE TABLE `member_login` (
   `member_login_password` varchar(32) DEFAULT NULL,
   `member_login_salt` varchar(6) DEFAULT NULL,
   `member_level` tinyint(4) NOT NULL,
-  `member_position_level` tinyint(4) NOT NULL,
   `operated_by` int(11) NOT NULL,
   `insert_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
@@ -71,4 +70,23 @@ CREATE TABLE `member_login` (
 -- ----------------------------
 -- Records of member_login
 -- ----------------------------
-INSERT INTO `member_login` VALUES ('100', 'chenguoxin', '7858bf06b8f2ab9ccf68aa68c8d04d7e', 'kn88y6', '2', '100', '100', '2020-01-29 20:21:47', '2020-01-29 20:21:47', '0');
+INSERT INTO `member_login` VALUES ('100', 'chenguoxin', '7858bf06b8f2ab9ccf68aa68c8d04d7e', 'kn88y6', '2', '100', '2020-01-29 20:21:47', '2020-01-29 20:21:47', '0');
+
+-- ----------------------------
+-- Table structure for member_position
+-- ----------------------------
+DROP TABLE IF EXISTS `member_position`;
+CREATE TABLE `member_position` (
+  `member_id` int(11) NOT NULL,
+  `member_position_level` tinyint(4) NOT NULL,
+  `operated_by` int(11) NOT NULL,
+  `insert_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  `del_flg` tinyint(4) NOT NULL,
+  PRIMARY KEY (`member_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of member_position
+-- ----------------------------
+INSERT INTO `member_position` VALUES ('100', '100', '100', '2020-01-29 20:21:47', '2020-01-29 20:21:47', '0');

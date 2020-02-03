@@ -21,7 +21,9 @@ class BroadcomMemberActionBase extends ActionBase
         $result[] = array("top", "个人信息管理");
         $result[] = array("info", "修改个人信息");
         $result[] = array("password", "修改登录密码");
+        $result[] = array("login&do_logout=2", "登出当前用户");
         $request->setAttribute("left_content", $result);
+        $request->setAttribute("member_info_template_file", SRC_PATH . "/menu/Member/tpl/BroadcomMemberBaseInfoView.tpl");
         return VIEW_DONE;
     }
 }

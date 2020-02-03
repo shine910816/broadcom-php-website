@@ -3,8 +3,8 @@
  * 系统主目录
  */
 //define("SRC_PATH", str_replace("\\", "/", __DIR__));
-//define("SRC_PATH", "F:/Website");
-define("SRC_PATH", "D:/Test");
+define("SRC_PATH", "F:/Website");
+//define("SRC_PATH", "D:/Test");
 require_once SRC_PATH . "/library/ActionBase.php";
 require_once SRC_PATH . "/library/Config.php";
 require_once SRC_PATH . "/library/Controller.php";

@@ -129,12 +129,22 @@ class BroadcomMember_LoginAction extends ActionBase
             return $err;
         }
         $member_position = "";
-        if ($login_info["member_position_level"] == "100") {
+        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
+        if ($controller->isError($position_info)) {
+            $position_info->setPos(__FILE__, __LINE__);
+            return $position_info;
+        }
+        if (empty($position_info)) {
+            $err = $controller->raiseError();
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        if ($position_info["member_position_level"] == "100") {
             $member_position = "管理员";
         } else {
             $position_level_list = BroadcomMemberEntity::getPositionLevelList();
-            if (isset($position_level_list[$login_info["member_position_level"]])) {
-                $member_position = $position_level_list[$login_info["member_position_level"]];
+            if (isset($position_level_list[$position_info["member_position_level"]])) {
+                $member_position = $position_level_list[$position_info["member_position_level"]];
             }
         }
         $user->setVariable("member_id", $member_id);
@@ -159,8 +169,12 @@ class BroadcomMember_LoginAction extends ActionBase
      */
     private function _doLogoutExecute(Controller $controller, User $user, Request $request)
     {
+        $redirect_url = "./login/";
+        if ($request->getParameter("do_logout") == "1") {
+            $redirect_url = "." . $redirect_url;
+        }
         if (!$user->isLogin()) {
-            $controller->redirect("../login/");
+            $controller->redirect($redirect_url);
             return VIEW_NONE;
         }
         $user->setVariable("member_id", "0");
@@ -168,7 +182,7 @@ class BroadcomMember_LoginAction extends ActionBase
         $user->freeVariable("member_name");
         $user->freeVariable("member_position");
         $user->freeVariable("member_position_level");
-        $controller->redirect("../login/");
+        $controller->redirect($redirect_url);
         return VIEW_NONE;
     }
 

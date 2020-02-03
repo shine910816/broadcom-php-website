@@ -205,11 +205,11 @@ p {
   color:#555;
 }
 .text_field {
-  width:auto;
+  width:96%;
   height:29px;
-  padding:0 0.5em;
+  padding:0 2%;
   text-align:left;
-  line-height:29px;
+  line-height:30px;
   border-bottom:1px solid #000;
   transition:.3s;
   display:block;
