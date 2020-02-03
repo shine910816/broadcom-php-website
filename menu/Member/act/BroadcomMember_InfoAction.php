@@ -4,9 +4,9 @@ require_once SRC_PATH . "/menu/Member/lib/BroadcomMemberActionBase.php";
 /**
  * 个人设定画面
  * @author Kinsama
- * @version 2020-02-02
+ * @version 2020-02-03
  */
-class BroadcomMember_TopAction extends BroadcomMemberActionBase
+class BroadcomMember_InfoAction extends BroadcomMemberActionBase
 {
 
     /**
@@ -17,10 +17,24 @@ class BroadcomMember_TopAction extends BroadcomMemberActionBase
      */
     public function doMainExecute(Controller $controller, User $user, Request $request)
     {
-        $ret = $this->_doDefaultExecute($controller, $user, $request);
-        if ($controller->isError($ret)) {
-            $ret->setPos(__FILE__, __LINE__);
-            return $ret;
+        if ($request->isError()) {
+            $ret = $this->_doErrorExecute($controller, $user, $request);
+            if ($controller->isError($ret)) {
+                $ret->setPos(__FILE__, __LINE__);
+                return $ret;
+            }
+        } elseif ($request->hasParameter("do_change")) {
+            $ret = $this->_doChangeExecute($controller, $user, $request);
+            if ($controller->isError($ret)) {
+                $ret->setPos(__FILE__, __LINE__);
+                return $ret;
+            }
+        } else {
+            $ret = $this->_doDefaultExecute($controller, $user, $request);
+            if ($controller->isError($ret)) {
+                $ret->setPos(__FILE__, __LINE__);
+                return $ret;
+            }
         }
         return $ret;
     }
@@ -44,6 +58,7 @@ class BroadcomMember_TopAction extends BroadcomMemberActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
+        $request->setAttribute("member_id", $member_id);
         $request->setAttribute("member_info", $member_info);
         return VIEW_DONE;
     }
@@ -56,6 +71,21 @@ class BroadcomMember_TopAction extends BroadcomMemberActionBase
      * @access private
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
+    {
+        $request->setAttribute("educated_list", BroadcomMemberEntity::getEducatedList());
+        $request->setAttribute("educated_type_list", BroadcomMemberEntity::getEducatedTypeList());
+        $request->setAttribute("married_type_list", BroadcomMemberEntity::getMarriedTypeList());
+        $request->setAttribute("contact_relationship_list", BroadcomMemberEntity::getContactRelationshipList());
+        return VIEW_DONE;
+    }
+
+    private function _doChangeExecute(Controller $controller, User $user, Request $request)
+    {
+        $controller->redirect("?menu=member&act=top");
+        return VIEW_DONE;
+    }
+
+    private function _doErrorExecute(Controller $controller, User $user, Request $request)
     {
         $request->setAttribute("educated_list", BroadcomMemberEntity::getEducatedList());
         $request->setAttribute("educated_type_list", BroadcomMemberEntity::getEducatedTypeList());

@@ -40,13 +40,46 @@
 </div>
 <h1>学历信息</h1>
 <div class="table-line">
-  <div class="table-item-a">
-    <div class="table-item-name">姓名</div>
-    <div class="table-item-value">{^$member_info["m_name"]|escape^}</div>
+  <div class="table-item-b">
+    <div class="table-item-name">毕业院校</div>
+    <div class="table-item-value">{^$member_info["m_college"]|escape^}</div>
   </div>
-  <div class="table-item-a">
-    <div class="table-item-name">生日</div>
-    <div class="table-item-value">{^$member_info["m_birthday"]|escape^}</div>
+  <div class="table-item-b">
+    <div class="table-item-name">专业</div>
+    <div class="table-item-value">{^$member_info["m_major"]|escape^}</div>
+  </div>
+  <div class="table-item-b">
+    <div class="table-item-name">学历</div>
+    <div class="table-item-value">{^$educated_list[$member_info["m_educated"]]^}</div>
+  </div>
+</div>
+<div class="table-line">
+  <div class="table-item-b">
+    <div class="table-item-name">入学时间</div>
+    <div class="table-item-value">{^$member_info["m_college_start_date"]|escape^}</div>
+  </div>
+  <div class="table-item-b">
+    <div class="table-item-name">毕业时间</div>
+    <div class="table-item-value">{^$member_info["m_college_end_date"]|escape^}</div>
+  </div>
+  <div class="table-item-b">
+    <div class="table-item-name">获取方式</div>
+    <div class="table-item-value">{^$educated_type_list[$member_info["m_educated_type"]]^}</div>
+  </div>
+</div>
+<h1>紧急联系人</h1>
+<div class="table-line">
+  <div class="table-item-b">
+    <div class="table-item-name">姓名</div>
+    <div class="table-item-value">{^$member_info["m_contact_name"]|escape^}</div>
+  </div>
+  <div class="table-item-b">
+    <div class="table-item-name">关系</div>
+    <div class="table-item-value">{^$contact_relationship_list[$member_info["m_contact_relationship"]]^}</div>
+  </div>
+  <div class="table-item-b">
+    <div class="table-item-name">手机号</div>
+    <div class="table-item-value">{^$member_info["m_contact_mobile_number"]|escape^}</div>
   </div>
 </div>
 {^include file=$comfooter_file^}
