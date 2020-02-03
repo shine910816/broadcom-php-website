@@ -2,7 +2,7 @@
 /**
  * 系统主目录
  */
-define("SRC_PATH", "F:/Website");
+define("SRC_PATH", str_replace("\\", "/", dirname(__DIR__)));
 require_once SRC_PATH . "/library/ActionBase.php";
 require_once SRC_PATH . "/library/Config.php";
 require_once SRC_PATH . "/library/Controller.php";
