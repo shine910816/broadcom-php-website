@@ -21,9 +21,5 @@ $controller = Controller::getInstance();
 $user = User::getInstance();
 $request = Request::getInstance();
 $launcher = Launcher::getInstance();
-if (!$user->isLogin()) {
-    $controller->redirect(SYSTEM_APP_HOST . "login/");
-} else {
-    $launcher->start($controller, $user, $request);
-}
+$launcher->start($controller, $user, $request);
 ?>

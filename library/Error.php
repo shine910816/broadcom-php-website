@@ -40,6 +40,10 @@ define("ERROR_CODE_OUTSIDE_FALSIFY", "3002");
  */
 define("ERROR_CODE_VERIFY_FALSIFY", "3003");
 /**
+ * 错误代码-用户无权限
+ */
+define("ERROR_CODE_NO_AUTH", "3004");
+/**
  * 错误代码-用户API获取失败
  */
 define("ERROR_CODE_API_GET_FALSIFY", "4001");
@@ -168,6 +172,7 @@ class Error
             ERROR_CODE_USER_FALSIFY => '用户窜改画面',
             ERROR_CODE_OUTSIDE_FALSIFY => '外部画面POST',
             ERROR_CODE_VERIFY_FALSIFY => '用户窜改验证码',
+            ERROR_CODE_NO_AUTH => '用户无权限',
             ERROR_CODE_API_GET_FALSIFY => '用户API获取失败',
             ERROR_CODE_API_ERROR_FALSIFY => '用户API存在错误',
             ERROR_CODE_THIRD_ERROR_FALSIFY => '第三方插件存在错误'

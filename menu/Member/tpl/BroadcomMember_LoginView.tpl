@@ -3,14 +3,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png"/>
+<link rel="shortcut icon" type="image/x-icon" href="img/favicon.png"/>
 <title>{^$page_title^}</title>
-<link type="text/css" rel="stylesheet" href="../css/common.css" />
+<link type="text/css" rel="stylesheet" href="css/common.css" />
 <style type="text/css">
 .login_box {
   width:500px;
   height:350px;
-  /*border:1px solid #000;*/
   border-radius:10px 10px 5px 5px;
   margin:30px auto;
   background-color:#FFF;
@@ -58,6 +57,8 @@
 </head>
 <body style="background-color:#4C637B;">
 <form action="./" method="post" class="login_box">
+  <input type="hidden" name="menu" value="{^$current_menu^}" />
+  <input type="hidden" name="act" value="{^$current_act^}" />
   <div class="login_title">教务管理系统</div>
   <div class="colspan_field"></div>
   <div class="colspan_field">

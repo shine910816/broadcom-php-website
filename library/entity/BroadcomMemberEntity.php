@@ -53,13 +53,13 @@ class BroadcomMemberEntity
     public static function getPositionLevelList()
     {
         return array(
-            self::POSITION_LEVEL_DIRECTOR_CITY => "城市总监",
-            self::POSITION_LEVEL_DIRECTOR_OPERATION => "运营总监",
-            self::POSITION_LEVEL_DIRECTOR_HUMANRESOURCE => "人事总监",
-            self::POSITION_LEVEL_DIRECTOR_FINANCE => "财务总监",
-            self::POSITION_LEVEL_DIRECTOR_MARKETING => "市场总监",
-            self::POSITION_LEVEL_DIRECTOR_EDUCATION => "教学总监",
-            self::POSITION_LEVEL_REGIONAL_MANAGER => "区域经理",
+            //self::POSITION_LEVEL_DIRECTOR_CITY => "城市总监",
+            //self::POSITION_LEVEL_DIRECTOR_OPERATION => "运营总监",
+            //self::POSITION_LEVEL_DIRECTOR_HUMANRESOURCE => "人事总监",
+            //self::POSITION_LEVEL_DIRECTOR_FINANCE => "财务总监",
+            //self::POSITION_LEVEL_DIRECTOR_MARKETING => "市场总监",
+            //self::POSITION_LEVEL_DIRECTOR_EDUCATION => "教学总监",
+            //self::POSITION_LEVEL_REGIONAL_MANAGER => "区域经理",
             self::POSITION_LEVEL_HEADMASTER => "校长",
             self::POSITION_LEVEL_EDUCATE_MANAGER => "学管主管",
             self::POSITION_LEVEL_MARKETING => "市场专员",

@@ -78,8 +78,14 @@ class Launcher
                 $err_disp_text = "该页面需要管理员权限才能进行访问。";
             }
             $request->setError("no_login", $err_disp_text);
-            $controller->forward("user", "login");
+            $controller->forward("member", "login");
             return VIEW_DONE;
+        }
+        // 职级判断
+        if ($user->isLogin() && !$user->checkPositionAble($current_menu, $current_act)) {
+            $err = $controller->raiseError(ERROR_CODE_NO_AUTH);
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
         }
         // 清除全局变量
         $usable_global_keys = Config::getUsableGlobalKeys();

@@ -33,8 +33,15 @@ class BroadcomMemberLoginDBI
     public static function selectMemberLoginByName($member_login_name)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT * FROM member_login" .
-               " WHERE del_flg = 0 AND member_login_name = " . $dbi->quote($member_login_name) .
+        $sql = "SELECT l.member_id," .
+               " l.member_login_name," .
+               " l.member_login_password," .
+               " l.member_login_salt" .
+               " FROM member_login l LEFT OUTER JOIN member_position p ON p.member_id = l.member_id" .
+               " WHERE l.del_flg = 0" .
+               " AND p.del_flg = 0" .
+               " AND p.member_employed_status = 1" .
+               " AND member_login_name = " . $dbi->quote($member_login_name) .
                " LIMIT 1";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {

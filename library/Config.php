@@ -17,6 +17,7 @@ class Config
         $result["member"]["top"] = SYSTEM_AUTH_LOGIN;
         $result["member"]["info"] = SYSTEM_AUTH_LOGIN;
         $result["member"]["password"] = SYSTEM_AUTH_LOGIN;
+        $result["human_resource"]["top"] = SYSTEM_AUTH_LOGIN;
         $list_data["php"] = $result;
         $result = array();
         $list_data["api"] = $result;
@@ -31,6 +32,17 @@ class Config
         $result["member"]["top"] = array("个人信息管理");
         $result["member"]["info"] = array('<a href="./?menu=member&act=top">个人信息管理</a>', "修改个人信息");
         $result["member"]["password"] = array('<a href="./?menu=member&act=top">个人信息管理</a>', "修改登录密码");
+        $result["human_resource"]["top"] = array("成员列表");
+        return $result;
+    }
+
+    public static function getPositionAllowedCurrent()
+    {
+        $result = array();
+        $result["human_resource"]["member_info"] = array(
+            BroadcomMemberEntity::POSITION_LEVEL_HEADMASTER,
+            BroadcomMemberEntity::POSITION_LEVEL_HR_FINANCE
+        );
         return $result;
     }
 

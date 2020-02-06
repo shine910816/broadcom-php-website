@@ -89,6 +89,24 @@ class User
         }
     }
 
+    public function checkPositionAble($menu, $act)
+    {
+        if ($this->isAdmin()) {
+            return true;
+        } else {
+            $position_level = Config::getPositionAllowedCurrent();
+            if (!isset($position_level[$menu][$act])) {
+                return true;
+            } else {
+                if (in_array($this->getPositionLevel(), $position_level[$menu][$act])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+
     /**
      * 获取用户登录IP地址
      *
