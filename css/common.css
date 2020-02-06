@@ -204,7 +204,16 @@ p {
   line-height:1.8em;
   color:#555;
 }
-.text_field {
+span.error-hint {
+  width:96%;
+  height:30px;
+  padding:0 2%;
+  text-align:left;
+  line-height:30px;
+  color:#EE1010;
+  display:block;
+}
+.text-field {
   width:96%;
   height:29px;
   padding:0 2%;
@@ -214,32 +223,49 @@ p {
   transition:.3s;
   display:block;
 }
-.text_field:focus {
+.text-field:focus {
   border-bottom:1px solid #0BF;
 }
-.text_field:disabled {
+.text-field:disabled {
   border-bottom:1px solid #AAA;
   color:#AAA;
   background-color:#FFF;
 }
-.button_field {
+.button-field {
   width:auto;
   height:30px;
   padding:0 0.5em;
   text-align:center;
-  line-height:2em;
+  line-height:30px;
+  text-decoration:none!important;
   transition:.3s;
-  background-color:#046;
+  background-color:#67BA2F;
   color:#FFF;
   border-radius:5px;
   display:block;
 }
-.button_field:hover {
-  background-color:#6AD;
+.button-field:hover {
+  opacity:0.7;
 }
-.button_field:active {
-  background-color:#0BF;
+.button-field:active {
+  opacity:0.9;
 }
-.button_field:disabled {
+.button-field:disabled {
   background-color:#AAA;
+}
+.ui-btn-a {
+  width:300px!important;
+  height:40px!important;
+  line-height:40px!important;
+  margin:0 auto;
+}
+.ui-btn-b {
+  height:35px!important;
+  line-height:35px!important;
+  float:left;
+  margin-left:10px;
+}
+.ui-btn-grey {
+  background-color:#EEE!important;
+  color:#000!important;
 }

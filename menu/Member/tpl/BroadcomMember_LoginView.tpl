@@ -46,12 +46,6 @@
 .input_text {
   width:270px!important;
 }
-.login_button {
-  width:300px!important;
-  height:3em!important;
-  line-height:3em!important;
-  margin:0 auto;
-}
 .error_hint {
   width:343px;
   color:#F30;
@@ -68,20 +62,20 @@
   <div class="colspan_field"></div>
   <div class="colspan_field">
     <div class="colspan_name">登录名</div>
-    <div class="colspan_item"><input type="text" name="member_login_name" value="{^$member_login_name^}" class="text_field input_text" /></div>
+    <div class="colspan_item"><input type="text" name="member_login_name" value="{^$member_login_name^}" class="text-field input_text" /></div>
   </div>
   <div class="colspan_field">
     <div class="error_hint">{^if isset($user_err_list["member_login_name"])^}{^$user_err_list["member_login_name"]^}{^/if^}</div>
   </div>
   <div class="colspan_field">
     <div class="colspan_name">密码</div>
-    <div class="colspan_item"><input type="password" name="member_login_password" class="text_field input_text" /></div>
+    <div class="colspan_item"><input type="password" name="member_login_password" class="text-field input_text" /></div>
   </div>
   <div class="colspan_field">
     <div class="error_hint">{^if isset($user_err_list["member_login_password"])^}{^$user_err_list["member_login_password"]^}{^/if^}</div>
   </div>
   <div class="colspan_field">
-    <input type="submit" name="do_login" value="登录" class="button_field login_button" />
+    <input type="submit" name="do_login" value="登录" class="button-field ui-btn-a" />
   </div>
 </form>
 </body>

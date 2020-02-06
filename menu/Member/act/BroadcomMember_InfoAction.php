@@ -78,10 +78,20 @@ class BroadcomMember_InfoAction extends BroadcomMemberActionBase
                 $update_data["m_id_code"] = $getting_member_info["m_id_code"];
             }
             if ($getting_member_info["m_mobile_number"] != $member_info["m_mobile_number"]) {
-                $update_data["m_mobile_number"] = $getting_member_info["m_mobile_number"];
+                if (!Validate::checkNotNull($getting_member_info["m_mobile_number"]) || !Validate::checkMobileNumber($getting_member_info["m_mobile_number"])) {
+                    $request->setError("m_mobile_number", "手机号格式不正确");
+                } else {
+                    $update_data["m_mobile_number"] = $getting_member_info["m_mobile_number"];
+                }
+                $member_info["m_mobile_number"] = $getting_member_info["m_mobile_number"];
             }
             if ($getting_member_info["m_mail_address"] != $member_info["m_mail_address"]) {
-                $update_data["m_mail_address"] = $getting_member_info["m_mail_address"];
+                if (!Validate::checkNotNull($getting_member_info["m_mail_address"]) || !Validate::checkMailAddress($getting_member_info["m_mail_address"])) {
+                    $request->setError("m_mail_address", "邮箱地址格式不正确");
+                } else {
+                    $update_data["m_mail_address"] = $getting_member_info["m_mail_address"];
+                }
+                $member_info["m_mail_address"] = $getting_member_info["m_mail_address"];
             }
             if ($getting_member_info["m_married_type"] != $member_info["m_married_type"]) {
                 $update_data["m_married_type"] = $getting_member_info["m_married_type"];
