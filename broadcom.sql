@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-02-03 17:27:46
+Date: 2020-02-07 02:46:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -48,7 +48,7 @@ CREATE TABLE `member_info` (
 -- ----------------------------
 -- Records of member_info
 -- ----------------------------
-INSERT INTO `member_info` VALUES ('100', '陈国欣', '000000199108160000', '13800000000', 'xxxxxx@163.com', '1', '1991-08-16', '1', '天津市河北区胜利路', '天津外国语大学滨海外事学院', '日语', '2010-09-01', '2014-06-30', '3', '1', '王', '13843838438', '5', '100', '2020-01-29 20:21:47', '2020-01-29 20:21:47', '0');
+INSERT INTO `member_info` VALUES ('100', '陈国欣', '000000199108160000', '13821247400', 'xxxxxx@163.com', '1', '1991-08-16', '1', '天津市河北区胜利路', '天津外国语大学滨海外事学院', '日语', '2010-09-01', '2014-06-30', '3', '1', '王', '13843838438', '5', '100', '2020-01-29 20:21:47', '2020-02-06 14:06:47', '0');
 
 -- ----------------------------
 -- Table structure for member_login
@@ -70,7 +70,7 @@ CREATE TABLE `member_login` (
 -- ----------------------------
 -- Records of member_login
 -- ----------------------------
-INSERT INTO `member_login` VALUES ('100', 'chenguoxin', '7858bf06b8f2ab9ccf68aa68c8d04d7e', 'kn88y6', '2', '100', '2020-01-29 20:21:47', '2020-01-29 20:21:47', '0');
+INSERT INTO `member_login` VALUES ('100', 'chenguoxin', 'daf4ff62ec443847472005351fa4e200', 'o7pll9', '2', '100', '2020-01-29 20:21:47', '2020-02-06 13:47:13', '0');
 
 -- ----------------------------
 -- Table structure for member_position
@@ -79,6 +79,7 @@ DROP TABLE IF EXISTS `member_position`;
 CREATE TABLE `member_position` (
   `member_id` int(11) NOT NULL,
   `member_position_level` tinyint(4) NOT NULL,
+  `member_employed_status` tinyint(4) NOT NULL,
   `operated_by` int(11) NOT NULL,
   `insert_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
@@ -89,4 +90,4 @@ CREATE TABLE `member_position` (
 -- ----------------------------
 -- Records of member_position
 -- ----------------------------
-INSERT INTO `member_position` VALUES ('100', '100', '100', '2020-01-29 20:21:47', '2020-01-29 20:21:47', '0');
+INSERT INTO `member_position` VALUES ('100', '100', '1', '100', '2020-01-29 20:21:47', '2020-01-29 20:21:47', '0');
