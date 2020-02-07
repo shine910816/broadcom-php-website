@@ -18,6 +18,7 @@ class Config
         $result["member"]["info"] = SYSTEM_AUTH_LOGIN;
         $result["member"]["password"] = SYSTEM_AUTH_LOGIN;
         $result["human_resource"]["top"] = SYSTEM_AUTH_LOGIN;
+        $result["human_resource"]["member_info"] = SYSTEM_AUTH_LOGIN;
         $list_data["php"] = $result;
         $result = array();
         $list_data["api"] = $result;
@@ -33,6 +34,7 @@ class Config
         $result["member"]["info"] = array('<a href="./?menu=member&act=top">个人信息管理</a>', "修改个人信息");
         $result["member"]["password"] = array('<a href="./?menu=member&act=top">个人信息管理</a>', "修改登录密码");
         $result["human_resource"]["top"] = array("成员列表");
+        $result["human_resource"]["member_info"] = array('<a href="./?menu=human_resource&act=top">成员列表</a>', "");
         return $result;
     }
 

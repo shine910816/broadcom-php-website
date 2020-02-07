@@ -24,7 +24,7 @@
   <div class="login-status-bar">
     <a href="./?menu=member&act=top" title="前往个人信息管理">{^$user_member_position^}</a>
     <a href="./?menu=member&act=top" title="前往个人信息管理">{^$user_member_name^}</a>
-    <a href="./login/?do_logout=1" title="登出当前用户">登出</a>
+    <a href="./?menu=member&act=login&do_logout=1" title="登出当前用户">登出</a>
   </div>
 </div>
 <div class="bottom-panel">
