@@ -88,7 +88,7 @@ class BroadcomMember_LoginAction extends ActionBase
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
         if ($user->isLogin()) {
-            $controller->redirect("../");
+            $controller->redirect("./");
             return VIEW_NONE;
         }
         return VIEW_DONE;
@@ -169,10 +169,7 @@ class BroadcomMember_LoginAction extends ActionBase
      */
     private function _doLogoutExecute(Controller $controller, User $user, Request $request)
     {
-        $redirect_url = "./login/";
-        if ($request->getParameter("do_logout") == "1") {
-            $redirect_url = "." . $redirect_url;
-        }
+        $redirect_url = "./";
         if (!$user->isLogin()) {
             $controller->redirect($redirect_url);
             return VIEW_NONE;

@@ -20,7 +20,9 @@ class BroadcomHumanResourceActionBase extends ActionBase
         
         $result = array();
         $result[] = array("top", "成员列表");
-        $result[] = array("member_info", "添加新成员");
+        if ($user->checkPositionAble("human_resource", "member_info")) {
+            $result[] = array("member_info", "添加新成员");
+        }
         $request->setAttribute("left_content", $result);
         $request->setAttribute("member_info_template_file", SRC_PATH . "/menu/Member/tpl/BroadcomMemberBaseInfoView.tpl");
         return VIEW_DONE;

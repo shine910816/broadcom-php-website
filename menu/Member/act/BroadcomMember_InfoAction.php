@@ -86,7 +86,7 @@ class BroadcomMember_InfoAction extends BroadcomMemberActionBase
                 $member_info["m_mobile_number"] = $getting_member_info["m_mobile_number"];
             }
             if ($getting_member_info["m_mail_address"] != $member_info["m_mail_address"]) {
-                if (!Validate::checkNotNull($getting_member_info["m_mail_address"]) || !Validate::checkMailAddress($getting_member_info["m_mail_address"])) {
+                if (!Validate::checkMailAddress($getting_member_info["m_mail_address"])) {
                     $request->setError("m_mail_address", "邮箱地址格式不正确");
                 } else {
                     $update_data["m_mail_address"] = $getting_member_info["m_mail_address"];

@@ -59,16 +59,9 @@ class BroadcomMemberLoginDBI
         return $data;
     }
 
-    public static function insertMemberLogin($login_name, $login_password, $login_salt, $position_level)
+    public static function insertMemberLogin($insert_data)
     {
         $dbi = Database::getInstance();
-        $insert_data = array();
-        $salt_info = Utility::transSalt();
-        $insert_data["member_login_name"] = $login_name;
-        $insert_data["member_login_password"] = $login_password;
-        $insert_data["member_login_salt"] = $login_salt;
-        $insert_data["member_level"] = "1";
-        $insert_data["member_position_level"] = $position_level;
         $result = $dbi->insert("member_login", $insert_data);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
