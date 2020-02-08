@@ -47,6 +47,12 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
+        $school_list = BroadcomSchoolInfoDBI::selectSchoolInfoList();
+        if ($controller->isError($school_list)) {
+            $school_list->setPos(__FILE__, __LINE__);
+            return $school_list;
+        }
+        $request->setAttribute("school_list", $school_list);
         $request->setAttribute("position_list", BroadcomMemberEntity::getPositionList());
         $request->setAttribute("position_level_list", BroadcomMemberEntity::getPositionLevelList());
         $request->setAttribute("educated_list", BroadcomMemberEntity::getEducatedList());
@@ -102,6 +108,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
         } else {
             $login_info = array();
             $request->setAttribute("member_login_name", "");
+            $request->setAttribute("school_id", "");
             $request->setAttribute("member_position", BroadcomMemberEntity::POSITION_TEACHER);
             $request->setAttribute("member_position_level", BroadcomMemberEntity::POSITION_LEVEL_0);
         }
@@ -127,6 +134,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             $request->setAttribute("member_id", $member_id);
         } else {
             $member_login_name = $request->getParameter("member_login_name");
+            $school_id = $request->getParameter("school_id");
             $member_position = $request->getParameter("member_position");
             $member_position_level = $request->getParameter("member_position_level");
             if (!Validate::checkNotNull($member_login_name)) {
@@ -142,7 +150,9 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
                 }
             }
             $request->setAttribute("member_login_name", $member_login_name);
+            $request->setAttribute("school_id", $school_id);
             $request->setAttribute("member_position", $member_position);
+            $request->setAttribute("member_position_level", $member_position_level);
         }
         $content_data = array();
         if (!$edit_mode || ($edit_mode && $getting_member_info["m_name"] != $member_info["m_name"])) {
@@ -221,8 +231,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
     {
         $edit_mode = $request->getAttribute("edit_mode");
         if ($edit_mode) {
-            $member_info = $request->getAttribute("member_info");
-            $request->setAttribute("page_titles", $member_info["m_name"]);
+            $request->setAttribute("page_titles", "修改成员信息");
         } else {
             $request->setAttribute("page_titles", "添加新成员");
         }
@@ -242,7 +251,9 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             }
         } else {
             $member_login_name = $request->getAttribute("member_login_name");
+            $school_id = $request->getAttribute("school_id");
             $member_position = $request->getAttribute("member_position");
+            $member_position_level = $request->getAttribute("member_position_level");
             $info_insert_data = $request->getAttribute("content_data");
             $password_context = substr($info_insert_data["m_mobile_number"], -6, 6);
             $salt_arr = Utility::transSalt();
@@ -252,7 +263,9 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             $login_insert_data["member_login_salt"] = $salt_arr["code"];
             $login_insert_data["member_level"] = "1";
             $position_insert_data = array();
+            $position_insert_data["school_id"] = $school_id;
             $position_insert_data["member_position"] = $member_position;
+            $position_insert_data["member_position_level"] = $member_position_level;
             $position_insert_data["member_employed_status"] = "1";
             $dbi = Database::getInstance();
             $begin_res = $dbi->begin();

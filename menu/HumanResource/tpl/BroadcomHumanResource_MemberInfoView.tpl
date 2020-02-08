@@ -15,6 +15,16 @@
   <h1>岗位信息</h1>
   <div class="table-line">
     <div class="table-item-b">
+      <div class="table-item-name">校区</div>
+      <div class="table-item-value">
+        <select name="school_id" class="text-field">
+{^foreach from=$school_list key=school_key item=school_item^}
+          <option value="{^$school_key^}"{^if $school_id eq $school_key^} selected{^/if^}>{^$school_item^}</option>
+{^/foreach^}
+        </select>
+      </div>
+    </div>
+    <div class="table-item-b">
       <div class="table-item-name">岗位</div>
       <div class="table-item-value">
         <select name="member_position" class="text-field">

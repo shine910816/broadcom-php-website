@@ -269,3 +269,33 @@ span.error-hint {
   background-color:#EEE!important;
   color:#000!important;
 }
+table.disp_table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+table.disp_table thead tr {
+  background-color:#E3EAF3;
+}
+table.disp_table thead tr th {
+  width:auto;
+  height:35px;
+  line-height:35px;
+  text-align:left;
+  padding:5px;
+  color:#55759F;
+  font-weight:bold;
+}
+table.disp_table tbody tr:nth-child(even) {
+  background-color:#F9F9F9;
+}
+table.disp_table tbody tr:hover {
+  background-color:#DAE4F2;
+}
+table.disp_table tbody tr td {
+  width:auto;
+  height:35px;
+  line-height:35px;
+  text-align:left;
+  padding:5px;
+}

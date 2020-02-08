@@ -67,6 +67,7 @@ class BroadcomMemberLoginDBI
                " l.member_login_name," .
                " i.m_mobile_number," .
                " i.m_mail_address," .
+               " p.school_id," .
                " p.member_position," .
                " p.member_position_level" .
                " FROM member_login l" .

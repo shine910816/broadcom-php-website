@@ -184,21 +184,21 @@ class Utility
         $max_page = ceil(count($data) / $per_page);
         $request->setAttribute("url_page", $url_page);
         $request->setAttribute("max_page", $max_page);
-        if ($request->checkMobile()) {
-            $request->setAttribute("mbl_grid_class_list", array(
-                "2" => "ui-grid-a",
-                "3" => "ui-grid-b",
-                "4" => "ui-grid-c",
-                "5" => "ui-grid-d",
-            ));
-            $request->setAttribute("mbl_grid_block_class_list", array(
-                0 => "ui-block-a",
-                1 => "ui-block-b",
-                2 => "ui-block-c",
-                3 => "ui-block-d",
-                4 => "ui-block-e"
-            ));
-        }
+        //if ($request->checkMobile()) {
+        //    $request->setAttribute("mbl_grid_class_list", array(
+        //        "2" => "ui-grid-a",
+        //        "3" => "ui-grid-b",
+        //        "4" => "ui-grid-c",
+        //        "5" => "ui-grid-d",
+        //    ));
+        //    $request->setAttribute("mbl_grid_block_class_list", array(
+        //        0 => "ui-block-a",
+        //        1 => "ui-block-b",
+        //        2 => "ui-block-c",
+        //        3 => "ui-block-d",
+        //        4 => "ui-block-e"
+        //    ));
+        //}
         $data_tmp = array_chunk($data, $per_page, true);
         if (!isset($data_tmp[$request->current_page - 1])) {
             $err = Error::getInstance();
