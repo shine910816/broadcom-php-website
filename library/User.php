@@ -69,10 +69,10 @@ class User
         }
     }
 
-    public function getPositionLevel()
+    public function getMemberPositionName()
     {
         if ($this->isLogin()) {
-            return $this->getVariable("member_position_level");
+            return $this->getVariable("member_position_name");
         } else {
             return "";
         }
@@ -94,11 +94,11 @@ class User
         if ($this->isAdmin()) {
             return true;
         } else {
-            $position_level = Config::getPositionAllowedCurrent();
-            if (!isset($position_level[$menu][$act])) {
+            $position_list = Config::getPositionAllowedCurrent();
+            if (!isset($position_list[$menu][$act])) {
                 return true;
             } else {
-                if (in_array($this->getPositionLevel(), $position_level[$menu][$act])) {
+                if (in_array($this->getMemberPosition(), $position_list[$menu][$act])) {
                     return true;
                 } else {
                     return false;

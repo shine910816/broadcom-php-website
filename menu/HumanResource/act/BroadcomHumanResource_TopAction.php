@@ -33,10 +33,8 @@ class BroadcomHumanResource_TopAction extends BroadcomHumanResourceActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
-        $request->setAttribute("educated_list", BroadcomMemberEntity::getEducatedList());
-        $request->setAttribute("educated_type_list", BroadcomMemberEntity::getEducatedTypeList());
-        $request->setAttribute("married_type_list", BroadcomMemberEntity::getMarriedTypeList());
-        $request->setAttribute("contact_relationship_list", BroadcomMemberEntity::getContactRelationshipList());
+        $request->setAttribute("position_list", BroadcomMemberEntity::getPositionList());
+        $request->setAttribute("position_level_list", BroadcomMemberEntity::getPositionLevelList());
         return VIEW_DONE;
     }
 
@@ -49,6 +47,18 @@ class BroadcomHumanResource_TopAction extends BroadcomHumanResourceActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
+        $member_list = BroadcomMemberLoginDBI::selectMemberList();
+        if ($controller->isError($member_list)) {
+            $member_list->setPos(__FILE__, __LINE__);
+            return $member_list;
+        }
+        $editable_flg = false;
+        if ($user->checkPositionAble("human_resource", "member_info")) {
+            $editable_flg = true;
+        }
+        $request->setAttribute("member_list", $member_list);
+        $request->setAttribute("editable_flg", $editable_flg);
+//Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 }

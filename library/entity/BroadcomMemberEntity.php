@@ -7,20 +7,32 @@
  */
 class BroadcomMemberEntity
 {
-    const POSITION_LEVEL_DIRECTOR_CITY = "1100";
-    const POSITION_LEVEL_DIRECTOR_OPERATION = "1110";
-    const POSITION_LEVEL_DIRECTOR_HUMANRESOURCE = "1120";
-    const POSITION_LEVEL_DIRECTOR_FINANCE = "1130";
-    const POSITION_LEVEL_DIRECTOR_MARKETING = "1140";
-    const POSITION_LEVEL_DIRECTOR_EDUCATION = "1150";
-    const POSITION_LEVEL_REGIONAL_MANAGER = "2100";
-    const POSITION_LEVEL_HEADMASTER = "3100";
-    const POSITION_LEVEL_EDUCATE_MANAGER = "3110";
-    const POSITION_LEVEL_MARKETING = "3111";
-    const POSITION_LEVEL_MANAGER = "3112";
-    const POSITION_LEVEL_TEACH_MANAGER = "3120";
-    const POSITION_LEVEL_TEACHER = "3121";
-    const POSITION_LEVEL_HR_FINANCE = "3200";
+    const POSITION_DIRECTOR_CITY = "1100";
+    const POSITION_DIRECTOR_OPERATION = "1110";
+    const POSITION_DIRECTOR_HUMANRESOURCE = "1120";
+    const POSITION_DIRECTOR_FINANCE = "1130";
+    const POSITION_DIRECTOR_MARKETING = "1140";
+    const POSITION_DIRECTOR_EDUCATION = "1150";
+    const POSITION_REGIONAL_MANAGER = "2100";
+    const POSITION_HEADMASTER = "3100";
+    const POSITION_EDUCATE_MANAGER = "3110";
+    const POSITION_MARKETING = "3111";
+    const POSITION_MANAGER = "3112";
+    const POSITION_TEACH_MANAGER = "3120";
+    const POSITION_TEACHER = "3121";
+    const POSITION_HR_FINANCE = "3200";
+
+    const POSITION_LEVEL_0 = "0";
+    const POSITION_LEVEL_1 = "1";
+    const POSITION_LEVEL_2 = "2";
+    const POSITION_LEVEL_3 = "3";
+    const POSITION_LEVEL_4 = "4";
+    const POSITION_LEVEL_5 = "5";
+    const POSITION_LEVEL_6 = "6";
+    const POSITION_LEVEL_7 = "7";
+    const POSITION_LEVEL_8 = "8";
+    const POSITION_LEVEL_9 = "9";
+    const POSITION_LEVEL_10 = "10";
 
     const EDUCATED_1 = "1";
     const EDUCATED_2 = "2";
@@ -50,23 +62,40 @@ class BroadcomMemberEntity
     const CONTACT_RELATIONSHIP_5 = "5";
     const CONTACT_RELATIONSHIP_6 = "6";
 
+    public static function getPositionList()
+    {
+        return array(
+            //self::POSITION_DIRECTOR_CITY => "城市总监",
+            //self::POSITION_DIRECTOR_OPERATION => "运营总监",
+            //self::POSITION_DIRECTOR_HUMANRESOURCE => "人事总监",
+            //self::POSITION_DIRECTOR_FINANCE => "财务总监",
+            //self::POSITION_DIRECTOR_MARKETING => "市场总监",
+            //self::POSITION_DIRECTOR_EDUCATION => "教学总监",
+            //self::POSITION_REGIONAL_MANAGER => "区域经理",
+            self::POSITION_HEADMASTER => "校长",
+            self::POSITION_EDUCATE_MANAGER => "学管主管",
+            self::POSITION_MARKETING => "市场专员",
+            self::POSITION_MANAGER => "学管",
+            self::POSITION_TEACH_MANAGER => "教学主管",
+            self::POSITION_TEACHER => "教师",
+            self::POSITION_HR_FINANCE => "财务人事"
+        );
+    }
+
     public static function getPositionLevelList()
     {
         return array(
-            //self::POSITION_LEVEL_DIRECTOR_CITY => "城市总监",
-            //self::POSITION_LEVEL_DIRECTOR_OPERATION => "运营总监",
-            //self::POSITION_LEVEL_DIRECTOR_HUMANRESOURCE => "人事总监",
-            //self::POSITION_LEVEL_DIRECTOR_FINANCE => "财务总监",
-            //self::POSITION_LEVEL_DIRECTOR_MARKETING => "市场总监",
-            //self::POSITION_LEVEL_DIRECTOR_EDUCATION => "教学总监",
-            //self::POSITION_LEVEL_REGIONAL_MANAGER => "区域经理",
-            self::POSITION_LEVEL_HEADMASTER => "校长",
-            self::POSITION_LEVEL_EDUCATE_MANAGER => "学管主管",
-            self::POSITION_LEVEL_MARKETING => "市场专员",
-            self::POSITION_LEVEL_MANAGER => "学管",
-            self::POSITION_LEVEL_TEACH_MANAGER => "教学主管",
-            self::POSITION_LEVEL_TEACHER => "教师",
-            self::POSITION_LEVEL_HR_FINANCE => "财务人事"
+            self::POSITION_LEVEL_0 => "无",
+            self::POSITION_LEVEL_1 => "实习生",
+            self::POSITION_LEVEL_2 => "专员级",
+            self::POSITION_LEVEL_3 => "主管级",
+            self::POSITION_LEVEL_4 => "高级主管/校长",
+            self::POSITION_LEVEL_5 => "经理级/高级督导/教务校长",
+            self::POSITION_LEVEL_6 => "高级经理级/区域督导/区域经理",
+            self::POSITION_LEVEL_7 => "副总监级/总监",
+            self::POSITION_LEVEL_8 => "高级总监级/事业部总经理",
+            self::POSITION_LEVEL_9 => "VP/CTO",
+            self::POSITION_LEVEL_10 => "执行董事"
         );
     }
 

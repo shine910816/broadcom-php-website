@@ -128,7 +128,7 @@ class BroadcomMember_LoginAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
-        $member_position = "";
+        $member_position_name = "";
         $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
         if ($controller->isError($position_info)) {
             $position_info->setPos(__FILE__, __LINE__);
@@ -139,19 +139,19 @@ class BroadcomMember_LoginAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
-        if ($position_info["member_position_level"] == "100") {
-            $member_position = "管理员";
+        if ($position_info["member_position"] == "100") {
+            $member_position_name = "管理员";
         } else {
-            $position_level_list = BroadcomMemberEntity::getPositionLevelList();
-            if (isset($position_level_list[$position_info["member_position_level"]])) {
-                $member_position = $position_level_list[$position_info["member_position_level"]];
+            $position_list = BroadcomMemberEntity::getPositionList();
+            if (isset($position_list[$position_info["member_position"]])) {
+                $member_position_name = $position_list[$position_info["member_position"]];
             }
         }
         $user->setVariable("member_id", $member_id);
         $user->setVariable("admin_lvl", $admin_lvl);
         $user->setVariable("member_name", $member_info["m_name"]);
-        $user->setVariable("member_position", $member_position);
-        $user->setVariable("member_position_level", $login_info["member_position_level"]);
+        $user->setVariable("member_position_name", $member_position_name);
+        $user->setVariable("member_position", $position_info["member_position"]);
         $redirect_url = "../";
         if ($user->hasVariable(REDIRECT_URL)) {
             $redirect_url .= $user->getVariable(REDIRECT_URL);
@@ -178,7 +178,7 @@ class BroadcomMember_LoginAction extends ActionBase
         $user->setVariable("admin_lvl", "0");
         $user->freeVariable("member_name");
         $user->freeVariable("member_position");
-        $user->freeVariable("member_position_level");
+        $user->freeVariable("member_position_name");
         $controller->redirect($redirect_url);
         return VIEW_NONE;
     }

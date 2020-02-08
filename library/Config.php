@@ -42,8 +42,8 @@ class Config
     {
         $result = array();
         $result["human_resource"]["member_info"] = array(
-            BroadcomMemberEntity::POSITION_LEVEL_HEADMASTER,
-            BroadcomMemberEntity::POSITION_LEVEL_HR_FINANCE
+            BroadcomMemberEntity::POSITION_HEADMASTER,
+            BroadcomMemberEntity::POSITION_HR_FINANCE
         );
         return $result;
     }

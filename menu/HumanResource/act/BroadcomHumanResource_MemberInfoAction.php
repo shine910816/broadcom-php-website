@@ -47,6 +47,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
+        $request->setAttribute("position_list", BroadcomMemberEntity::getPositionList());
         $request->setAttribute("position_level_list", BroadcomMemberEntity::getPositionLevelList());
         $request->setAttribute("educated_list", BroadcomMemberEntity::getEducatedList());
         $request->setAttribute("educated_type_list", BroadcomMemberEntity::getEducatedTypeList());
@@ -101,7 +102,8 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
         } else {
             $login_info = array();
             $request->setAttribute("member_login_name", "");
-            $request->setAttribute("member_position_level", BroadcomMemberEntity::POSITION_LEVEL_TEACHER);
+            $request->setAttribute("member_position", BroadcomMemberEntity::POSITION_TEACHER);
+            $request->setAttribute("member_position_level", BroadcomMemberEntity::POSITION_LEVEL_0);
         }
         $request->setAttribute("edit_mode", $edit_mode);
         $request->setAttribute("member_info", $member_info);
@@ -125,6 +127,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             $request->setAttribute("member_id", $member_id);
         } else {
             $member_login_name = $request->getParameter("member_login_name");
+            $member_position = $request->getParameter("member_position");
             $member_position_level = $request->getParameter("member_position_level");
             if (!Validate::checkNotNull($member_login_name)) {
                 $request->setError("member_login_name", "登录名不能为空");
@@ -139,7 +142,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
                 }
             }
             $request->setAttribute("member_login_name", $member_login_name);
-            $request->setAttribute("member_position_level", $member_position_level);
+            $request->setAttribute("member_position", $member_position);
         }
         $content_data = array();
         if (!$edit_mode || ($edit_mode && $getting_member_info["m_name"] != $member_info["m_name"])) {
@@ -239,7 +242,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             }
         } else {
             $member_login_name = $request->getAttribute("member_login_name");
-            $member_position_level = $request->getAttribute("member_position_level");
+            $member_position = $request->getAttribute("member_position");
             $info_insert_data = $request->getAttribute("content_data");
             $password_context = substr($info_insert_data["m_mobile_number"], -6, 6);
             $salt_arr = Utility::transSalt();
@@ -249,7 +252,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             $login_insert_data["member_login_salt"] = $salt_arr["code"];
             $login_insert_data["member_level"] = "1";
             $position_insert_data = array();
-            $position_insert_data["member_position_level"] = $member_position_level;
+            $position_insert_data["member_position"] = $member_position;
             $position_insert_data["member_employed_status"] = "1";
             $dbi = Database::getInstance();
             $begin_res = $dbi->begin();

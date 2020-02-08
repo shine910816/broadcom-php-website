@@ -59,6 +59,36 @@ class BroadcomMemberLoginDBI
         return $data;
     }
 
+    public static function selectMemberList()
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT l.member_id," .
+               " i.m_name," .
+               " l.member_login_name," .
+               " i.m_mobile_number," .
+               " i.m_mail_address," .
+               " p.member_position," .
+               " p.member_position_level" .
+               " FROM member_login l" .
+               " LEFT OUTER JOIN member_position p ON p.member_id = l.member_id" .
+               " LEFT OUTER JOIN member_info i ON i.member_id = l.member_id" .
+               " WHERE l.del_flg = 0" .
+               " AND p.del_flg = 0" .
+               " AND i.del_flg = 0" .
+               " AND l.member_level = 1";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["member_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function insertMemberLogin($insert_data)
     {
         $dbi = Database::getInstance();
