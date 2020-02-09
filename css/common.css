@@ -184,6 +184,24 @@ div.table-item-value {
   line-height:30px;
   padding:0 1%;
 }
+div.main-table {
+  border:1px #CCC solid;
+  border-radius:5px;
+  width:auto;
+  margin-top:15px;
+}
+div.main-table h2 {
+  width:auto;
+  height:4em;
+  text-align:left;
+  line-height:4em;
+  font-size:1.2em;
+  color:#3F4F65;
+  padding-left:20px;
+  background-image:url("../img/h2-bg.png");
+  background-repeat:repeat;
+  border-bottom:1px #CCC solid;
+}
 
 /* 模块样式 */
 h1 {
@@ -280,7 +298,6 @@ span.error-hint {
 table.disp_table {
   width:100%;
   border-collapse:collapse;
-  margin-top:15px;
 }
 table.disp_table thead tr {
   background-color:#E3EAF3;
