@@ -30,6 +30,24 @@ class BroadcomMemberInfoDBI
         return $data;
     }
 
+    public static function selectMemberNameList()
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM member_info" .
+               " WHERE del_flg = 0";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["member_id"]] = $row["m_name"];
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function insertMemberInfo($insert_data)
     {
         $dbi = Database::getInstance();

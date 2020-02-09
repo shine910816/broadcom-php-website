@@ -263,11 +263,19 @@ span.error-hint {
   height:35px!important;
   line-height:35px!important;
   float:left;
-  margin-left:10px;
+  margin-right:10px;
 }
 .ui-btn-grey {
   background-color:#EEE!important;
   color:#000!important;
+}
+.ui-btn-purple {
+  background-color:#9E8EE6!important;
+  color:#FFF!important;
+}
+.ui-btn-orange {
+  background-color:#E86940!important;
+  color:#FFF!important;
 }
 table.disp_table {
   width:100%;

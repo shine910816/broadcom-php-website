@@ -36,10 +36,10 @@ class BroadcomSchoolInfoDBI
         return $result;
     }
 
-    public static function updateSchoolInfo($update_data, $school_info)
+    public static function updateSchoolInfo($update_data, $school_id)
     {
         $dbi = Database::getInstance();
-        $result = $dbi->update("school_info", $update_data, "school_info = " . $school_info);
+        $result = $dbi->update("school_info", $update_data, "school_id = " . $school_id);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
             return $result;

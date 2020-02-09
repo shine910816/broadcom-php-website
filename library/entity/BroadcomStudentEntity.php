@@ -21,6 +21,8 @@ class BroadcomStudentEntity
     const GRADE_SENIOR_2 = "11";
     const GRADE_SENIOR_3 = "12";
 
+    const STUDENT_LEVEL_NONE = "0";
+
     const MEDIA_CHANNEL_1_1 = "1";
     const MEDIA_CHANNEL_1_2 = "2";
     const MEDIA_CHANNEL_1_3 = "3";
@@ -121,6 +123,13 @@ class BroadcomStudentEntity
             self::FOLLOW_STATUS_1 => "待跟进",
             self::FOLLOW_STATUS_2 => "已试听",
             self::FOLLOW_STATUS_3 => "已签单"
+        );
+    }
+
+    public static function getStudentLevelList()
+    {
+        return array(
+            self::STUDENT_LEVEL_NONE => "非会员"
         );
     }
 }

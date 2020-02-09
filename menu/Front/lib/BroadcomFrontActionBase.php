@@ -1,11 +1,11 @@
 <?php
 
 /**
- * 人力资源模块基类
+ * 前台业务基类
  * @author Kinsama
- * @version 2020-02-06
+ * @version 2020-02-09
  */
-class BroadcomHumanResourceActionBase extends ActionBase
+class BroadcomFrontActionBase extends ActionBase
 {
 
     /**
@@ -18,9 +18,9 @@ class BroadcomHumanResourceActionBase extends ActionBase
     public function doLeftContent(Controller $controller, User $user, Request $request)
     {
         $result = array();
-        $result[] = array("top", "成员列表");
+        $result[] = array("my_leads", "我的意向客户");
+        $result[] = array("school_leads", "校区意向客户");
         $request->setAttribute("left_content", $result);
-        $request->setAttribute("member_info_template_file", SRC_PATH . "/menu/Member/tpl/BroadcomMemberBaseInfoView.tpl");
         return VIEW_DONE;
     }
 }

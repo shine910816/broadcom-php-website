@@ -19,6 +19,10 @@ class Config
         $result["member"]["password"] = SYSTEM_AUTH_LOGIN;
         $result["human_resource"]["top"] = SYSTEM_AUTH_LOGIN;
         $result["human_resource"]["member_info"] = SYSTEM_AUTH_LOGIN;
+        $result["front"]["top"] = SYSTEM_AUTH_LOGIN;
+        $result["front"]["my_leads"] = SYSTEM_AUTH_LOGIN;
+        $result["front"]["school_leads"] = SYSTEM_AUTH_LOGIN;
+        $result["front"]["create_leads"] = SYSTEM_AUTH_LOGIN;
         $list_data["php"] = $result;
         $result = array();
         $list_data["api"] = $result;
@@ -35,6 +39,10 @@ class Config
         $result["member"]["password"] = array('<a href="./?menu=member&act=top">个人信息管理</a>', "修改登录密码");
         $result["human_resource"]["top"] = array("成员列表");
         $result["human_resource"]["member_info"] = array('<a href="./?menu=human_resource&act=top">成员列表</a>', "");
+        $result["front"]["top"] = array("前台业务");
+        $result["front"]["my_leads"] = array('<a href="./?menu=front&act=top">前台业务</a>', "我的意向客户");
+        $result["front"]["school_leads"] = array('<a href="./?menu=front&act=top">前台业务</a>', "校区意向客户");
+        $result["front"]["create_leads"] = array('<a href="./?menu=front&act=top">前台业务</a>', '<a href="./?menu=front&act=my_leads">我的意向客户</a>', "新增意向客户");
         return $result;
     }
 
