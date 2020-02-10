@@ -17,10 +17,18 @@ class BroadcomMember_TopAction extends BroadcomMemberActionBase
      */
     public function doMainExecute(Controller $controller, User $user, Request $request)
     {
-        $ret = $this->_doDefaultExecute($controller, $user, $request);
-        if ($controller->isError($ret)) {
-            $ret->setPos(__FILE__, __LINE__);
-            return $ret;
+        if ($request->hasParameter("admin_mode")) {
+            $ret = $this->_doAdminExecute($controller, $user, $request);
+            if ($controller->isError($ret)) {
+                $ret->setPos(__FILE__, __LINE__);
+                return $ret;
+            }
+        } else {
+            $ret = $this->_doDefaultExecute($controller, $user, $request);
+            if ($controller->isError($ret)) {
+                $ret->setPos(__FILE__, __LINE__);
+                return $ret;
+            }
         }
         return $ret;
     }
@@ -61,6 +69,12 @@ class BroadcomMember_TopAction extends BroadcomMemberActionBase
         $request->setAttribute("educated_type_list", BroadcomMemberEntity::getEducatedTypeList());
         $request->setAttribute("married_type_list", BroadcomMemberEntity::getMarriedTypeList());
         $request->setAttribute("contact_relationship_list", BroadcomMemberEntity::getContactRelationshipList());
+        return VIEW_DONE;
+    }
+
+    private function _doAdminExecute(Controller $controller, User $user, Request $request)
+    {
+        $controller->redirect("?menu=admin&act=top");
         return VIEW_DONE;
     }
 }

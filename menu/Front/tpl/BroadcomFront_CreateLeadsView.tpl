@@ -103,8 +103,8 @@
   </div>
   <div class="table-line"></div>
   <div class="table-line">
-    <a href="./?menu=front&act=my_leads" class="button-field ui-btn-b ui-btn-grey">返回</a>
-    <input type="submit" name="do_create" value="保存" class="button-field ui-btn-b" />
+    <a href="./?menu=front&act=my_leads" class="button-field ui-btn-b ui-btn-grey"><i class="fa fa-chevron-left"></i> 返回</a>
+    <button type="submit" name="do_create" value="1" class="button-field ui-btn-b"><i class="fa fa-check"></i> 保存</button>
   </div>
 </form>
 {^include file=$comfooter_file^}

@@ -12,6 +12,14 @@
       <div class="table-item-value"><input type="text" name="member_login_name" value="{^$member_login_name|escape^}" class="text-field" /></div>
     </div>
   </div>
+{^if isset($user_err_list["member_login_name"])^}
+  <div class="table-line">
+    <div class="table-item-b">
+      <div class="table-item-name"></div>
+      <div class="table-item-value"><span class="error-hint">{^$user_err_list["member_login_name"]^}</span></div>
+    </div>
+  </div>
+{^/if^}
   <h1>岗位信息</h1>
   <div class="table-line">
     <div class="table-item-b">
@@ -45,20 +53,12 @@
       </div>
     </div>
   </div>
-{^if isset($user_err_list["member_login_name"])^}
-  <div class="table-line">
-    <div class="table-item-b">
-      <div class="table-item-name"></div>
-      <div class="table-item-value"><span class="error-hint">{^$user_err_list["member_login_name"]^}</span></div>
-    </div>
-  </div>
-{^/if^}
 {^/if^}
 {^include file=$member_info_template_file^}
   <div class="table-line"></div>
   <div class="table-line">
-    <a href="./?menu={^$current_menu^}&act=top" class="button-field ui-btn-b ui-btn-grey">返回</a>
-    <input type="submit" name="do_submit" value="{^if $edit_mode^}确认修改{^else^}创建{^/if^}" class="button-field ui-btn-b" />
+    <a href="./?menu={^$current_menu^}&act=top" class="button-field ui-btn-b ui-btn-grey"><i class="fa fa-chevron-left"></i> 返回</a>
+    <button type="submit" name="do_submit" value="1" class="button-field ui-btn-b"><i class="fa fa-check"></i> {^if $edit_mode^}确认修改{^else^}创建{^/if^}<button>
   </div>
 </form>
 {^include file=$comfooter_file^}

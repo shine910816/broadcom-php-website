@@ -251,10 +251,10 @@ span.error-hint {
 }
 .button-field {
   width:auto;
-  height:30px;
-  padding:0 0.5em;
+  height:35px;
+  padding:0 0.7em;
   text-align:center;
-  line-height:30px;
+  line-height:35px;
   text-decoration:none!important;
   transition:.3s;
   background-color:#67BA2F;
@@ -278,14 +278,13 @@ span.error-hint {
   margin:0 auto;
 }
 .ui-btn-b {
-  height:35px!important;
-  line-height:35px!important;
   float:left;
   margin-right:10px;
+  padding:0 0.5em;
 }
 .ui-btn-grey {
-  background-color:#EEE!important;
-  color:#000!important;
+  background-color:#AAA!important;
+  color:#FFF!important;
 }
 .ui-btn-purple {
   background-color:#9E8EE6!important;

@@ -1,7 +1,7 @@
 {^include file=$comheader_file^}
 {^if $editable_flg^}
   <div class="table-line">
-    <a href="./?menu=human_resource&act=member_info" class="button-field ui-btn-b ui-btn-purple">添加新成员</a>
+    <a href="./?menu=human_resource&act=member_info" class="button-field ui-btn-b ui-btn-purple"><i class="fa fa-plus"></i> 添加新成员</a>
   </div>
 {^/if^}
 {^if !empty($member_list)^}

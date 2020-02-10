@@ -6,6 +6,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png"/>
 <title>{^$page_title^}</title>
 <link type="text/css" rel="stylesheet" href="css/common.css" />
+<link type="text/css" rel="stylesheet" href="css/font-awesome.css" />
 <script type="text/javascript" src="js/jquery-2.0.0.min.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 </head>
