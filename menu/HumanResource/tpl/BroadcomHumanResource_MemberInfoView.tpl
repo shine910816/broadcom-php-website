@@ -10,7 +10,7 @@
   <div class="table-line">
     <div class="table-item-b">
       <div class="table-item-name">登录名</div>
-      <div class="table-item-value"><input type="text" name="member_login_name" value="{^$member_login_name|escape^}" class="text-field" /></div>
+      <div class="table-item-value"><input type="text" name="member_login_name" value="{^$member_login_name|escape^}" class="text-field hylight-field" /></div>
     </div>
   </div>
 {^if isset($user_err_list["member_login_name"])^}

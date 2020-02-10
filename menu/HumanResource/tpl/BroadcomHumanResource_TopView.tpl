@@ -43,6 +43,7 @@
 {^/foreach^}
       </tbody>
     </table>
+{^include file=$compagina_file^}
   </div>
 {^/if^}
 {^include file=$comfooter_file^}

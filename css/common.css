@@ -172,6 +172,7 @@ div.table-item-name {
   width:25%;
   font-weight:bold;
   text-align:right;
+  color:#333;
 }
 div.table-item-value {
   width:71%;
@@ -221,6 +222,16 @@ div.error-table p {
   margin-top:10px;
   color:#FF5050;
 }
+div.page-nav-bar {
+  padding:0 10px;
+  width:auto;
+  height:35px;
+  display:block;
+  margin:10px 0;
+}
+div.page-nav-bar a.button-field {
+  min-width:21px;
+}
 
 /* 模块样式 */
 h1 {
@@ -256,9 +267,10 @@ span.error-hint {
   padding:0 2%;
   text-align:left;
   line-height:30px;
-  border-bottom:1px solid #000;
+  border-bottom:1px solid #333;
   transition:.3s;
   display:block;
+  box-sizing:border-box;
 }
 .text-field:focus {
   border-bottom:1px solid #0BF;
@@ -267,6 +279,9 @@ span.error-hint {
   border-bottom:1px solid #AAA;
   color:#AAA;
   background-color:#FFF;
+}
+.hylight-field {
+  border-bottom-color:#EE1010!important;
 }
 .button-field {
   width:auto;

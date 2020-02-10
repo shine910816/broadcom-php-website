@@ -16,16 +16,16 @@
 </div>
 <div class="table-line">
   <div class="table-item-b">
-    <div class="table-item-name">身份证号</div>
-    <div class="table-item-value">{^$member_info["m_id_code"]|escape^}</div>
-  </div>
-  <div class="table-item-b">
     <div class="table-item-name">手机号</div>
     <div class="table-item-value">{^$member_info["m_mobile_number"]|escape^}</div>
   </div>
   <div class="table-item-b">
     <div class="table-item-name">邮箱地址</div>
     <div class="table-item-value">{^$member_info["m_mail_address"]|escape^}</div>
+  </div>
+  <div class="table-item-b">
+    <div class="table-item-name">身份证号</div>
+    <div class="table-item-value">{^$member_info["m_id_code"]|escape^}</div>
   </div>
 </div>
 <div class="table-line">

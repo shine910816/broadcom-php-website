@@ -66,6 +66,12 @@ class BroadcomFront_SchoolLeadsAction extends BroadcomFrontActionBase
             $student_info_list->setPos(__FILE__, __LINE__);
             return $student_info_list;
         }
+        $page_url = "./?menu=" . $request->current_menu . "&act=" . $request->current_act;
+        $student_info_list = Utility::getPaginationData($request, $student_info_list, $page_url);
+        if ($controller->isError($student_info_list)) {
+            $student_info_list->setPos(__FILE__, __LINE__);
+            return $student_info_list;
+        }
         foreach ($student_info_list as $student_id => $student_info) {
             $student_info_list[$student_id]["grade_name"] = BroadcomStudentEntity::getGradeName($student_info["student_entrance_year"]);
         }

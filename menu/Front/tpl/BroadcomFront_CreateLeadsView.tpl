@@ -7,7 +7,7 @@
   <div class="table-line">
     <div class="table-item-b">
       <div class="table-item-name">学员姓名</div>
-      <div class="table-item-value"><input type="text" name="student_info[student_name]" value="{^$student_info["student_name"]|escape^}" class="text-field" /></div>
+      <div class="table-item-value"><input type="text" name="student_info[student_name]" value="{^$student_info["student_name"]|escape^}" class="text-field hylight-field" /></div>
     </div>
     <div class="table-item-b">
       <div class="table-item-name">性别</div>
@@ -40,7 +40,7 @@
   <div class="table-line">
     <div class="table-item-b">
       <div class="table-item-name">手机号</div>
-      <div class="table-item-value"><input type="text" name="student_info[student_mobile_number]" value="{^$student_info["student_mobile_number"]|escape^}" class="text-field" /></div>
+      <div class="table-item-value"><input type="text" name="student_info[student_mobile_number]" value="{^$student_info["student_mobile_number"]|escape^}" class="text-field hylight-field" /></div>
     </div>
     <div class="table-item-b">
       <div class="table-item-name">一级渠道</div>

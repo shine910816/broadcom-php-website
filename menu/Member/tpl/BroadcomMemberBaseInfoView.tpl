@@ -2,7 +2,7 @@
   <div class="table-line">
     <div class="table-item-b">
       <div class="table-item-name">姓名</div>
-      <div class="table-item-value"><input type="text" name="member_info[m_name]" value="{^$member_info["m_name"]|escape^}" class="text-field" /></div>
+      <div class="table-item-value"><input type="text" name="member_info[m_name]" value="{^$member_info["m_name"]|escape^}" class="text-field hylight-field" /></div>
     </div>
     <div class="table-item-b">
       <div class="table-item-name">生日</div>
@@ -20,21 +20,20 @@
   </div>
   <div class="table-line">
     <div class="table-item-b">
-      <div class="table-item-name">身份证号</div>
-      <div class="table-item-value"><input type="text" name="member_info[m_id_code]" value="{^$member_info["m_id_code"]|escape^}" class="text-field" /></div>
-    </div>
-    <div class="table-item-b">
       <div class="table-item-name">手机号</div>
-      <div class="table-item-value"><input type="text" name="member_info[m_mobile_number]" value="{^$member_info["m_mobile_number"]|escape^}" class="text-field" /></div>
+      <div class="table-item-value"><input type="text" name="member_info[m_mobile_number]" value="{^$member_info["m_mobile_number"]|escape^}" class="text-field hylight-field" /></div>
     </div>
     <div class="table-item-b">
       <div class="table-item-name">邮箱地址</div>
       <div class="table-item-value"><input type="text" name="member_info[m_mail_address]" value="{^$member_info["m_mail_address"]|escape^}" class="text-field" /></div>
     </div>
+    <div class="table-item-b">
+      <div class="table-item-name">身份证号</div>
+      <div class="table-item-value"><input type="text" name="member_info[m_id_code]" value="{^$member_info["m_id_code"]|escape^}" class="text-field" /></div>
+    </div>
   </div>
 {^if isset($user_err_list["m_mobile_number"]) or isset($user_err_list["m_mail_address"])^}
   <div class="table-line">
-    <div class="table-item-b"></div>
     <div class="table-item-b">
       <div class="table-item-name"></div>
       <div class="table-item-value">{^if isset($user_err_list["m_mobile_number"])^}<span class="error-hint">{^$user_err_list["m_mobile_number"]^}</span>{^/if^}</div>
