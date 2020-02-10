@@ -202,6 +202,25 @@ div.main-table h2 {
   background-repeat:repeat;
   border-bottom:1px #CCC solid;
 }
+div.error-table {
+  border-color:#FF7070!important;
+  padding-bottom:10px;
+}
+div.error-table h2 {
+  background-image:url("../img/h2-bg-red.png")!important;
+  color:#FF5050;
+  border-bottom-color:#FF7070!important;
+  height:2em;
+  line-height:2em;
+}
+div.error-table p {
+  height:1.5em;
+  padding:0 20px;
+  line-height:1.5em;
+  text-align:left;
+  margin-top:10px;
+  color:#FF5050;
+}
 
 /* 模块样式 */
 h1 {

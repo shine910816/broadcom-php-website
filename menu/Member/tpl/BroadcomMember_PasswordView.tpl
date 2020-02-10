@@ -1,4 +1,5 @@
 {^include file=$comheader_file^}
+{^include file=$usererror_file^}
 <form action="./" method="post">
   <input type="hidden" name="menu" value="{^$current_menu^}" />
   <input type="hidden" name="act" value="{^$current_act^}" />
