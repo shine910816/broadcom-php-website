@@ -41,5 +41,7 @@
     </table>
 {^include file=$compagina_file^}
   </div>
+{^else^}
+  <p>暂无数据</p>
 {^/if^}
 {^include file=$comfooter_file^}
