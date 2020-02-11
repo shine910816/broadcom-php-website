@@ -50,6 +50,7 @@ class BroadcomAdmin_ItemInputAction extends BroadcomAdminActionBase
         $request->setAttribute("item_type_list", BroadcomItemEntity::getItemTypeList());
         $request->setAttribute("item_method_list", BroadcomItemEntity::getItemMethodList());
         $request->setAttribute("item_grade_list", BroadcomItemEntity::getItemGradeList());
+        $request->setAttribute("subject_list", BroadcomSubjectEntity::getSubjectList());
         $item_info = array(
             "item_name" => "",
             "item_type" => BroadcomItemEntity::ITEM_TYPE_NORMAL,
