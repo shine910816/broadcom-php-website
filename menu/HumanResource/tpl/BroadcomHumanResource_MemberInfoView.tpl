@@ -58,8 +58,8 @@
 {^include file=$member_info_template_file^}
   <div class="table-line"></div>
   <div class="table-line">
-    <a href="./?menu={^$current_menu^}&act=top" class="button-field ui-btn-b ui-btn-grey"><i class="fa fa-chevron-left"></i> 返回</a>
-    <button type="submit" name="do_submit" value="1" class="button-field ui-btn-b"><i class="fa fa-check"></i> {^if $edit_mode^}确认修改{^else^}创建{^/if^}<button>
+    <a href="./?menu={^$current_menu^}&act=top" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>
+    <button type="submit" name="do_submit" value="1" class="button-field ui-btn-green"><i class="fa fa-check"></i> {^if $edit_mode^}确认修改{^else^}创建{^/if^}<button>
   </div>
 </form>
 {^include file=$comfooter_file^}

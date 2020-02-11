@@ -1,7 +1,7 @@
 {^include file=$comheader_file^}
 {^if $editable_flg^}
   <div class="table-line">
-    <a href="./?menu=human_resource&act=member_info" class="button-field ui-btn-b ui-btn-purple"><i class="fa fa-plus"></i> 添加新成员</a>
+    <a href="./?menu=human_resource&act=member_info" class="button-field ui-btn-purple"><i class="fa fa-plus"></i> 添加新成员</a>
   </div>
 {^/if^}
 {^if !empty($member_list)^}
@@ -34,9 +34,9 @@
           <td style="width:150px;">{^$position_level_list[$member_item["member_position_level"]]^}</td>
           <td style="width:500px;">
 {^if $editable_flg^}
-            <a href="./?menu=human_resource&act=member_info&member_id={^$member_item["member_id"]|escape^}" class="button-field ui-btn-b">修改信息</a>
-            <a href="./?menu=human_resource&act=change_position&member_id={^$member_item["member_id"]|escape^}" class="button-field ui-btn-b ui-btn-orange">岗位变动</a>
-            <a href="./?menu=human_resource&act=reset_password&member_id={^$member_item["member_id"]|escape^}" class="button-field ui-btn-b ui-btn-grey">重置密码</a>
+            <a href="./?menu=human_resource&act=member_info&member_id={^$member_item["member_id"]|escape^}" class="button-field ui-btn-green">修改信息</a>
+            <a href="./?menu=human_resource&act=change_position&member_id={^$member_item["member_id"]|escape^}" class="button-field ui-btn-orange">岗位变动</a>
+            <a href="./?menu=human_resource&act=reset_password&member_id={^$member_item["member_id"]|escape^}" class="button-field">重置密码</a>
 {^/if^}
           </td>
         </tr>

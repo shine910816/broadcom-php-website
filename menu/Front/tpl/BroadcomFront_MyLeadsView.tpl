@@ -1,6 +1,6 @@
 {^include file=$comheader_file^}
   <div class="table-line">
-    <a href="./?menu=front&act=create_leads" class="button-field ui-btn-b ui-btn-purple"><i class="fa fa-plus"></i> 添加意向客户</a>
+    <a href="./?menu=front&act=create_leads" class="button-field ui-btn-purple"><i class="fa fa-plus"></i> 添加意向客户</a>
   </div>
 {^if !empty($student_info_list)^}
   <div class="main-table">

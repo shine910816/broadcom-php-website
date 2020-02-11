@@ -76,7 +76,7 @@
     <div class="error_hint">{^if isset($user_err_list["member_login_password"])^}{^$user_err_list["member_login_password"]^}{^/if^}</div>
   </div>
   <div class="colspan_field">
-    <input type="submit" name="do_login" value="登录" class="button-field ui-btn-a" />
+    <input type="submit" name="do_login" value="登录" class="button-field ui-btn-big ui-btn-green" />
   </div>
 </form>
 </body>

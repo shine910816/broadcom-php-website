@@ -8,5 +8,5 @@
   <p>■ 请勿擅自修改地址栏及源代码中的内容</p>
   <p>■ 如遇系统繁忙请稍后再试</p>
   <p></p>
-  <button class="button-field ui-btn-a ui-btn-grey" onclick="javascript:history.back()"><i class="fa fa-chevron-left"></i> 返回</button>
+  <button class="button-field ui-btn-big" onclick="javascript:history.back()"><i class="fa fa-chevron-left"></i> 返回</button>
 {^include file=$comfooter_file^}

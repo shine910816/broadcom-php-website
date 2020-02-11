@@ -252,6 +252,9 @@ p {
   line-height:1.8em;
   color:#555;
 }
+.no_disp {
+  display:none;
+}
 span.error-hint {
   width:96%;
   height:30px;
@@ -260,6 +263,10 @@ span.error-hint {
   line-height:30px;
   color:#EE1010;
   display:block;
+}
+label.ui-btn-check input[type="checkbox"],
+label.ui-btn-check input[type="radio"] {
+  display:none;
 }
 .text-field {
   width:96%;
@@ -271,6 +278,7 @@ span.error-hint {
   transition:.3s;
   display:block;
   box-sizing:border-box;
+  float:left;
 }
 .text-field:focus {
   border-bottom:1px solid #0BF;
@@ -286,15 +294,17 @@ span.error-hint {
 .button-field {
   width:auto;
   height:35px;
-  padding:0 0.7em;
+  margin-right:10px;
+  padding:0 0.5em;
   text-align:center;
   line-height:35px;
   text-decoration:none!important;
   transition:.3s;
-  background-color:#67BA2F;
+  background-color:#A0A0A0;
   color:#FFF;
   border-radius:5px;
   display:block;
+  float:left;
 }
 .button-field:hover {
   opacity:0.7;
@@ -303,30 +313,25 @@ span.error-hint {
   opacity:0.9;
 }
 .button-field:disabled {
-  background-color:#AAA;
+  background-color:#555;
+  color:#FFF;
 }
-.ui-btn-a {
+.ui-btn-big {
   width:300px!important;
   height:40px!important;
   line-height:40px!important;
-  margin:0 auto;
+  margin:0 auto!important;
+  padding:0!important;
+  float:none!important;
 }
-.ui-btn-b {
-  float:left;
-  margin-right:10px;
-  padding:0 0.5em;
-}
-.ui-btn-grey {
-  background-color:#AAA!important;
-  color:#FFF!important;
+.ui-btn-green {
+  background-color:#67BA2F;
 }
 .ui-btn-purple {
   background-color:#9E8EE6!important;
-  color:#FFF!important;
 }
 .ui-btn-orange {
   background-color:#E86940!important;
-  color:#FFF!important;
 }
 table.disp_table {
   width:100%;

@@ -50,6 +50,18 @@ var adjustWindow = function(){
 };
 $(document).ready(function(){
     adjustWindow();
+    $("input[type='checkbox'], input[type='radio']").change(function(){
+        $("input[name='" + $(this).attr("name") + "']").each(function(){
+            if ($(this).prop("checked")) {
+                $(this).parent().addClass("ui-btn-orange");
+            } else {
+                $(this).parent().removeClass("ui-btn-orange");
+            }
+        });
+    });
+    $(".auto-select").focus(function(){
+        $(this).select();
+    });
 $(window).on("resize", function(){
     adjustWindow();
 });
