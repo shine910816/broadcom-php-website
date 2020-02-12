@@ -123,6 +123,8 @@ class BroadcomFront_CreateLeadsAction extends BroadcomFrontActionBase
         $student_info["school_id"] = $school_id;
         $student_info["follow_status"] = BroadcomStudentEntity::FOLLOW_STATUS_1;
         $student_info["student_level"] = BroadcomStudentEntity::STUDENT_LEVEL_NONE;
+        $student_info["audition_hours"] = "2";
+        $student_info["accept_date"] = date("Y-m-d H:i:s");
         $insert_res = BroadcomStudentInfoDBI::insertSchoolInfo($student_info);
         if ($controller->isError($insert_res)) {
             $insert_res->setPos(__FILE__, __LINE__);
