@@ -13,9 +13,10 @@
           <th>意向程度</th>
           <th>跟进状态</th>
           <th>在读学校</th>
+          <th>受理人</th>
+          <th>受理时间</th>
           <th>创建人</th>
           <th>创建时间</th>
-          <th>操作</th>
         </tr>
       </thead>
       <tbody>
@@ -29,9 +30,10 @@
           <td>{^$purpose_level_list[$student_info_item["purpose_level"]]^}</td>
           <td>{^$follow_status_list[$student_info_item["follow_status"]]^}</td>
           <td>{^$student_info_item["student_school_name"]|escape^}</td>
+          <td>{^$member_name_list[$student_info_item["member_id"]]^}</td>
+          <td>{^$student_info_item["accept_date"]|date_format:"%Y-%m-%d"^}</td>
           <td>{^$member_name_list[$student_info_item["operated_by"]]^}</td>
           <td>{^$student_info_item["insert_date"]|date_format:"%Y-%m-%d"^}</td>
-          <td>{^$student_info_item["student_id"]^}</td>
         </tr>
 {^/foreach^}
       </tbody>

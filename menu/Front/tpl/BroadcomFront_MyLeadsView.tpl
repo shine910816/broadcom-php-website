@@ -34,7 +34,15 @@
           <td>{^$student_info_item["student_school_name"]|escape^}</td>
           <td>{^$member_name_list[$student_info_item["operated_by"]]^}</td>
           <td>{^$student_info_item["insert_date"]|date_format:"%Y-%m-%d"^}</td>
-          <td>{^$student_info_item["student_id"]^}</td>
+          <td>
+            <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
+            <div class="operate-option">
+              <a href="./?menu=education&act=course_create&student_id={^$student_info_item["student_id"]|escape^}">安排试听</a>
+              <a href="./?menu=front&act=add_item&student_id={^$student_info_item["student_id"]|escape^}">添加课程</a>
+              <a href="./?menu=front&act=cart_info&student_id={^$student_info_item["student_id"]|escape^}">已选课程</a>
+              <a href="./?menu=front&act=create_order&student_id={^$student_info_item["student_id"]|escape^}">结算</a>
+            </div>
+          </td>
         </tr>
 {^/foreach^}
       </tbody>

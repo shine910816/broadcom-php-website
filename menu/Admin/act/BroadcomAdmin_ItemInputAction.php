@@ -77,6 +77,9 @@ class BroadcomAdmin_ItemInputAction extends BroadcomAdminActionBase
             if (!Validate::checkFullNotNull($item_info["item_name"])) {
                 $request->setError("item_name", "课程名不能为空");
             }
+            if (!isset($item_info["item_labels"])) {
+                $item_info["item_labels"] = array();
+            }
         }
         $request->setAttribute("item_info", $item_info);
         return VIEW_DONE;

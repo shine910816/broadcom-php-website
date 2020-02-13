@@ -48,6 +48,7 @@ var adjustWindow = function(){
         "padding":option.bottomPadding
     });
 };
+var open_operate_option = false;
 $(document).ready(function(){
     adjustWindow();
     $("input[type='checkbox'], input[type='radio']").change(function(){
@@ -61,6 +62,30 @@ $(document).ready(function(){
     });
     $(".auto-select").focus(function(){
         $(this).select();
+    });
+    $(".operate-button").click(function(){
+        if (open_operate_option) {
+            $(".operate-button").removeClass("ui-btn-orange");
+            $(".operate-button").removeClass("ui-btn-open");
+            $(".operate-button").children("i").addClass("fa-angle-down");
+            $(".operate-button").children("i").removeClass("fa-angle-up");
+            $("div#operate-disp-option").css({"display":"none"});
+            open_operate_option = false;
+        } else {
+            $(this).addClass("ui-btn-orange");
+            $(this).addClass("ui-btn-open");
+            $(this).children("i").removeClass("fa-angle-down");
+            $(this).children("i").addClass("fa-angle-up");
+            var new_top = $(this).offset().top + $(this).height();
+            var new_left = $(this).offset().left;
+            $("div#operate-disp-option").empty().append($(this).next().html());
+            $("div#operate-disp-option").css({
+                "display":"block",
+                "top":new_top,
+                "left":new_left
+            });
+            open_operate_option = true;
+        }
     });
 $(window).on("resize", function(){
     adjustWindow();

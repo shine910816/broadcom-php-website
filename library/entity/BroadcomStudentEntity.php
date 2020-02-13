@@ -20,8 +20,10 @@ class BroadcomStudentEntity
     const GRADE_SENIOR_1 = "10";
     const GRADE_SENIOR_2 = "11";
     const GRADE_SENIOR_3 = "12";
+    const GRADE_AFTER = "13";
 
     const STUDENT_LEVEL_NONE = "0";
+    const STUDENT_LEVEL_1 = "1";
 
     const MEDIA_CHANNEL_1_1 = "1";
     const MEDIA_CHANNEL_1_2 = "2";
@@ -72,16 +74,24 @@ class BroadcomStudentEntity
         );
     }
 
-    public static function getGradeName($entrance_year)
+    public static function getGradeName($entrance_year, $output_key = false)
     {
-        $grade_list = self::getGradeList();
         $diff_year = self::getAdjustedYear() - $entrance_year + 1;
+        $grade_key = $diff_year;
         if ($diff_year < self::GRADE_BEFORE) {
-            return $grade_list[self::GRADE_BEFORE];
+            $grade_key = self::GRADE_BEFORE;
         } elseif ($diff_year > self::GRADE_SENIOR_3) {
-            return "高中毕业";
+            $grade_key = self::GRADE_AFTER;
+        }
+        if ($output_key) {
+            return $grade_key;
         } else {
-            return $grade_list[$diff_year];
+            if ($grade_key == self::GRADE_AFTER) {
+                return "高中毕业";
+            } else {
+                $grade_list = self::getGradeList();
+                return $grade_list[$grade_key];
+            }
         }
     }
 
@@ -129,7 +139,8 @@ class BroadcomStudentEntity
     public static function getStudentLevelList()
     {
         return array(
-            self::STUDENT_LEVEL_NONE => "非会员"
+            self::STUDENT_LEVEL_NONE => "非会员",
+            self::STUDENT_LEVEL_1 => "会员"
         );
     }
 }

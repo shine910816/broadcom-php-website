@@ -8,6 +8,26 @@
 class BroadcomStudentInfoDBI
 {
 
+    public static function selectStudentInfo($student_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM student_info WHERE del_flg = 0 AND student_id = " . $student_id . " LIMIT 1";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        $result->free();
+        if (count($data) == 1) {
+            return $data[0];
+        }
+        return $data;
+    }
+
     public static function selectLeadsStudentInfo($member_id, $school_id = null)
     {
         $dbi = Database::getInstance();
@@ -20,6 +40,8 @@ class BroadcomStudentInfoDBI
                " purpose_level," .
                " follow_status," .
                " student_school_name," .
+               " member_id," .
+               " accept_date," .
                " operated_by," .
                " insert_date" .
                " FROM student_info" .
