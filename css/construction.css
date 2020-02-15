@@ -1,0 +1,144 @@
+/* 主样式表 */
+* {
+  margin:0;
+  padding:0;
+  border:0;
+  font-family:"Microsoft Yahei","Arial","SimSun";
+  font-size:14px;
+}
+body {
+  height:auto;
+  background-color:#FFFFFF;
+}
+div.top-panel {
+  background-color:#2C4C60;
+}
+div.bottom-panel {
+  display:block;
+}
+div.left-panel {
+  background-color:#4C637B;
+  float:left;
+}
+div.left-logo-box {
+  width:72px;
+  height:72px;
+  background-color:#CCCCCC;
+  border:4px #626262 solid;
+  border-radius:40px;
+  margin:15px auto;
+}
+div.left-logo-box img {
+  width:72px;
+  height:72px;
+}
+ul.left-item-box {
+  width:180px;
+  height:auto;
+  padding-top:10px;
+  list-style:none;
+  margin:0 auto;
+}
+ul.left-item-box li {
+  width:180px;
+  height:35px;
+  text-align:center;
+  line-height:35px;
+  background-color:#4C637B;
+  color:#FFF!important;
+  margin-top:10px;
+  border-radius:5px;
+  display:block;
+}
+ul.left-item-box a {
+  text-decoration:none;
+}
+ul.left-item-box li:hover {
+  background-color:#607FA0!important;
+}
+ul.left-item-box li.selected {
+  background-color:#639AC1;
+}
+div.main-panel {
+  height:auto;
+  float:left;
+}
+div.bread-crumbs-bar {
+  padding:0.3em;
+}
+div.bread-crumbs-bar ul {
+  width:100%;
+  height:1.5em;
+  list-style:none;
+}
+div.bread-crumbs-bar ul li {
+  float:left;
+  height:1.5em;
+  line-height:1.5em;
+  color:#999999;
+}
+div.bread-crumbs-bar ul li.nav_item:before {
+  content:">";
+  padding:0 0.5em;
+  color:#999999;
+}
+div.bread-crumbs-bar ul li a {
+  color:#3E70C5;
+  text-decoration:none;
+}
+div.bread-crumbs-bar ul li a:hover {
+  color:#428BCA;
+}
+div.logo-box {
+  width:157px;
+  height:40px;
+  margin:15px;
+  display:block;
+  background-image:url("../img/logo.png");
+  float:left;
+}
+div.main-nav-bar {
+  width:500px;
+  height:70px;
+  float:left;
+}
+div.main-nav-bar ul {
+  width:100%;
+  height:100%;
+  list-style:none;
+}
+div.main-nav-bar ul li {
+  float:left;
+  display:block;
+}
+div.main-nav-bar ul li a {
+  height:70px;
+  padding:0 0.7em;
+  text-align:center;
+  line-height:70px;
+  color:#BED9FC;
+  font-size:1.15em;
+  text-decoration:none;
+  display:block;
+}
+div.main-nav-bar ul li a:hover {
+  color:#FFFFFF;
+}
+div.main-nav-bar ul li a.selected {
+  color:#FFFFFF;
+  font-size:1.4em;
+}
+div.login-status-bar {
+  width:293px;
+  height:70px;
+  padding-right:20px;
+  text-align:right;
+  line-height:70px;
+  float:right;
+}
+div.login-status-bar a {
+  color:#FFF;
+}
+div.login-status-bar a:hover {
+  text-decoration:none;
+}

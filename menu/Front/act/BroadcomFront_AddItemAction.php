@@ -208,6 +208,7 @@ class BroadcomFront_AddItemAction extends BroadcomFrontActionBase
         $add_item_id = $request->getAttribute("add_item_id");
         $item_amount = $request->getAttribute("item_amount");
         $cart_info = $request->getAttribute("cart_info");
+        $add_present_flg = $request->getAttribute("add_present_flg");
         if (isset($cart_info[$add_item_id])) {
             $update_data = array();
             $update_data["item_amount"] = $cart_info[$add_item_id]["item_amount"] + $item_amount;
@@ -221,7 +222,6 @@ class BroadcomFront_AddItemAction extends BroadcomFrontActionBase
             $insert_data["student_id"] = $student_id;
             $insert_data["item_id"] = $add_item_id;
             $insert_data["item_amount"] = $item_amount;
-            $add_present_flg = $request->getAttribute("add_present_flg");
             if ($add_present_flg) {
                 $insert_data["item_present_flg"] = "1";
                 $insert_data["main_item_id"] = $request->getAttribute("main_item_id");
@@ -235,7 +235,14 @@ class BroadcomFront_AddItemAction extends BroadcomFrontActionBase
                 return $insert_res;
             }
         }
-        $controller->redirect("./?menu=front&act=add_item&student_id=" . $student_id . "&page=" . $request->current_page);
+        $redirect_url = "./?menu=front&act=";
+        if ($add_present_flg) {
+            $redirect_url .= "cart_info";
+        } else {
+            $redirect_url .= "add_item";
+        }
+        $redirect_url .= "&student_id=" . $student_id . "&page=" . $request->current_page;
+        $controller->redirect($redirect_url);
         return VIEW_DONE;
     }
 }

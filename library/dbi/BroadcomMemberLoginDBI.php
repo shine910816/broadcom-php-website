@@ -40,7 +40,7 @@ class BroadcomMemberLoginDBI
                " FROM member_login l LEFT OUTER JOIN member_position p ON p.member_id = l.member_id" .
                " WHERE l.del_flg = 0" .
                " AND p.del_flg = 0" .
-               " AND p.member_employed_status = 1" .
+               " AND p.member_employed_status != 0" .
                " AND member_login_name = " . $dbi->quote($member_login_name) .
                " LIMIT 1";
         $result = $dbi->query($sql);
@@ -59,7 +59,7 @@ class BroadcomMemberLoginDBI
         return $data;
     }
 
-    public static function selectMemberList()
+    public static function selectMemberList($school_id = null)
     {
         $dbi = Database::getInstance();
         $sql = "SELECT l.member_id," .
@@ -77,6 +77,9 @@ class BroadcomMemberLoginDBI
                " AND p.del_flg = 0" .
                " AND i.del_flg = 0" .
                " AND l.member_level = 1";
+        if (!is_null($school_id)) {
+            $sql .= " AND school_id = " . $school_id;
+        }
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);

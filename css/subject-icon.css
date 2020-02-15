@@ -1,0 +1,102 @@
+.subject_tip_0,
+.subject_tip_1,
+.subject_tip_2,
+.subject_tip_3,
+.subject_tip_4,
+.subject_tip_5,
+.subject_tip_6,
+.subject_tip_7,
+.subject_tip_8,
+.subject_tip_9 {
+  width:35px;
+  height:33px;
+  padding:0 5px 0 38px;
+  text-align:center;
+  line-height:33px;
+  overflow:hidden;
+  border-radius:5px;
+  background-color:#FFF;
+  background-image:url("../img/subject.png");
+  background-repeat: no-repeat;
+  display:block;
+}
+.subject_tip_0 {
+  background-position:0 0;
+  color:#888888;
+  border:1px solid #888888;
+}
+.subject_tip_1 {
+  background-position:0 -33px;
+  color:#FA8F31;
+  border:1px solid #FA8F31;
+}
+.subject_tip_2 {
+  background-position:0 -66px;
+  color:#FFBE0A;
+  border:1px solid #FFBE0A;
+}
+.subject_tip_3 {
+  background-position:0 -99px;
+  color:#60B9FD;
+  border:1px solid #60B9FD;
+}
+.subject_tip_4 {
+  background-position:0 -132px;
+  color:#F46A68;
+  border:1px solid #F46A68;
+}
+.subject_tip_5 {
+  background-position:0 -165px;
+  color:#4DD0E2;
+  border:1px solid #4DD0E2;
+}
+.subject_tip_6 {
+  background-position:0 -198px;
+  color:#50CAB3;
+  border:1px solid #50CAB3;
+}
+.subject_tip_7 {
+  background-position:0 -231px;
+  color:#8FA6FF;
+  border:1px solid #8FA6FF;
+}
+.subject_tip_8 {
+  background-position:0 -264px;
+  color:#97D058;
+  border:1px solid #97D058;
+}
+.subject_tip_9 {
+  background-position:0 -297px;
+  color:#D192DC;
+  border:1px solid #D192DC;
+}
+.subject_tip_0:after {
+  content:"其他";
+}
+.subject_tip_1:after {
+  content:"英语";
+}
+.subject_tip_2:after {
+  content:"语文";
+}
+.subject_tip_3:after {
+  content:"数学";
+}
+.subject_tip_4:after {
+  content:"物理";
+}
+.subject_tip_5:after {
+  content:"化学";
+}
+.subject_tip_6:after {
+  content:"历史";
+}
+.subject_tip_7:after {
+  content:"政治";
+}
+.subject_tip_8:after {
+  content:"地理";
+}
+.subject_tip_9:after {
+  content:"生物";
+}

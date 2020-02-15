@@ -18,13 +18,17 @@ class Config
         $result["member"]["info"] = SYSTEM_AUTH_LOGIN;
         $result["member"]["password"] = SYSTEM_AUTH_LOGIN;
         $result["human_resource"]["top"] = SYSTEM_AUTH_LOGIN;
+        $result["human_resource"]["member_list"] = SYSTEM_AUTH_LOGIN;
         $result["human_resource"]["member_info"] = SYSTEM_AUTH_LOGIN;
+        $result["human_resource"]["teacher_list"] = SYSTEM_AUTH_LOGIN;
+        $result["human_resource"]["teacher_info"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["top"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["my_leads"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["school_leads"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["create_leads"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["add_item"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["cart_info"] = SYSTEM_AUTH_LOGIN;
+        $result["front"]["create_order"] = SYSTEM_AUTH_LOGIN;
         $result["admin"]["top"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["school_list"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["item_list"] = SYSTEM_AUTH_ADMIN;
@@ -43,14 +47,18 @@ class Config
         $result["member"]["top"] = array("个人信息管理");
         $result["member"]["info"] = array('<a href="./?menu=member&act=top">个人信息管理</a>', "修改个人信息");
         $result["member"]["password"] = array('<a href="./?menu=member&act=top">个人信息管理</a>', "修改登录密码");
-        $result["human_resource"]["top"] = array("成员列表");
-        $result["human_resource"]["member_info"] = array('<a href="./?menu=human_resource&act=top">成员列表</a>', "");
+        $result["human_resource"]["top"] = array("人力资源");
+        $result["human_resource"]["member_list"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', "成员列表");
+        $result["human_resource"]["member_info"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', '<a href="./?menu=human_resource&act=member_list">成员列表</a>', "");
+        $result["human_resource"]["teacher_list"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', "教师列表");
+        $result["human_resource"]["teacher_info"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', '<a href="./?menu=human_resource&act=teacher_list">人力资源</a>', "教师信息");
         $result["front"]["top"] = array("前台业务");
         $result["front"]["my_leads"] = array('<a href="./?menu=front&act=top">前台业务</a>', "我的意向客户");
         $result["front"]["school_leads"] = array('<a href="./?menu=front&act=top">前台业务</a>', "校区意向客户");
         $result["front"]["create_leads"] = array('<a href="./?menu=front&act=top">前台业务</a>', '<a href="./?menu=front&act=my_leads">我的意向客户</a>', "新增意向客户");
         $result["front"]["add_item"] = array('<a href="./?menu=front&act=top">前台业务</a>', "添加课程");
         $result["front"]["cart_info"] = array('<a href="./?menu=front&act=top">前台业务</a>', "已选择课程");
+        $result["front"]["create_order"] = array('<a href="./?menu=front&act=top">前台业务</a>', "结算");
         $result["admin"]["top"] = array("后台管理");
         $result["admin"]["school_list"] = array('<a href="./?menu=admin&act=top">后台管理</a>', "校区管理");
         $result["admin"]["item_list"] = array('<a href="./?menu=admin&act=top">后台管理</a>', "课程管理");
@@ -62,6 +70,10 @@ class Config
     {
         $result = array();
         $result["human_resource"]["member_info"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,
+            BroadcomMemberEntity::POSITION_HR_FINANCE
+        );
+        $result["human_resource"]["teacher_info"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,
             BroadcomMemberEntity::POSITION_HR_FINANCE
         );

@@ -59,6 +59,8 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
         $request->setAttribute("educated_type_list", BroadcomMemberEntity::getEducatedTypeList());
         $request->setAttribute("married_type_list", BroadcomMemberEntity::getMarriedTypeList());
         $request->setAttribute("contact_relationship_list", BroadcomMemberEntity::getContactRelationshipList());
+        $request->setAttribute("employed_status_list", BroadcomMemberEntity::getEmployedStatusList());
+        $request->setAttribute("star_level_list", BroadcomMemberEntity::getStarLevelList());
         if ($request->hasParameter("do_submit")) {
             $ret = $this->_doSubmitValidate($controller, $user, $request);
             if ($controller->isError($ret)) {
@@ -96,6 +98,10 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
         $member_info["m_contact_name"] = "";
         $member_info["m_contact_relationship"] = "6";
         $member_info["m_contact_mobile_number"] = "";
+        $member_info["m_licence_number"] = "";
+        $member_info["m_primary_star_level"] = BroadcomMemberEntity::STAR_LEVEL_0;
+        $member_info["m_junior_star_level"] = BroadcomMemberEntity::STAR_LEVEL_0;
+        $member_info["m_senior_star_level"] = BroadcomMemberEntity::STAR_LEVEL_0;
         if ($request->hasParameter("member_id")) {
             $edit_mode = true;
             $member_id = $request->getParameter("member_id");
@@ -106,9 +112,9 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             }
             $request->setAttribute("member_id", $member_id);
         } else {
-            $login_info = array();
             $request->setAttribute("member_login_name", "");
             $request->setAttribute("school_id", "");
+            $request->setAttribute("member_employed_status", BroadcomMemberEntity::EMPLOYED_STATUS_1);
             $request->setAttribute("member_position", BroadcomMemberEntity::POSITION_TEACHER);
             $request->setAttribute("member_position_level", BroadcomMemberEntity::POSITION_LEVEL_0);
         }
@@ -136,6 +142,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             $member_login_name = $request->getParameter("member_login_name");
             $school_id = $request->getParameter("school_id");
             $member_position = $request->getParameter("member_position");
+            $member_employed_status = $request->getParameter("member_employed_status");
             $member_position_level = $request->getParameter("member_position_level");
             if (!Validate::checkNotNull($member_login_name)) {
                 $request->setError("member_login_name", "登录名不能为空");
@@ -152,6 +159,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             $request->setAttribute("member_login_name", $member_login_name);
             $request->setAttribute("school_id", $school_id);
             $request->setAttribute("member_position", $member_position);
+            $request->setAttribute("member_employed_status", $member_employed_status);
             $request->setAttribute("member_position_level", $member_position_level);
         }
         $content_data = array();
@@ -213,6 +221,18 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
         }
         if (!$edit_mode || ($getting_member_info["m_contact_mobile_number"] != $member_info["m_contact_mobile_number"])) {
             $content_data["m_contact_mobile_number"] = $getting_member_info["m_contact_mobile_number"];
+        }
+        if (!$edit_mode) {
+            $content_data["m_licence_number"] = $getting_member_info["m_licence_number"];
+        }
+        if (!$edit_mode) {
+            $content_data["m_primary_star_level"] = $getting_member_info["m_primary_star_level"];
+        }
+        if (!$edit_mode) {
+            $content_data["m_junior_star_level"] = $getting_member_info["m_junior_star_level"];
+        }
+        if (!$edit_mode) {
+            $content_data["m_senior_star_level"] = $getting_member_info["m_senior_star_level"];
         }
         $request->setAttribute("edit_mode", $edit_mode);
         $request->setAttribute("member_info", $getting_member_info);

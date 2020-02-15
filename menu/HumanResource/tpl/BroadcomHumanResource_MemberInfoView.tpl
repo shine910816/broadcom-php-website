@@ -24,6 +24,18 @@
   <h1>岗位信息</h1>
   <div class="table-line">
     <div class="table-item-b">
+      <div class="table-item-name">在职状态</div>
+      <div class="table-item-value">
+        <select name="member_position" class="text-field">
+{^foreach from=$employed_status_list key=employed_status_key item=employed_status_item^}
+          <option value="{^$employed_status_key^}"{^if $member_employed_status eq $employed_status_key^} selected{^/if^}>{^$employed_status_item^}</option>
+{^/foreach^}
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="table-line">
+    <div class="table-item-b">
       <div class="table-item-name">校区</div>
       <div class="table-item-value">
         <select name="school_id" class="text-field">
@@ -56,6 +68,47 @@
   </div>
 {^/if^}
 {^include file=$member_info_template_file^}
+{^if !$edit_mode^}
+  <h1>教学能力</h1>
+  <div class="table-line">
+    <div class="table-item-b">
+      <div class="table-item-name">小学星级</div>
+      <div class="table-item-value">
+        <select name="member_info[m_primary_star_level]" class="text-field">
+{^foreach from=$star_level_list key=star_level_key item=star_level_item^}
+          <option value="{^$star_level_key^}"{^if $member_info["m_primary_star_level"] eq $star_level_key^} selected{^/if^}>{^$star_level_item^}</option>
+{^/foreach^}
+        </select>
+      </div>
+    </div>
+    <div class="table-item-b">
+      <div class="table-item-name">初中星级</div>
+      <div class="table-item-value">
+        <select name="member_info[m_junior_star_level]" class="text-field">
+{^foreach from=$star_level_list key=star_level_key item=star_level_item^}
+          <option value="{^$star_level_key^}"{^if $member_info["m_junior_star_level"] eq $star_level_key^} selected{^/if^}>{^$star_level_item^}</option>
+{^/foreach^}
+        </select>
+      </div>
+    </div>
+    <div class="table-item-b">
+      <div class="table-item-name">高中星级</div>
+      <div class="table-item-value">
+        <select name="member_info[m_senior_star_level]" class="text-field">
+{^foreach from=$star_level_list key=star_level_key item=star_level_item^}
+          <option value="{^$star_level_key^}"{^if $member_info["m_senior_star_level"] eq $star_level_key^} selected{^/if^}>{^$star_level_item^}</option>
+{^/foreach^}
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="table-line">
+    <div class="table-item-b">
+      <div class="table-item-name">教师资格证号</div>
+      <div class="table-item-value"><input type="text" name="member_info[m_licence_number]" value="{^$member_info["m_licence_number"]|escape^}" class="text-field" /></div>
+    </div>
+  </div>
+{^/if^}
   <div class="table-line"></div>
   <div class="table-line">
     <a href="./?menu={^$current_menu^}&act=top" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>

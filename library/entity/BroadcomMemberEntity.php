@@ -20,6 +20,7 @@ class BroadcomMemberEntity
     const POSITION_MANAGER = "3112";
     const POSITION_TEACH_MANAGER = "3120";
     const POSITION_TEACHER = "3121";
+    const POSITION_CONCURRENT_TEACHER = "3122";
     const POSITION_HR_FINANCE = "3200";
 
     const POSITION_LEVEL_0 = "0";
@@ -33,6 +34,12 @@ class BroadcomMemberEntity
     const POSITION_LEVEL_8 = "8";
     const POSITION_LEVEL_9 = "9";
     const POSITION_LEVEL_10 = "10";
+
+    const EMPLOYED_STATUS_1 = "1";
+    const EMPLOYED_STATUS_2 = "2";
+    const EMPLOYED_STATUS_3 = "3";
+    const EMPLOYED_STATUS_4 = "4";
+    const EMPLOYED_STATUS_0 = "0";
 
     const EDUCATED_1 = "1";
     const EDUCATED_2 = "2";
@@ -62,6 +69,11 @@ class BroadcomMemberEntity
     const CONTACT_RELATIONSHIP_5 = "5";
     const CONTACT_RELATIONSHIP_6 = "6";
 
+    const STAR_LEVEL_0 = "0";
+    const STAR_LEVEL_1 = "1";
+    const STAR_LEVEL_2 = "2";
+    const STAR_LEVEL_3 = "3";
+
     public static function getPositionList()
     {
         return array(
@@ -78,6 +90,7 @@ class BroadcomMemberEntity
             self::POSITION_MANAGER => "学管",
             self::POSITION_TEACH_MANAGER => "教学主管",
             self::POSITION_TEACHER => "教师",
+            self::POSITION_CONCURRENT_TEACHER => "兼职教师",
             self::POSITION_HR_FINANCE => "财务人事"
         );
     }
@@ -144,6 +157,27 @@ class BroadcomMemberEntity
             self::CONTACT_RELATIONSHIP_4 => "兄弟姐妹",
             self::CONTACT_RELATIONSHIP_5 => "朋友",
             self::CONTACT_RELATIONSHIP_6 => "无"
+        );
+    }
+
+    public static function getEmployedStatusList()
+    {
+        return array(
+            self::EMPLOYED_STATUS_1 => "正式员工",
+            self::EMPLOYED_STATUS_2 => "试用期员工",
+            self::EMPLOYED_STATUS_3 => "实习员工",
+            self::EMPLOYED_STATUS_4 => "兼职员工",
+            self::EMPLOYED_STATUS_0 => "离职"
+        );
+    }
+
+    public static function getStarLevelList()
+    {
+        return array(
+            self::STAR_LEVEL_0 => "无星级",
+            self::STAR_LEVEL_1 => "三星级",
+            self::STAR_LEVEL_2 => "四星级",
+            self::STAR_LEVEL_3 => "五星级"
         );
     }
 }

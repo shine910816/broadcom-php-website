@@ -1,12 +1,12 @@
 <?php
-require_once SRC_PATH . "/menu/Front/lib/BroadcomFrontActionBase.php";
+require_once SRC_PATH . "/menu/HumanResource/lib/BroadcomHumanResourceActionBase.php";
 
 /**
- * 校区意向客户画面
+ * 个人设定画面
  * @author Kinsama
- * @version 2020-02-09
+ * @version 2020-02-02
  */
-class BroadcomFront_SchoolLeadsAction extends BroadcomFrontActionBase
+class BroadcomHumanResource_MemberListAction extends BroadcomHumanResourceActionBase
 {
 
     /**
@@ -33,10 +33,8 @@ class BroadcomFront_SchoolLeadsAction extends BroadcomFrontActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
-        $request->setAttribute("media_channel_list", BroadcomStudentEntity::getMediaChannelList());
-        $request->setAttribute("purpose_level_list", BroadcomStudentEntity::getPurposeLevelList());
-        $request->setAttribute("follow_status_list", BroadcomStudentEntity::getFollowStatusList());
-        $request->setAttribute("student_level_list", BroadcomStudentEntity::getStudentLevelList());
+        $request->setAttribute("position_list", BroadcomMemberEntity::getPositionList());
+        $request->setAttribute("position_level_list", BroadcomMemberEntity::getPositionLevelList());
         return VIEW_DONE;
     }
 
@@ -61,27 +59,29 @@ class BroadcomFront_SchoolLeadsAction extends BroadcomFrontActionBase
             return $err;
         }
         $school_id = $position_info["school_id"];
-        $student_info_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id);
-        if ($controller->isError($student_info_list)) {
-            $student_info_list->setPos(__FILE__, __LINE__);
-            return $student_info_list;
+        $member_list = BroadcomMemberLoginDBI::selectMemberList($school_id);
+        if ($controller->isError($member_list)) {
+            $member_list->setPos(__FILE__, __LINE__);
+            return $member_list;
         }
         $page_url = "./?menu=" . $request->current_menu . "&act=" . $request->current_act;
-        $student_info_list = Utility::getPaginationData($request, $student_info_list, $page_url);
-        if ($controller->isError($student_info_list)) {
-            $student_info_list->setPos(__FILE__, __LINE__);
-            return $student_info_list;
+        $member_list = Utility::getPaginationData($request, $member_list, $page_url);
+        if ($controller->isError($member_list)) {
+            $member_list->setPos(__FILE__, __LINE__);
+            return $member_list;
         }
-        foreach ($student_info_list as $student_id => $student_info) {
-            $student_info_list[$student_id]["grade_name"] = BroadcomStudentEntity::getGradeName($student_info["student_entrance_year"]);
+        $school_list = BroadcomSchoolInfoDBI::selectSchoolInfoList();
+        if ($controller->isError($school_list)) {
+            $school_list->setPos(__FILE__, __LINE__);
+            return $school_list;
         }
-        $member_name_list = BroadcomMemberInfoDBI::selectMemberNameList();
-        if ($controller->isError($member_name_list)) {
-            $member_name_list->setPos(__FILE__, __LINE__);
-            return $member_name_list;
+        $editable_flg = false;
+        if ($user->checkPositionAble("human_resource", "member_info")) {
+            $editable_flg = true;
         }
-        $request->setAttribute("student_info_list", $student_info_list);
-        $request->setAttribute("member_name_list", $member_name_list);
+        $request->setAttribute("member_list", $member_list);
+        $request->setAttribute("school_list", $school_list);
+        $request->setAttribute("editable_flg", $editable_flg);
         return VIEW_DONE;
     }
 }

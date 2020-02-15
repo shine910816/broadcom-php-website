@@ -18,7 +18,8 @@ class BroadcomHumanResourceActionBase extends ActionBase
     public function doLeftContent(Controller $controller, User $user, Request $request)
     {
         $result = array();
-        $result[] = array("top", "成员列表");
+        $result[] = array("member_list", "成员列表");
+        $result[] = array("teacher_list", "教师列表");
         $request->setAttribute("left_content", $result);
         $request->setAttribute("member_info_template_file", SRC_PATH . "/menu/Member/tpl/BroadcomMemberBaseInfoView.tpl");
         return VIEW_DONE;

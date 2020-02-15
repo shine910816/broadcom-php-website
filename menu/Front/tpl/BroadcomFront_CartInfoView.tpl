@@ -59,7 +59,7 @@
 {^if isset($main_item_info["present"])^}
 {^foreach from=$main_item_info["present"] key=present_item_id item=present_item_amount^}
         <tr>
-          <td>{^$cart_item_info[$present_item_id]["item_name"]|escape^}</td>
+          <td>&nbsp;-&nbsp;{^$cart_item_info[$present_item_id]["item_name"]|escape^}</td>
           <td>{^$item_type_list[$cart_item_info[$present_item_id]["item_type"]]^}</td>
           <td>{^$item_method_list[$cart_item_info[$present_item_id]["item_method"]]^}</td>
           <td>{^$item_grade_list[$cart_item_info[$present_item_id]["item_grade"]]^}</td>

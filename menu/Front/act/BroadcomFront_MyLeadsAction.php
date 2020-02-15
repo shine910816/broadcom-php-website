@@ -50,7 +50,18 @@ class BroadcomFront_MyLeadsAction extends BroadcomFrontActionBase
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
         $member_id = $user->getMemberId();
-        $student_info_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($member_id);
+        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
+        if ($controller->isError($position_info)) {
+            $position_info->setPos(__FILE__, __LINE__);
+            return $position_info;
+        }
+        if (empty($position_info)) {
+            $err = $controller->raiseError();
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        $school_id = $position_info["school_id"];
+        $student_info_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id, $member_id);
         if ($controller->isError($student_info_list)) {
             $student_info_list->setPos(__FILE__, __LINE__);
             return $student_info_list;

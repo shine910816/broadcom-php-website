@@ -33,8 +33,6 @@ class BroadcomHumanResource_TopAction extends BroadcomHumanResourceActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
-        $request->setAttribute("position_list", BroadcomMemberEntity::getPositionList());
-        $request->setAttribute("position_level_list", BroadcomMemberEntity::getPositionLevelList());
         return VIEW_DONE;
     }
 
@@ -47,29 +45,6 @@ class BroadcomHumanResource_TopAction extends BroadcomHumanResourceActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-        $member_list = BroadcomMemberLoginDBI::selectMemberList();
-        if ($controller->isError($member_list)) {
-            $member_list->setPos(__FILE__, __LINE__);
-            return $member_list;
-        }
-        $page_url = "./?menu=" . $request->current_menu . "&act=" . $request->current_act;
-        $member_list = Utility::getPaginationData($request, $member_list, $page_url);
-        if ($controller->isError($member_list)) {
-            $member_list->setPos(__FILE__, __LINE__);
-            return $member_list;
-        }
-        $school_list = BroadcomSchoolInfoDBI::selectSchoolInfoList();
-        if ($controller->isError($school_list)) {
-            $school_list->setPos(__FILE__, __LINE__);
-            return $school_list;
-        }
-        $editable_flg = false;
-        if ($user->checkPositionAble("human_resource", "member_info")) {
-            $editable_flg = true;
-        }
-        $request->setAttribute("member_list", $member_list);
-        $request->setAttribute("school_list", $school_list);
-        $request->setAttribute("editable_flg", $editable_flg);
         return VIEW_DONE;
     }
 }

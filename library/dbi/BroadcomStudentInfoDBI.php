@@ -28,7 +28,7 @@ class BroadcomStudentInfoDBI
         return $data;
     }
 
-    public static function selectLeadsStudentInfo($member_id, $school_id = null)
+    public static function selectLeadsStudentInfo($school_id, $member_id = null)
     {
         $dbi = Database::getInstance();
         $sql = "SELECT student_id," .
@@ -45,10 +45,9 @@ class BroadcomStudentInfoDBI
                " operated_by," .
                " insert_date" .
                " FROM student_info" .
-               " WHERE del_flg = 0";
-        if (!is_null($school_id)) {
-            $sql .= " AND school_id = " . $school_id;
-        } else {
+               " WHERE del_flg = 0" .
+               " AND school_id = " . $school_id;
+        if (!is_null($member_id)) {
             $sql .= " AND member_id = " . $member_id;
         }
         $result = $dbi->query($sql);
