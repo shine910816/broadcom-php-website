@@ -2,11 +2,11 @@
 require_once SRC_PATH . "/menu/Front/lib/BroadcomFrontActionBase.php";
 
 /**
- * 已选择课程画面
+ * 前台业务画面
  * @author Kinsama
- * @version 2020-02-09
+ * @version 2020-02-16
  */
-class BroadcomFront_CartInfoAction extends BroadcomFrontActionBase
+class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
 {
 
     /**
@@ -17,20 +17,14 @@ class BroadcomFront_CartInfoAction extends BroadcomFrontActionBase
      */
     public function doMainExecute(Controller $controller, User $user, Request $request)
     {
-        if ($request->hasParameter("delete_item_id")) {
-            $ret = $this->_doDeleteExecute($controller, $user, $request);
-            if ($controller->isError($ret)) {
-                $ret->setPos(__FILE__, __LINE__);
-                return $ret;
-            }
-        } elseif ($request->isError()) {
+        if ($request->isError()) {
             $ret = $this->_doErrorExecute($controller, $user, $request);
             if ($controller->isError($ret)) {
                 $ret->setPos(__FILE__, __LINE__);
                 return $ret;
             }
-        } elseif ($request->hasParameter("do_change")) {
-            $ret = $this->_doChangeExecute($controller, $user, $request);
+        } elseif ($request->hasParameter("do_create")) {
+            $ret = $this->_doCreateExecute($controller, $user, $request);
             if ($controller->isError($ret)) {
                 $ret->setPos(__FILE__, __LINE__);
                 return $ret;
@@ -91,18 +85,6 @@ class BroadcomFront_CartInfoAction extends BroadcomFrontActionBase
             $cart_item_info->setPos(__FILE__, __LINE__);
             return $cart_item_info;
         }
-        $getting_cart_info = array();
-        if ($request->hasParameter("do_change")) {
-            $getting_cart_info = $request->getParameter("cart_info");
-            foreach ($getting_cart_info as $item_id => $cart_item_info_tmp) {
-                if (!Validate::checkNotNull($cart_item_info_tmp["item_amount"]) || !Validate::checkNumber($cart_item_info_tmp["item_amount"], array("min" => "1", "max" => "999"))) {
-                    $request->setError("item_amount", "请填写有效的购买数量");
-                }
-                if (!Validate::checkNotNull($cart_item_info_tmp["item_discount_amount"]) || !Validate::checkDecimalNumber($cart_item_info_tmp["item_discount_amount"])) {
-                    $request->setError("item_discount_amount", "请填写有效的优惠额度");
-                }
-            }
-        }
         $total_price = 0;
         $payable_price_list = array();
         foreach ($cart_item_info as $item_id => $cart_item_info_tmp) {
@@ -115,12 +97,15 @@ class BroadcomFront_CartInfoAction extends BroadcomFrontActionBase
             $payable_price_list[$item_id] = $item_total_price;
             $total_price += $item_total_price;
         }
+        $payment_amount = "0";
+        if ($request->hasParameter("do_change")) {
+            $payment_amount = $request->getParameter("payment_amount");
+        }
         $request->setAttribute("student_id", $student_id);
         $request->setAttribute("student_info", $student_info);
         $request->setAttribute("scope_out_flg", $scope_out_flg);
         $request->setAttribute("cart_list", $cart_list);
         $request->setAttribute("cart_item_info", $cart_item_info);
-        $request->setAttribute("getting_cart_info", $getting_cart_info);
         $request->setAttribute("item_type_list", BroadcomItemEntity::getItemTypeList());
         $request->setAttribute("item_method_list", BroadcomItemEntity::getItemMethodList());
         $request->setAttribute("item_grade_list", BroadcomItemEntity::getItemGradeList());
@@ -128,6 +113,7 @@ class BroadcomFront_CartInfoAction extends BroadcomFrontActionBase
         $request->setAttribute("item_discount_type_list", BroadcomItemEntity::getItemDiscountTypeList());
         $request->setAttribute("payable_price_list", $payable_price_list);
         $request->setAttribute("total_price", $total_price);
+        $request->setAttribute("payment_amount", $payment_amount);
         return VIEW_DONE;
     }
 
@@ -140,7 +126,6 @@ class BroadcomFront_CartInfoAction extends BroadcomFrontActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-//Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 
@@ -149,70 +134,10 @@ class BroadcomFront_CartInfoAction extends BroadcomFrontActionBase
         return VIEW_DONE;
     }
 
-    private function _doChangeExecute(Controller $controller, User $user, Request $request)
+    private function _doCreateExecute(Controller $controller, User $user, Request $request)
     {
         $student_id = $request->getAttribute("student_id");
-        $cart_item_info = $request->getAttribute("cart_item_info");
-        $getting_cart_info = $request->getAttribute("getting_cart_info");
-        $update_list = array();
-        foreach ($getting_cart_info as $item_id => $cart_info) {
-            if ($cart_item_info[$item_id]["item_amount"] != $cart_info["item_amount"]) {
-                $update_list[$item_id]["item_amount"] = $cart_info["item_amount"];
-            }
-            if ($cart_item_info[$item_id]["item_discount_amount"] != $cart_info["item_discount_amount"]) {
-                $update_list[$item_id]["item_discount_amount"] = $cart_info["item_discount_amount"];
-            }
-            if ($cart_item_info[$item_id]["item_discount_type"] != $cart_info["item_discount_type"]) {
-                $update_list[$item_id]["item_discount_type"] = $cart_info["item_discount_type"];
-                if ($cart_info["item_discount_type"] == BroadcomItemEntity::ITEM_DISCOUNT_TYPE_NONE) {
-                    $update_list[$item_id]["item_discount_amount"] = "0";
-                }
-            }
-        }
-        if (!empty($update_list)) {
-            $dbi = Database::getInstance();
-            $begin_res = $dbi->begin();
-            if ($controller->isError($begin_res)) {
-                $begin_res->setPos(__FILE__, __LINE__);
-                return $begin_res;
-            }
-            foreach ($update_list as $item_id => $update_data) {
-                $update_res = BroadcomOrderCartDBI::updateOrderCart($update_data, $student_id, $item_id);
-                if ($controller->isError($update_res)) {
-                    $update_res->setPos(__FILE__, __LINE__);
-                    $dbi->rollback();
-                    return $update_res;
-                }
-            }
-            $commit_res = $dbi->commit();
-            if ($controller->isError($commit_res)) {
-                $commit_res->setPos(__FILE__, __LINE__);
-                return $commit_res;
-            }
-        }
-        $controller->redirect("./?menu=front&act=cart_info&student_id=" . $student_id);
-        return VIEW_DONE;
-    }
-
-    private function _doDeleteExecute(Controller $controller, User $user, Request $request)
-    {
-        $student_id = $request->getAttribute("student_id");
-        $cart_item_info = $request->getAttribute("cart_item_info");
-        $delete_item_id = $request->getParameter("delete_item_id");
-        $delete_item_list = array();
-        foreach ($cart_item_info as $item_info_tmp) {
-            if ($delete_item_id == $item_info_tmp["item_id"] || $delete_item_id == $item_info_tmp["main_item_id"]) {
-                $delete_item_list[] = $item_info_tmp["item_id"];
-            }
-        }
-        if (!empty($delete_item_list)) {
-            $delete_res = BroadcomOrderCartDBI::clearOrderCart($student_id, $delete_item_list);
-            if ($controller->isError($delete_res)) {
-                $delete_res->setPos(__FILE__, __LINE__);
-                return $delete_res;
-            }
-        }
-        $controller->redirect("./?menu=front&act=cart_info&student_id=" . $student_id);
+        $controller->redirect("./?menu=front&act=order_list&student_id=" . $student_id);
         return VIEW_DONE;
     }
 }

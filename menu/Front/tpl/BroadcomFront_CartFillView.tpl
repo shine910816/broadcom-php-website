@@ -46,7 +46,7 @@
     </div>
     <div class="table-item-b">
       <div class="table-item-name">价格</div>
-      <div class="table-item-value">{^$main_item_info["item_price"]|escape^}{^$item_unit_list[$main_item_info["item_unit"]]^}</div>
+      <div class="table-item-value">{^$main_item_info["item_price"]|number_format^}{^$item_unit_list[$main_item_info["item_unit"]]^}</div>
     </div>
   </div>
 {^/if^}
@@ -77,7 +77,7 @@
           <td>{^$item_type_list[$item_info["item_type"]]^}</td>
           <td>{^$item_method_list[$item_info["item_method"]]^}</td>
           <td>{^$item_grade_list[$item_info["item_grade"]]^}</td>
-          <td>{^$item_info["item_price"]|escape^}{^$item_unit_list[$item_info["item_unit"]]^}</td>
+          <td>{^$item_info["item_price"]|number_format^}{^$item_unit_list[$item_info["item_unit"]]^}</td>
         </tr>
 {^/foreach^}
       </tbody>
@@ -98,7 +98,7 @@
 {^/if^}
 {^if !$scope_out_flg^}
     <a href="./?menu=front&act=cart_info&student_id={^$student_id^}" class="button-field ui-btn-purple"><i class="fa fa-shopping-cart"></i> 已选择课程({^$cart_count^})</a>
-    <a href="./?menu=front&act=create_order&student_id={^$student_id^}" class="button-field ui-btn-orange"><i class="fa fa-cart-arrow-down"></i> 结算</a>
+    <a href="./?menu=front&act=order_create&student_id={^$student_id^}" class="button-field ui-btn-orange"><i class="fa fa-cart-arrow-down"></i> 结算</a>
 {^/if^}
   </div>
 {^/if^}

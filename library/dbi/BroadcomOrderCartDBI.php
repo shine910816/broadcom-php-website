@@ -20,7 +20,9 @@ class BroadcomOrderCartDBI
                " i.item_unit," .
                " c.item_amount," .
                " c.item_present_flg," .
-               " c.main_item_id" .
+               " c.main_item_id," .
+               " c.item_discount_type," .
+               " c.item_discount_amount" .
                " FROM order_cart c" .
                " LEFT OUTER JOIN item_info i ON i.item_id = c.item_id" .
                " WHERE i.del_flg = 0" .

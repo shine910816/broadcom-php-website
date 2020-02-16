@@ -23,5 +23,19 @@ class BroadcomFrontActionBase extends ActionBase
         $request->setAttribute("left_content", $result);
         return VIEW_DONE;
     }
+
+    protected function _getTotalPrice($item_price, $item_amount, $item_discount_type, $item_discount_amount)
+    {
+        $result = $item_price * $item_amount;
+        if ($item_discount_type == BroadcomItemEntity::ITEM_DISCOUNT_TYPE_DIRECT) {
+            $result = $result - $item_discount_amount;
+        } elseif ($item_discount_type == BroadcomItemEntity::ITEM_DISCOUNT_TYPE_PERCENT) {
+            $result = $result * (100 - $item_discount_amount) / 100;
+        }
+        if ($result < 0) {
+            return 0;
+        }
+        return round($result, 2);
+    }
 }
 ?>

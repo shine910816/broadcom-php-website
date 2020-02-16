@@ -38,9 +38,9 @@
             <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
             <div class="operate-option">
               <a href="./?menu=education&act=course_create&student_id={^$student_info_item["student_id"]|escape^}">安排试听</a>
-              <a href="./?menu=front&act=add_item&student_id={^$student_info_item["student_id"]|escape^}">添加课程</a>
+              <a href="./?menu=front&act=cart_fill&student_id={^$student_info_item["student_id"]|escape^}">添加课程</a>
               <a href="./?menu=front&act=cart_info&student_id={^$student_info_item["student_id"]|escape^}">已选课程</a>
-              <a href="./?menu=front&act=create_order&student_id={^$student_info_item["student_id"]|escape^}">结算</a>
+              <a href="./?menu=front&act=order_list&student_id={^$student_info_item["student_id"]|escape^}">订单管理</a>
             </div>
           </td>
         </tr>

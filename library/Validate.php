@@ -120,7 +120,7 @@ class Validate
                 }
             }
         } else {
-            if (!preg_match("/^((\-)?[1-9]\d*)|0$/", $value)) {
+            if (!preg_match("/^(((\-)?[1-9]\d*)|0)(.\d{1,})?$/", $value)) {
                 return false;
             }
             if (isset($opt["min"]) && ($value < $opt["min"])) {

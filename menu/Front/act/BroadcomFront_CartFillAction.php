@@ -6,7 +6,7 @@ require_once SRC_PATH . "/menu/Front/lib/BroadcomFrontActionBase.php";
  * @author Kinsama
  * @version 2020-02-13
  */
-class BroadcomFront_AddItemAction extends BroadcomFrontActionBase
+class BroadcomFront_CartFillAction extends BroadcomFrontActionBase
 {
 
     /**
@@ -239,7 +239,7 @@ class BroadcomFront_AddItemAction extends BroadcomFrontActionBase
         if ($add_present_flg) {
             $redirect_url .= "cart_info";
         } else {
-            $redirect_url .= "add_item";
+            $redirect_url .= "cart_fill";
         }
         $redirect_url .= "&student_id=" . $student_id . "&page=" . $request->current_page;
         $controller->redirect($redirect_url);

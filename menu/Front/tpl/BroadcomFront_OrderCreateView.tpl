@@ -36,10 +36,8 @@
           <th>年级</th>
           <th>价格</th>
           <th>数量</th>
-          <th>优惠方式</th>
           <th>优惠额度</th>
           <th>应支付</th>
-          <th>操作</th>
         </tr>
       </thead>
       <tbody>
@@ -50,23 +48,9 @@
           <td>{^$item_method_list[$cart_item_info[$main_item_id]["item_method"]]^}</td>
           <td>{^$item_grade_list[$cart_item_info[$main_item_id]["item_grade"]]^}</td>
           <td>{^$cart_item_info[$main_item_id]["item_price"]|number_format^}{^$item_unit_list[$cart_item_info[$main_item_id]["item_unit"]]^}</td>
-          <td><input type="text" name="cart_info[{^$main_item_id^}][item_amount]" value="{^$main_item_info["amount"]^}" class="table-text-field auto-select" /></td>
-          <td>
-            <select name="cart_info[{^$main_item_id^}][item_discount_type]" class="table-text-field">
-{^foreach from=$item_discount_type_list key=discount_type_key item=discount_type_name^}
-              <option value="{^$discount_type_key^}"{^if $cart_item_info[$main_item_id]["item_discount_type"] eq $discount_type_key^} selected{^/if^}>{^$discount_type_name^}</option>
-{^/foreach^}
-            </select>
-          </td>
-          <td><input type="text" name="cart_info[{^$main_item_id^}][item_discount_amount]" value="{^$cart_item_info[$main_item_id]["item_discount_amount"]^}" class="table-text-field auto-select" /></td>
+          <td>{^$main_item_info["amount"]^}</td>
+          <td>{^if $cart_item_info[$main_item_id]["item_discount_type"] eq "1"^}{^$cart_item_info[$main_item_id]["item_discount_amount"]^}元{^elseif $cart_item_info[$main_item_id]["item_discount_type"] eq "2"^}{^$cart_item_info[$main_item_id]["item_discount_amount"]^}%{^/if^}</td>
           <td>{^$payable_price_list[$main_item_id]^}元</td>
-          <td>
-            <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
-            <div class="operate-option">
-              <a href="./?menu=front&act=cart_fill&student_id={^$student_id^}&main_item_id={^$main_item_id^}">添加赠课</a>
-              <a href="./?menu=front&act=cart_info&student_id={^$student_id^}&delete_item_id={^$main_item_id^}">删除</a>
-            </div>
-          </td>
         </tr>
 {^if isset($main_item_info["present"])^}
 {^foreach from=$main_item_info["present"] key=present_item_id item=present_item_amount^}
@@ -76,16 +60,9 @@
           <td>{^$item_method_list[$cart_item_info[$present_item_id]["item_method"]]^}</td>
           <td>{^$item_grade_list[$cart_item_info[$present_item_id]["item_grade"]]^}</td>
           <td>{^$cart_item_info[$present_item_id]["item_price"]|number_format^}{^$item_unit_list[$cart_item_info[$present_item_id]["item_unit"]]^}</td>
-          <td><input type="text" name="item_amount[{^$present_item_id^}]" value="{^$present_item_amount^}" class="table-text-field" /></td>
-          <td></td>
+          <td>{^$present_item_amount^}</td>
           <td></td>
           <td>{^$payable_price_list[$present_item_id]^}元</td>
-          <td>
-            <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
-            <div class="operate-option">
-              <a href="./?menu=front&act=cart_info&student_id={^$student_id^}&delete_item_id={^$present_item_id^}">删除</a>
-            </div>
-          </td>
         </tr>
 {^/foreach^}
 {^/if^}
@@ -93,16 +70,24 @@
       </tbody>
     </table>
   </div>
-  <p>合计: {^$total_price^}元</p>
+  <div class="table-line">
+    <div class="table-item-b">
+      <div class="table-item-name">应付款</div>
+      <div class="table-item-value">{^$total_price^}元</div>
+    </div>
+    <div class="table-item-b">
+      <div class="table-item-name">已付款</div>
+      <div class="table-item-value"><input type="text" name="payment_amount" value="{^$payment_amount^}" class="text-field hylight-field" /></div>
+    </div>
+  </div>
 {^/if^}
   <div class="table-line"></div>
   <div class="table-line">
     <a href="./?menu=front&act=my_leads" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>
 {^if !empty($cart_list)^}
-    <button type="submit" name="do_change" value="1" class="button-field ui-btn-green"><i class="fa fa-check"></i> 确认数量修改</button>
+    <a href="./?menu=front&act=cart_info&student_id={^$student_id^}" class="button-field ui-btn-purple"><i class="fa fa-cart-plus"></i> 调整数量及优惠</a>
+    <button type="submit" name="do_create" value="1" class="button-field ui-btn-green"><i class="fa fa-check"></i> 创建订单</button>
 {^/if^}
-    <a href="./?menu=front&act=cart_fill&student_id={^$student_id^}" class="button-field ui-btn-purple"><i class="fa fa-cart-plus"></i> 继续添加课程</a>
-    <a href="./?menu=front&act=order_create&student_id={^$student_id^}" class="button-field ui-btn-orange"><i class="fa fa-cart-arrow-down"></i> 结算</a>
   </div>
 {^/if^}
 </form>
