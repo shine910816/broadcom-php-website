@@ -111,7 +111,7 @@
 {^/if^}
   <div class="table-line"></div>
   <div class="table-line">
-    <a href="./?menu={^$current_menu^}&act=top" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>
+    <a href="./?menu={^$current_menu^}&act=member_list" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>
     <button type="submit" name="do_submit" value="1" class="button-field ui-btn-green"><i class="fa fa-check"></i> {^if $edit_mode^}确认修改{^else^}创建{^/if^}<button>
   </div>
 </form>

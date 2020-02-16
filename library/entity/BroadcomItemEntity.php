@@ -37,6 +37,10 @@ class BroadcomItemEntity
     const ITEM_SALE_ON = "1";
     const ITEM_SALE_OFF = "0";
 
+    const ITEM_DISCOUNT_TYPE_NONE = "0";
+    const ITEM_DISCOUNT_TYPE_DIRECT = "1";
+    const ITEM_DISCOUNT_TYPE_PERCENT = "2";
+
     public static function getItemTypeList()
     {
         return array(
@@ -89,6 +93,15 @@ class BroadcomItemEntity
         return array(
             self::ITEM_SALE_ON => "在售",
             self::ITEM_SALE_OFF => "下架"
+        );
+    }
+
+    public static function getItemDiscountTypeList()
+    {
+        return array(
+            self::ITEM_DISCOUNT_TYPE_NONE => "无优惠",
+            self::ITEM_DISCOUNT_TYPE_DIRECT => "优惠金额",
+            self::ITEM_DISCOUNT_TYPE_PERCENT => "优惠百分比"
         );
     }
 }

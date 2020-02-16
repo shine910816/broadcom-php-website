@@ -110,6 +110,7 @@ class BroadcomFront_CartInfoAction extends BroadcomFrontActionBase
         $request->setAttribute("item_method_list", BroadcomItemEntity::getItemMethodList());
         $request->setAttribute("item_grade_list", BroadcomItemEntity::getItemGradeList());
         $request->setAttribute("item_unit_list", BroadcomItemEntity::getItemUnitList());
+        $request->setAttribute("item_discount_type_list", BroadcomItemEntity::getItemDiscountTypeList());
         return VIEW_DONE;
     }
 

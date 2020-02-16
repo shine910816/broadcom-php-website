@@ -95,7 +95,6 @@ class BroadcomHumanResource_TeacherListAction extends BroadcomHumanResourceActio
         $request->setAttribute("teacher_info_list", $teacher_info_list);
         $request->setAttribute("no_subject_teacher_list", $no_subject_teacher_list);
         $request->setAttribute("editable_flg", $editable_flg);
-//Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 }

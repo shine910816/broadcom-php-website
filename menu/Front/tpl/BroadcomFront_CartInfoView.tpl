@@ -36,6 +36,8 @@
           <th>年级</th>
           <th>价格</th>
           <th>数量</th>
+          <th>优惠方式</th>
+          <th>优惠额度</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -48,6 +50,8 @@
           <td>{^$item_grade_list[$cart_item_info[$main_item_id]["item_grade"]]^}</td>
           <td>{^$cart_item_info[$main_item_id]["item_price"]|escape^}{^$item_unit_list[$cart_item_info[$main_item_id]["item_unit"]]^}</td>
           <td><input type="text" name="item_amount[{^$main_item_id^}]" value="{^$main_item_info["amount"]^}" class="table-text-field" /></td>
+          <td>{^$item_discount_type_list[$cart_item_info[$main_item_id]["item_discount_type"]]^}</td>
+          <td><input type="text" name="item_discount_amount[{^$main_item_id^}]" value="{^$main_item_info["amount"]^}" class="table-text-field" /></td>
           <td>
             <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
             <div class="operate-option">
