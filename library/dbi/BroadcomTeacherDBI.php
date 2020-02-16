@@ -52,6 +52,7 @@ class BroadcomTeacherDBI
         );
         $sql = "SELECT i.member_id," .
                " i.m_name," .
+               " p.school_id," .
                " p.member_position," .
                " p.member_employed_status," .
                " i.m_primary_star_level," .

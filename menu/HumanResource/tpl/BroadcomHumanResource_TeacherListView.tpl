@@ -29,7 +29,7 @@
 {^if $editable_flg^}
             <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
             <div class="operate-option">
-              <a href="./?menu=human_resource&act=teacher_info&member_id={^$teacher_member_id|escape^}">修改信息</a>
+              <a href="./?menu=human_resource&act=teacher_info&teacher_member_id={^$teacher_member_id|escape^}">修改信息</a>
             </div>
 {^/if^}
           </td>
@@ -70,7 +70,7 @@
 {^if $editable_flg^}
             <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
             <div class="operate-option">
-              <a href="./?menu=human_resource&act=teacher_info&member_id={^$teacher_member_id|escape^}">修改信息</a>
+              <a href="./?menu=human_resource&act=teacher_info&teacher_member_id={^$teacher_member_id|escape^}">修改信息</a>
             </div>
 {^/if^}
           </td>

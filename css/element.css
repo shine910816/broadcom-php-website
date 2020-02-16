@@ -33,6 +33,10 @@ label.ui-btn-check input[type="checkbox"],
 label.ui-btn-check input[type="radio"] {
   display:none;
 }
+div.table-item-value label.ui-btn-check {
+  height:30px!important;
+  line-height:30px!important;
+}
 .table-text-field {
   width:108px;
   height:33px;
@@ -55,7 +59,7 @@ label.ui-btn-check input[type="radio"] {
 }
 .text-field {
   width:96%;
-  height:29px;
+  height:30px;
   padding:0 2%;
   text-align:left;
   line-height:30px;
