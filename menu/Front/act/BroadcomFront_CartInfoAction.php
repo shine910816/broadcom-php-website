@@ -98,6 +98,9 @@ class BroadcomFront_CartInfoAction extends BroadcomFrontActionBase
                 if (!Validate::checkNotNull($cart_item_info_tmp["item_amount"]) || !Validate::checkNumber($cart_item_info_tmp["item_amount"], array("min" => "1", "max" => "999"))) {
                     $request->setError("item_amount", "请填写有效的购买数量");
                 }
+                if ($cart_item_info[$item_id]["item_unit"] == BroadcomItemEntity::ITEM_UNIT_PERIOD && $cart_item_info_tmp["item_amount"] > 1) {
+                    $request->setError("item_amount_period", "班课每单购买数量最大为1");
+                }
                 if (!Validate::checkNotNull($cart_item_info_tmp["item_discount_amount"]) || !Validate::checkDecimalNumber($cart_item_info_tmp["item_discount_amount"])) {
                     $request->setError("item_discount_amount", "请填写有效的优惠额度");
                 }
@@ -140,7 +143,6 @@ class BroadcomFront_CartInfoAction extends BroadcomFrontActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-//Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 

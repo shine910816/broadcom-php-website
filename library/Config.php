@@ -28,6 +28,7 @@ class Config
         $result["front"]["create_leads"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["cart_fill"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["cart_info"] = SYSTEM_AUTH_LOGIN;
+        $result["front"]["order_list"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["order_create"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["order_payment"] = SYSTEM_AUTH_LOGIN;
         $result["admin"]["top"] = SYSTEM_AUTH_ADMIN;
@@ -59,6 +60,7 @@ class Config
         $result["front"]["create_leads"] = array('<a href="./?menu=front&act=top">前台业务</a>', '<a href="./?menu=front&act=my_leads">我的意向客户</a>', "新增意向客户");
         $result["front"]["cart_fill"] = array('<a href="./?menu=front&act=top">前台业务</a>', "添加课程");
         $result["front"]["cart_info"] = array('<a href="./?menu=front&act=top">前台业务</a>', "已选择课程");
+        $result["front"]["order_list"] = array('<a href="./?menu=front&act=top">前台业务</a>', "订单管理");
         $result["front"]["order_create"] = array('<a href="./?menu=front&act=top">前台业务</a>', "创建订单");
         $result["front"]["order_payment"] = array('<a href="./?menu=front&act=top">前台业务</a>', "支付订单");
         $result["admin"]["top"] = array("后台管理");
