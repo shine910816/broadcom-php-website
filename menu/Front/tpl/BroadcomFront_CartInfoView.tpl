@@ -1,5 +1,24 @@
 {^include file=$comheader_file^}
 {^include file=$usererror_file^}
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".discount_type_select").change(function(){
+        var item_id = $(this).data("item-id");
+        var select_value = $(this).val();
+        var type_0_text = '<input type="hidden" name="cart_info[' + item_id + '][item_discount_amount]" value="0" />';
+        var type_1_text = '<input type="text" name="cart_info[' + item_id + '][item_discount_amount]" class="table-text-field" />&nbsp;元';
+        var type_2_text = '<input type="text" name="cart_info[' + item_id + '][item_discount_amount]" class="table-text-field" />&nbsp;%';
+        var target_text = "td#target_item_id_" + item_id;
+        if (select_value == "1") {
+            $(target_text).empty().html(type_1_text);
+        } else if (select_value == "2") {
+            $(target_text).empty().html(type_2_text);
+        } else {
+            $(target_text).empty().html(type_0_text);
+        }
+    });
+});
+</script>
 <form action="./" method="post">
   <input type="hidden" name="menu" value="{^$current_menu^}" />
   <input type="hidden" name="act" value="{^$current_act^}" />
@@ -52,13 +71,13 @@
           <td>{^$cart_item_info[$main_item_id]["item_price"]|number_format^}{^$item_unit_list[$cart_item_info[$main_item_id]["item_unit"]]^}</td>
           <td><input type="text" name="cart_info[{^$main_item_id^}][item_amount]" value="{^$main_item_info["amount"]^}" class="table-text-field auto-select" /></td>
           <td>
-            <select name="cart_info[{^$main_item_id^}][item_discount_type]" class="table-text-field">
+            <select name="cart_info[{^$main_item_id^}][item_discount_type]" class="table-text-field discount_type_select" data-item-id="{^$main_item_id^}">
 {^foreach from=$item_discount_type_list key=discount_type_key item=discount_type_name^}
               <option value="{^$discount_type_key^}"{^if $cart_item_info[$main_item_id]["item_discount_type"] eq $discount_type_key^} selected{^/if^}>{^$discount_type_name^}</option>
 {^/foreach^}
             </select>
           </td>
-          <td><input type="text" name="cart_info[{^$main_item_id^}][item_discount_amount]" value="{^$cart_item_info[$main_item_id]["item_discount_amount"]^}" class="table-text-field auto-select" /></td>
+          <td id="target_item_id_{^$main_item_id^}">{^if $cart_item_info[$main_item_id]["item_discount_type"] eq "0"^}<input type="hidden" name="cart_info[{^$main_item_id^}][item_discount_amount]" value="0" />{^else^}<input type="text" name="cart_info[{^$main_item_id^}][item_discount_amount]" value="{^$cart_item_info[$main_item_id]["item_discount_amount"]^}" class="table-text-field auto-select" />{^/if^}&nbsp;{^if $cart_item_info[$main_item_id]["item_discount_type"] eq "1"^}元{^elseif $cart_item_info[$main_item_id]["item_discount_type"] eq "2"^}%{^/if^}</td>
           <td>{^$payable_price_list[$main_item_id]^}元</td>
           <td>
             <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
