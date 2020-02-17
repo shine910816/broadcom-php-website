@@ -98,8 +98,11 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
             $total_price += $item_total_price;
         }
         $payment_amount = "0";
-        if ($request->hasParameter("do_change")) {
+        if ($request->hasParameter("do_create")) {
             $payment_amount = $request->getParameter("payment_amount");
+            if (!Validate::checkNotNull($payment_amount) || !Validate::checkDecimalNumber($payment_amount, array("min" => "1", "max" => $total_price))) {
+                $request->setError("payment_amount", "请填写的有效付款额");
+            }
         }
         $request->setAttribute("student_id", $student_id);
         $request->setAttribute("student_info", $student_info);
@@ -136,6 +139,7 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
 
     private function _doCreateExecute(Controller $controller, User $user, Request $request)
     {
+Utility::testVariable($request->getAttributes());
         $student_id = $request->getAttribute("student_id");
         $controller->redirect("./?menu=front&act=order_list&student_id=" . $student_id);
         return VIEW_DONE;
