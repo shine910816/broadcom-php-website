@@ -63,7 +63,7 @@ class BroadcomFront_OrderListAction extends BroadcomFrontActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-Utility::testVariable($request->getAttributes());
+//Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 }

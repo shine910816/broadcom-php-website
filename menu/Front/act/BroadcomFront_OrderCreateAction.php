@@ -270,7 +270,7 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
             $commit_res->setPos(__FILE__, __LINE__);
             return $commit_res;
         }
-        $controller->redirect("./?menu=front&act=order_list&student_id=" . $student_id);
+        $controller->redirect("./?menu=education&act=student_info&student_id=" . $student_id);
         return VIEW_DONE;
     }
 }
