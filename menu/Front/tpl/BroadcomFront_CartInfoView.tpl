@@ -20,9 +20,6 @@ $(document).ready(function(){
 });
 </script>
 <form action="./" method="post">
-  <input type="hidden" name="menu" value="{^$current_menu^}" />
-  <input type="hidden" name="act" value="{^$current_act^}" />
-  <input type="hidden" name="student_id" value="{^$student_id^}" />
   <h1>学员信息</h1>
   <div class="table-line">
     <div class="table-item-b">
@@ -44,6 +41,9 @@ $(document).ready(function(){
 {^if empty($cart_list)^}
   <p>还未选择课程</p>
 {^else^}
+  <input type="hidden" name="menu" value="{^$current_menu^}" />
+  <input type="hidden" name="act" value="{^$current_act^}" />
+  <input type="hidden" name="student_id" value="{^$student_id^}" />
   <div class="main-table">
     <h2>已选择课程</h2>
     <table class="disp_table">
@@ -119,8 +119,10 @@ $(document).ready(function(){
     <a href="./?menu=front&act=my_leads" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>
 {^if !empty($cart_list)^}
     <button type="submit" name="do_change" value="1" class="button-field ui-btn-green"><i class="fa fa-check"></i> 确认数量修改</button>
-{^/if^}
     <a href="./?menu=front&act=cart_fill&student_id={^$student_id^}" class="button-field ui-btn-purple"><i class="fa fa-cart-plus"></i> 继续添加课程</a>
+{^else^}
+    <a href="./?menu=front&act=cart_fill&student_id={^$student_id^}" class="button-field ui-btn-purple"><i class="fa fa-cart-plus"></i> 添加课程</a>
+{^/if^}
     <a href="./?menu=front&act=order_create&student_id={^$student_id^}" class="button-field ui-btn-orange"><i class="fa fa-cart-arrow-down"></i> 结算</a>
   </div>
 {^/if^}

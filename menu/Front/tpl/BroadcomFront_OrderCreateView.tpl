@@ -1,9 +1,6 @@
 {^include file=$comheader_file^}
 {^include file=$usererror_file^}
 <form action="./" method="post">
-  <input type="hidden" name="menu" value="{^$current_menu^}" />
-  <input type="hidden" name="act" value="{^$current_act^}" />
-  <input type="hidden" name="student_id" value="{^$student_id^}" />
   <h1>学员信息</h1>
   <div class="table-line">
     <div class="table-item-b">
@@ -25,6 +22,9 @@
 {^if empty($cart_list)^}
   <p>还未选择课程</p>
 {^else^}
+  <input type="hidden" name="menu" value="{^$current_menu^}" />
+  <input type="hidden" name="act" value="{^$current_act^}" />
+  <input type="hidden" name="student_id" value="{^$student_id^}" />
   <div class="main-table">
     <h2>已选择课程</h2>
     <table class="disp_table">
@@ -70,12 +70,13 @@
       </tbody>
     </table>
   </div>
-  <h1>付款情况</h1>
   <div class="table-line">
     <div class="table-item-b">
-      <div class="table-item-name">应付款</div>
+      <div class="table-item-name">合计金额</div>
       <div class="table-item-value">{^$total_price^}元</div>
     </div>
+  </div>
+  <div class="table-line">
     <div class="table-item-b">
       <div class="table-item-name">本次付款</div>
       <div class="table-item-value"><input type="text" name="payment_amount" value="{^$payment_amount^}" class="text-field hylight-field" /></div>
@@ -88,6 +89,8 @@
 {^if !empty($cart_list)^}
     <a href="./?menu=front&act=cart_info&student_id={^$student_id^}" class="button-field ui-btn-purple"><i class="fa fa-cart-plus"></i> 调整数量及优惠</a>
     <button type="submit" name="do_create" value="1" class="button-field ui-btn-green"><i class="fa fa-check"></i> 创建订单</button>
+{^else^}
+    <a href="./?menu=front&act=cart_fill&student_id={^$student_id^}" class="button-field ui-btn-purple"><i class="fa fa-cart-plus"></i> 添加课程</a>
 {^/if^}
   </div>
 {^/if^}

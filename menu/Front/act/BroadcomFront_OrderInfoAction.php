@@ -102,7 +102,9 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         $request->setAttribute("item_method_list", BroadcomItemEntity::getItemMethodList());
         $request->setAttribute("item_grade_list", BroadcomItemEntity::getItemGradeList());
         $request->setAttribute("item_unit_list", BroadcomItemEntity::getItemUnitList());
+        $request->setAttribute("item_unit_list", BroadcomItemEntity::getItemUnitList());
         $request->setAttribute("passable_flg", $passable_flg);
+        $request->setAttribute("order_status_list", BroadcomOrderEntity::getOrderStatusList());
         return VIEW_DONE;
     }
 

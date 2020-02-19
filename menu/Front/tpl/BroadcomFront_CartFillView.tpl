@@ -1,13 +1,6 @@
 {^include file=$comheader_file^}
 {^include file=$usererror_file^}
 <form action="./" method="post">
-  <input type="hidden" name="menu" value="{^$current_menu^}" />
-  <input type="hidden" name="act" value="{^$current_act^}" />
-  <input type="hidden" name="page" value="{^$current_page^}" />
-  <input type="hidden" name="student_id" value="{^$student_id^}" />
-{^if $add_present_flg^}
-  <input type="hidden" name="main_item_id" value="{^$main_item_id^}" />
-{^/if^}
   <h1>学员信息</h1>
   <div class="table-line">
     <div class="table-item-b">
@@ -24,6 +17,7 @@
     </div>
   </div>
 {^if $add_present_flg^}
+  <input type="hidden" name="main_item_id" value="{^$main_item_id^}" />
   <h1>主课程信息</h1>
   <div class="table-line">
     <div class="table-item-b">
@@ -56,6 +50,10 @@
 {^if empty($item_info_list)^}
   <p>当前没有适用的课程</p>
 {^else^}
+  <input type="hidden" name="menu" value="{^$current_menu^}" />
+  <input type="hidden" name="act" value="{^$current_act^}" />
+  <input type="hidden" name="page" value="{^$current_page^}" />
+  <input type="hidden" name="student_id" value="{^$student_id^}" />
   <div class="main-table">
     <h2>{^if $add_present_flg^}赠课{^else^}主课{^/if^}课程选择</h2>
     <table class="disp_table">

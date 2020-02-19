@@ -3,6 +3,45 @@
   <input type="hidden" name="menu" value="{^$current_menu^}" />
   <input type="hidden" name="act" value="{^$current_act^}" />
   <input type="hidden" name="order_id" value="{^$order_id^}" />
+  <h1>订单信息</h1>
+  <div class="table-line">
+    <div class="table-item-b">
+      <div class="table-item-name">订单号</div>
+      <div class="table-item-value">{^$order_info["order_number"]|escape^}</div>
+    </div>
+    <div class="table-item-b">
+      <div class="table-item-name">订单状态</div>
+      <div class="table-item-value">{^$order_status_list[$order_info["order_status"]]^}</div>
+    </div>
+  </div>
+  <div class="table-line">
+    <div class="table-item-b">
+      <div class="table-item-name">学员姓名</div>
+      <div class="table-item-value">{^$student_info["student_name"]|escape^}</div>
+    </div>
+    <div class="table-item-b">
+      <div class="table-item-name">当前年级</div>
+      <div class="table-item-value">{^$student_info["grade_name"]|escape^}</div>
+    </div>
+    <div class="table-item-b">
+      <div class="table-item-name">会员级别</div>
+      <div class="table-item-value">{^$student_info["student_level_name"]|escape^}</div>
+    </div>
+  </div>
+  <div class="table-line">
+    <div class="table-item-b">
+      <div class="table-item-name">合计金额</div>
+      <div class="table-item-value">{^$order_info["order_payable"]^}元</div>
+    </div>
+    <div class="table-item-b">
+      <div class="table-item-name">已付款</div>
+      <div class="table-item-value">{^$order_info["order_payment"]^}元</div>
+    </div>
+    <div class="table-item-b">
+      <div class="table-item-name">应付款</div>
+      <div class="table-item-value">{^$order_info["order_debt"]^}元</div>
+    </div>
+  </div>
   <div class="main-table">
     <h2>订单内课程</h2>
     <table class="disp_table">
@@ -35,36 +74,6 @@
 {^/foreach^}
       </tbody>
     </table>
-  </div>
-  <h1>学员信息</h1>
-  <div class="table-line">
-    <div class="table-item-b">
-      <div class="table-item-name">学员姓名</div>
-      <div class="table-item-value">{^$student_info["student_name"]|escape^}</div>
-    </div>
-    <div class="table-item-b">
-      <div class="table-item-name">当前年级</div>
-      <div class="table-item-value">{^$student_info["grade_name"]|escape^}</div>
-    </div>
-    <div class="table-item-b">
-      <div class="table-item-name">会员级别</div>
-      <div class="table-item-value">{^$student_info["student_level_name"]|escape^}</div>
-    </div>
-  </div>
-  <h1>付款情况</h1>
-  <div class="table-line">
-    <div class="table-item-b">
-      <div class="table-item-name">合计金额</div>
-      <div class="table-item-value">{^$order_info["order_payable"]^}元</div>
-    </div>
-    <div class="table-item-b">
-      <div class="table-item-name">已付款</div>
-      <div class="table-item-value">{^$order_info["order_payment"]^}元</div>
-    </div>
-    <div class="table-item-b">
-      <div class="table-item-name">应付款</div>
-      <div class="table-item-value">{^$order_info["order_debt"]^}元</div>
-    </div>
   </div>
   <div class="table-line"></div>
   <div class="table-line">
