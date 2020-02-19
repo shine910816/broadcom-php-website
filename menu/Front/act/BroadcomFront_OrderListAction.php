@@ -34,7 +34,7 @@ class BroadcomFront_OrderListAction extends BroadcomFrontActionBase
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
         $order_status_list = BroadcomOrderEntity::getOrderStatusList();
-        $order_status = BroadcomOrderEntity::ORDER_STATUS_1;
+        $order_status = BroadcomOrderEntity::ORDER_STATUS_2;
         if ($request->hasParameter("order_status")) {
             $order_status = $request->getParameter("order_status");
             if (!Validate::checkAcceptParam($order_status, array_keys($order_status_list))) {
@@ -63,7 +63,26 @@ class BroadcomFront_OrderListAction extends BroadcomFrontActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-//Utility::testVariable($request->getAttributes());
+        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($user->getMemberId());
+        if ($controller->isError($position_info)) {
+            $position_info->setPos(__FILE__, __LINE__);
+            return $position_info;
+        }
+        if (empty($position_info)) {
+            $err = $controller->raiseError();
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        $school_id = $position_info["school_id"];
+        $student_info_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id);
+        if ($controller->isError($student_info_list)) {
+            $student_info_list->setPos(__FILE__, __LINE__);
+            return $student_info_list;
+        }
+        foreach ($student_info_list as $student_id => $student_info) {
+            $student_info_list[$student_id]["grade_name"] = BroadcomStudentEntity::getGradeName($student_info["student_entrance_year"]);
+        }
+        $request->setAttribute("student_info_list", $student_info_list);
         return VIEW_DONE;
     }
 }

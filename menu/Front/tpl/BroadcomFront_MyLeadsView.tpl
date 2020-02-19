@@ -24,7 +24,7 @@
       <tbody>
 {^foreach from=$student_info_list item=student_info_item^}
         <tr>
-          <td>{^$student_info_item["student_name"]|escape^}</td>
+          <td><a href="./?menu=education&act=student_info&student_id={^$student_info_item["student_id"]|escape^}" class="text-link">{^$student_info_item["student_name"]|escape^}</a></td>
           <td>{^$student_info_item["student_mobile_number"]|escape^}</td>
           <td>{^$student_level_list[$student_info_item["student_level"]]^}</td>
           <td>{^$student_info_item["grade_name"]^}</td>
@@ -40,7 +40,6 @@
               <a href="./?menu=education&act=course_create&student_id={^$student_info_item["student_id"]|escape^}">安排试听</a>
               <a href="./?menu=front&act=cart_fill&student_id={^$student_info_item["student_id"]|escape^}">添加课程</a>
               <a href="./?menu=front&act=cart_info&student_id={^$student_info_item["student_id"]|escape^}">已选课程</a>
-              <a href="./?menu=front&act=order_list&student_id={^$student_info_item["student_id"]|escape^}">订单管理</a>
             </div>
           </td>
         </tr>

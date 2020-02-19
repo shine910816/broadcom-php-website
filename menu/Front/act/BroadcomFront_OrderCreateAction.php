@@ -140,11 +140,11 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
     private function _doCreateExecute(Controller $controller, User $user, Request $request)
     {
         $student_id = $request->getAttribute("student_id");
-        $cart_list= $request->getAttribute("cart_list");
-        $cart_item_info= $request->getAttribute("cart_item_info");
-        $payable_price_list= $request->getAttribute("payable_price_list");
-        $total_price= $request->getAttribute("total_price");
-        $payment_amount= $request->getAttribute("payment_amount");
+        $cart_list = $request->getAttribute("cart_list");
+        $cart_item_info = $request->getAttribute("cart_item_info");
+        $payable_price_list = $request->getAttribute("payable_price_list");
+        $total_price = $request->getAttribute("total_price");
+        $payment_amount = $request->getAttribute("payment_amount");
         $position_info = BroadcomMemberPositionDBI::selectMemberPosition($user->getMemberId());
         if ($controller->isError($position_info)) {
             $position_info->setPos(__FILE__, __LINE__);
@@ -189,6 +189,9 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
             $dbi->rollback();
             return $order_id;
         }
+        //------------------------------
+        // TODO START PAYMENT PLAN A
+        //------------------------------
         $payment_insert_data = array();
         $payment_insert_data["student_id"] = $student_id;
         $payment_insert_data["order_id"] = $order_id;
@@ -200,6 +203,9 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
             $dbi->rollback();
             return $payment_insert_res;
         }
+        //------------------------------
+        // TODO END PAYMENT PLAN A
+        //------------------------------
         foreach ($cart_list as $main_item_id => $main_item_info) {
             $main_contract_count = BroadcomOrderDBI::selectOrderItemCountForCreate();
             if ($controller->isError($main_contract_count)) {

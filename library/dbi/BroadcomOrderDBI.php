@@ -8,6 +8,43 @@
 class BroadcomOrderDBI
 {
 
+    public static function selectOrderInfo($order_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM order_info WHERE del_flg = 0 AND order_id = " . $order_id . " LIMIT 1";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        $result->free();
+        if (count($data) == 1) {
+            return $data[0];
+        }
+        return $data;
+    }
+
+    public static function selectOrderItemByOrderId($order_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM order_item_info WHERE del_flg = 0 AND order_id = " . $order_id;
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["order_item_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function selectOrderListByStatus($order_status)
     {
         $dbi = Database::getInstance();

@@ -82,10 +82,12 @@ div.bread-crumbs-bar ul li.nav_item:before {
   padding:0 0.5em;
   color:#999999;
 }
+a.text-link,
 div.bread-crumbs-bar ul li a {
   color:#3E70C5;
   text-decoration:none;
 }
+a.text-link:hover,
 div.bread-crumbs-bar ul li a:hover {
   color:#428BCA;
 }

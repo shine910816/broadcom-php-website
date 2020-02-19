@@ -13,12 +13,34 @@
       <thead>
         <tr>
           <th>订单号</th>
+          <th>学员姓名</th>
+          <th>联系电话</th>
+          <th>年级</th>
+          <th>应付款</th>
+          <th>已付款</th>
+          <th>待付款</th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody>
 {^foreach from=$order_list item=order_info^}
         <tr>
-          <td>{^$order_info["order_number"]|escape^}</td>
+          <td><a href="./?menu=front&act=order_info&order_id={^$order_info["order_id"]|escape^}" class="text-link">{^$order_info["order_number"]|escape^}</a></td>
+          <td>{^if isset($student_info_list[$order_info["student_id"]])^}{^$student_info_list[$order_info["student_id"]]["student_name"]|escape^}{^/if^}</td>
+          <td>{^if isset($student_info_list[$order_info["student_id"]])^}{^$student_info_list[$order_info["student_id"]]["student_mobile_number"]|escape^}{^/if^}</td>
+          <td>{^if isset($student_info_list[$order_info["student_id"]])^}{^$student_info_list[$order_info["student_id"]]["grade_name"]|escape^}{^/if^}</td>
+          <td>{^$order_info["order_payable"]|escape^}元</td>
+          <td>{^$order_info["order_payment"]|escape^}元</td>
+          <td>{^$order_info["order_debt"]|escape^}元</td>
+          <td>
+            <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
+            <div class="operate-option">
+              <a href="./?menu=front&act=order_info&order_id={^$order_info["order_id"]|escape^}">详情</a>
+{^if $order_status eq "1"^}
+              <a href="./?menu=front&act=order_payment&order_id={^$order_info["order_id"]|escape^}">付款</a>
+{^/if^}
+            </div>
+          </td>
         </tr>
 {^/foreach^}
       </tbody>

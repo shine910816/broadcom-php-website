@@ -31,6 +31,7 @@ class Config
         $result["front"]["order_list"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["order_create"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["order_payment"] = SYSTEM_AUTH_LOGIN;
+        $result["front"]["order_info"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["top"] = SYSTEM_AUTH_ADMIN;
         $result["education"]["student_list"] = SYSTEM_AUTH_ADMIN;
         $result["education"]["student_info"] = SYSTEM_AUTH_ADMIN;
@@ -66,6 +67,7 @@ class Config
         $result["front"]["order_list"] = array('<a href="./?menu=front&act=top">前台业务</a>', "订单管理");
         $result["front"]["order_create"] = array('<a href="./?menu=front&act=top">前台业务</a>', "创建订单");
         $result["front"]["order_payment"] = array('<a href="./?menu=front&act=top">前台业务</a>', "支付订单");
+        $result["front"]["order_info"] = array('<a href="./?menu=front&act=top">前台业务</a>', "订单详情");
         $result["education"]["top"] = array("学员教务");
         $result["education"]["student_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "学员管理");
         $result["education"]["student_info"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=student_list">学员管理</a>', "学员信息");

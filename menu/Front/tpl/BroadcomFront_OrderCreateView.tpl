@@ -70,13 +70,14 @@
       </tbody>
     </table>
   </div>
+  <h1>付款情况</h1>
   <div class="table-line">
     <div class="table-item-b">
       <div class="table-item-name">应付款</div>
       <div class="table-item-value">{^$total_price^}元</div>
     </div>
     <div class="table-item-b">
-      <div class="table-item-name">已付款</div>
+      <div class="table-item-name">本次付款</div>
       <div class="table-item-value"><input type="text" name="payment_amount" value="{^$payment_amount^}" class="text-field hylight-field" /></div>
     </div>
   </div>
