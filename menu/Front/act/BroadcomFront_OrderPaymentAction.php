@@ -127,33 +127,21 @@ class BroadcomFront_OrderPaymentAction extends BroadcomFrontActionBase
 
     private function _doPaymentExecute(Controller $controller, User $user, Request $request)
     {
-//Utility::testVariable($request->getAttributes());
         $order_id = $request->getAttribute("order_id");
         $order_info = $request->getAttribute("order_info");
         $payment_amount = $request->getAttribute("payment_amount");
         $student_id = $request->getAttribute("student_id");
-        $order_update_data = array();
-        $order_update_data["order_payment"] = $order_info["order_payment"] + $payment_amount;
-        $order_update_data["order_debt"] = $order_info["order_debt"] - $payment_amount;
-        if ($order_update_data["order_debt"] == 0) {
-            $order_update_data["order_status"] = BroadcomOrderEntity::ORDER_STATUS_2;
-        }
-        //------------------------------
-        // TODO START PAYMENT PLAN A
-        //------------------------------
-        $payment_insert_data = array();
-        $payment_insert_data["student_id"] = $student_id;
-        $payment_insert_data["order_id"] = $order_id;
-        $payment_insert_data["order_item_id"] = null;
-        $payment_insert_data["payment_amount"] = $payment_amount;
-        //------------------------------
-        // TODO END PAYMENT PLAN A
-        //------------------------------
         $dbi = Database::getInstance();
         $begin_res = $dbi->begin();
         if ($controller->isError($begin_res)) {
             $begin_res->setPos(__FILE__, __LINE__);
             return $begin_res;
+        }
+        $order_update_data = array();
+        $order_update_data["order_payment"] = $order_info["order_payment"] + $payment_amount;
+        $order_update_data["order_debt"] = $order_info["order_debt"] - $payment_amount;
+        if ($order_update_data["order_debt"] == 0) {
+            $order_update_data["order_status"] = BroadcomOrderEntity::ORDER_STATUS_2;
         }
         $order_update_res = BroadcomOrderDBI::updateOrder($order_update_data, $order_id);
         if ($controller->isError($order_update_res)) {
@@ -164,6 +152,11 @@ class BroadcomFront_OrderPaymentAction extends BroadcomFrontActionBase
         //------------------------------
         // TODO START PAYMENT PLAN A
         //------------------------------
+        $payment_insert_data = array();
+        $payment_insert_data["student_id"] = $student_id;
+        $payment_insert_data["order_id"] = $order_id;
+        $payment_insert_data["order_item_id"] = null;
+        $payment_insert_data["payment_amount"] = $payment_amount;
         $payment_insert_res = BroadcomPaymentDBI::insertPayment($payment_insert_data);
         if ($controller->isError($payment_insert_res)) {
             $payment_insert_res->setPos(__FILE__, __LINE__);
