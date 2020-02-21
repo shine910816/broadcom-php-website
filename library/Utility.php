@@ -254,9 +254,7 @@ class Utility
     public static function encodeCookieInfo($param)
     {
         if (!is_array($param)) {
-            $param = array(
-                $param
-            );
+            $param = array($param);
         }
         foreach ($param as $key => $val) {
             $param[$key] = urlencode($val);
@@ -275,6 +273,31 @@ class Utility
         $result = json_decode(base64_decode($param), true);
         foreach ($result as $key => $val) {
             $result[$key] = urldecode($val);
+        }
+        return $result;
+    }
+
+    public static function encodeBackLink($menu, $act, $param = array())
+    {
+        $result = array();
+        $result["menu"] = $menu;
+        $result["act"] = $act;
+        if (!empty($param)) {
+            foreach ($param as $key_name => $key_value) {
+                $result[$key_name] = $key_value;
+            }
+        }
+        return self::encodeCookieInfo($result);
+    }
+
+    public static function decodeBackLink($param)
+    {
+        $param_arr = self::decodeCookieInfo($param);
+        $result = "./?menu=" . $param_arr["menu"];
+        foreach ($param_arr as $key_name => $key_value) {
+            if ($key_name != "menu") {
+                $result .= "&" . $key_name . "=" . $key_value;
+            }
         }
         return $result;
     }

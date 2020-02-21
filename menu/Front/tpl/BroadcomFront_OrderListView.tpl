@@ -25,7 +25,7 @@
       <tbody>
 {^foreach from=$order_list item=order_info^}
         <tr>
-          <td><a href="./?menu=front&act=order_info&order_id={^$order_info["order_id"]|escape^}" class="text-link">{^$order_info["order_number"]|escape^}</a></td>
+          <td><a href="./?menu=front&act=order_info&order_id={^$order_info["order_id"]|escape^}&b={^$back_link^}" class="text-link">{^$order_info["order_number"]|escape^}</a></td>
           <td>{^if isset($student_info_list[$order_info["student_id"]])^}{^$student_info_list[$order_info["student_id"]]["student_name"]|escape^}{^/if^}</td>
           <td>{^if isset($student_info_list[$order_info["student_id"]])^}{^$student_info_list[$order_info["student_id"]]["student_mobile_number"]|escape^}{^/if^}</td>
           <td>{^if isset($student_info_list[$order_info["student_id"]])^}{^$student_info_list[$order_info["student_id"]]["grade_name"]|escape^}{^/if^}</td>

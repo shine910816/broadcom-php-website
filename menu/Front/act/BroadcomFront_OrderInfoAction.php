@@ -92,6 +92,10 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         if ($user->isAdmin() && $order_info["order_status"] == BroadcomOrderEntity::ORDER_STATUS_2) {
             $passable_flg = true;
         }
+        $back_link = "./?menu=front&act=order_list";
+        if ($request->hasParameter("b")) {
+            $back_link = Utility::decodeBackLink($request->getParameter("b"));
+        }
         $request->setAttribute("order_id", $order_id);
         $request->setAttribute("order_info", $order_info);
         $request->setAttribute("order_item_info", $order_item_info);
@@ -104,6 +108,7 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         $request->setAttribute("item_unit_list", BroadcomItemEntity::getItemUnitList());
         $request->setAttribute("passable_flg", $passable_flg);
         $request->setAttribute("order_status_list", BroadcomOrderEntity::getOrderStatusList());
+        $request->setAttribute("back_link", $back_link);
         return VIEW_DONE;
     }
 

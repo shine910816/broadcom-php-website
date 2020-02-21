@@ -82,7 +82,12 @@ class BroadcomFront_OrderListAction extends BroadcomFrontActionBase
         foreach ($student_info_list as $student_id => $student_info) {
             $student_info_list[$student_id]["grade_name"] = BroadcomStudentEntity::getGradeName($student_info["student_entrance_year"]);
         }
+        $back_link = Utility::encodeBackLink("front", "order_list", array(
+            "order_status" => $request->getAttribute("order_status"),
+            "page" => $request->current_page
+        ));
         $request->setAttribute("student_info_list", $student_info_list);
+        $request->setAttribute("back_link", $back_link);
         return VIEW_DONE;
     }
 }
