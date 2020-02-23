@@ -57,10 +57,13 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
             $order_list->setPos(__FILE__, __LINE__);
             return $order_list;
         }
-        $order_item_list = BroadcomOrderDBI::selectOrderItemByOrderId(array_keys($order_list));
-        if ($controller->isError($order_item_list)) {
-            $order_item_list->setPos(__FILE__, __LINE__);
-            return $order_item_list;
+        $order_item_list = array();
+        if (!empty($order_list)) {
+            $order_item_list = BroadcomOrderDBI::selectOrderItemByOrderId(array_keys($order_list));
+            if ($controller->isError($order_item_list)) {
+                $order_item_list->setPos(__FILE__, __LINE__);
+                return $order_item_list;
+            }
         }
         $item_list = BroadcomItemInfoDBI::selectItemInfoList();
         if ($controller->isError($item_list)) {
@@ -90,7 +93,10 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-//Utility::testVariable($request->getAttributes());
+        $back_link = Utility::encodeBackLink("education", "student_info", array(
+            "student_id" => $request->getAttribute("student_id")
+        ));
+        $request->setAttribute("back_link", $back_link);
         return VIEW_DONE;
     }
 }

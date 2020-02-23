@@ -28,10 +28,17 @@ class BroadcomOrderDBI
         return $data;
     }
 
-    public static function selectOrderInfoByStudentId($student_id)
+    public static function selectOrderInfoByStudentId($student_id, $order_status = null)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT * FROM order_info WHERE del_flg = 0 AND student_id = " . $student_id;
+        $where = "del_flg = 0 AND student_id = " . $student_id;
+        if (!is_null($order_status)) {
+            if (!is_array($order_status)) {
+                $order_status = array($order_status);
+            }
+            $where = " AND order_status IN (" . implode(", ", $order_status) . ")";
+        }
+        $sql = "SELECT * FROM order_info WHERE " . $where;
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);

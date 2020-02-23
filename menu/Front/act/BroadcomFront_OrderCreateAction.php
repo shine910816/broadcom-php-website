@@ -189,9 +189,6 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
             $dbi->rollback();
             return $order_id;
         }
-        //------------------------------
-        // TODO START PAYMENT PLAN A
-        //------------------------------
         $payment_insert_data = array();
         $payment_insert_data["student_id"] = $student_id;
         $payment_insert_data["order_id"] = $order_id;
@@ -203,9 +200,6 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
             $dbi->rollback();
             return $payment_insert_res;
         }
-        //------------------------------
-        // TODO END PAYMENT PLAN A
-        //------------------------------
         foreach ($cart_list as $main_item_id => $main_item_info) {
             $main_contract_count = BroadcomOrderDBI::selectOrderItemCountForCreate();
             if ($controller->isError($main_contract_count)) {

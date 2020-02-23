@@ -70,7 +70,7 @@
       <tbody>
 {^foreach from=$item_info_list item=item_info^}
         <tr>
-          <td><label class="button-field ui-btn-check{^if $add_item_id eq {^$item_info["item_id"]^}^} ui-btn-orange{^/if^}"><input type="radio" name="add_item_id" value="{^$item_info["item_id"]^}"{^if $add_item_id eq {^$item_info["item_id"]^}^} checked{^/if^} />&nbsp;<i class="fa fa-cart-plus"></i>&nbsp;</label></td>
+          <td><label class="button-field ui-btn-check{^if $add_item_id eq $item_info["item_id"]^} ui-btn-orange{^/if^}"><input type="radio" name="add_item_id" value="{^$item_info["item_id"]^}"{^if $add_item_id eq $item_info["item_id"]^} checked{^/if^} />&nbsp;<i class="fa fa-cart-plus"></i>&nbsp;</label></td>
           <td>{^$item_info["item_name"]|escape^}</td>
           <td>{^$item_type_list[$item_info["item_type"]]^}</td>
           <td>{^$item_method_list[$item_info["item_method"]]^}</td>

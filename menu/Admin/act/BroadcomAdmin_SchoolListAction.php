@@ -45,6 +45,12 @@ class BroadcomAdmin_SchoolListAction extends BroadcomAdminActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
+        $school_info_list = BroadcomSchoolInfoDBI::selectSchoolInfoList();
+        if ($controller->isError($school_info_list)) {
+            $school_info_list->setPos(__FILE__, __LINE__);
+            return $school_info_list;
+        }
+        $request->setAttribute("school_info_list", $school_info_list);
         return VIEW_DONE;
     }
 }

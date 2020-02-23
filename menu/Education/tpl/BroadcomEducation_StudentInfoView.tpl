@@ -1,34 +1,36 @@
 {^include file=$comheader_file^}
-  <h1>基本信息</h1>
-  <div class="table-line">
-    <div class="table-item-b">
-      <div class="table-item-name">学员姓名</div>
-      <div class="table-item-value">{^$student_info["student_name"]|escape^}</div>
+  <div class="main-table pb_15">
+    <h2>基本信息</h2>
+    <div class="table-line">
+      <div class="table-item-b">
+        <div class="table-item-name">学员姓名</div>
+        <div class="table-item-value">{^$student_info["student_name"]|escape^}</div>
+      </div>
+      <div class="table-item-b">
+        <div class="table-item-name">性别</div>
+        <div class="table-item-value">{^if $student_info["student_gender"] eq "1"^}男{^else^}>女<{^/if^}</div>
+      </div>
+      <div class="table-item-b">
+        <div class="table-item-name">年级</div>
+        <div class="table-item-value">{^$student_info["student_grade"]|escape^}</div>
+      </div>
     </div>
-    <div class="table-item-b">
-      <div class="table-item-name">性别</div>
-      <div class="table-item-value">{^if $student_info["student_gender"] eq "1"^}男{^else^}>女<{^/if^}</div>
-    </div>
-    <div class="table-item-b">
-      <div class="table-item-name">年级</div>
-      <div class="table-item-value">{^$student_info["student_grade"]|escape^}</div>
+    <div class="table-line">
+      <div class="table-item-b">
+        <div class="table-item-name">手机号</div>
+        <div class="table-item-value">{^$student_info["student_mobile_number"]|escape^}</div>
+      </div>
+      <div class="table-item-b">
+        <div class="table-item-name">在读学校</div>
+        <div class="table-item-value">{^$student_info["student_school_name"]|escape^}</div>
+      </div>
     </div>
   </div>
-  <div class="table-line">
-    <div class="table-item-b">
-      <div class="table-item-name">手机号</div>
-      <div class="table-item-value">{^$student_info["student_mobile_number"]|escape^}</div>
-    </div>
-    <div class="table-item-b">
-      <div class="table-item-name">在读学校</div>
-      <div class="table-item-value">{^$student_info["student_school_name"]|escape^}</div>
-    </div>
-  </div>
-  <h1>已购课程</h1>
+  <div class="main-table{^if empty($order_item_list)^} pb_15{^/if^}">
+    <h2>已购课程</h2>
 {^if empty($order_item_list)^}
-  <p>无已购课程</p>
+    <p>无已购课程</p>
 {^else^}
-  <div class="main-table">
     <table class="disp_table">
       <thead>
         <tr>
@@ -57,13 +59,13 @@
 {^/foreach^}
       </tbody>
     </table>
-  </div>
 {^/if^}
-  <h1>订单信息</h1>
+  </div>
+  <div class="main-table{^if empty($order_list)^} pb_15{^/if^}">
+    <h2>订单信息</h2>
 {^if empty($order_list)^}
-  <p>无订单信息</p>
+    <p>无订单信息</p>
 {^else^}
-  <div class="main-table">
     <table class="disp_table">
       <thead>
         <tr>
@@ -77,7 +79,7 @@
       <tbody>
 {^foreach from=$order_list item=order_info^}
         <tr>
-          <td><a href="./?menu=front&act=order_info&order_id={^$order_info["order_id"]|escape^}" class="text-link">{^$order_info["order_number"]|escape^}</a></td>
+          <td><a href="./?menu=front&act=order_info&order_id={^$order_info["order_id"]|escape^}&b={^$back_link^}" class="text-link">{^$order_info["order_number"]|escape^}</a></td>
           <td>{^$order_info["order_payable"]|escape^}元</td>
           <td>{^$order_info["order_payment"]|escape^}元</td>
           <td>{^$order_info["order_debt"]|escape^}元</td>
@@ -86,9 +88,10 @@
 {^/foreach^}
       </tbody>
     </table>
-  </div>
 {^/if^}
-
-
-
+  </div>
+  <div class="table-line"></div>
+  <div class="table-line">
+    <a href="./?menu=education&act=student_list" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>
+  </div>
 {^include file=$comfooter_file^}

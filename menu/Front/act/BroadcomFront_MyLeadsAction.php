@@ -61,7 +61,11 @@ class BroadcomFront_MyLeadsAction extends BroadcomFrontActionBase
             return $err;
         }
         $school_id = $position_info["school_id"];
-        $student_info_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id, $member_id);
+        $follow_status_array = array(
+            BroadcomStudentEntity::FOLLOW_STATUS_1,
+            BroadcomStudentEntity::FOLLOW_STATUS_2
+        );
+        $student_info_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id, $member_id, $follow_status_array);
         if ($controller->isError($student_info_list)) {
             $student_info_list->setPos(__FILE__, __LINE__);
             return $student_info_list;

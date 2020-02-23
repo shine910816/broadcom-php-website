@@ -149,9 +149,6 @@ class BroadcomFront_OrderPaymentAction extends BroadcomFrontActionBase
             $dbi->rollback();
             return $order_update_res;
         }
-        //------------------------------
-        // TODO START PAYMENT PLAN A
-        //------------------------------
         $payment_insert_data = array();
         $payment_insert_data["student_id"] = $student_id;
         $payment_insert_data["order_id"] = $order_id;
@@ -163,9 +160,6 @@ class BroadcomFront_OrderPaymentAction extends BroadcomFrontActionBase
             $dbi->rollback();
             return $payment_insert_res;
         }
-        //------------------------------
-        // TODO END PAYMENT PLAN A
-        //------------------------------
         $commit_res = $dbi->commit();
         if ($controller->isError($commit_res)) {
             $commit_res->setPos(__FILE__, __LINE__);

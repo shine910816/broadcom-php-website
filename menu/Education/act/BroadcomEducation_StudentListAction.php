@@ -1,12 +1,12 @@
 <?php
-require_once SRC_PATH . "/menu/Front/lib/BroadcomFrontActionBase.php";
+require_once SRC_PATH . "/menu/Education/lib/BroadcomEducationActionBase.php";
 
 /**
- * 校区意向客户画面
+ * 学员教务画面
  * @author Kinsama
- * @version 2020-02-09
+ * @version 2020-02-22
  */
-class BroadcomFront_SchoolLeadsAction extends BroadcomFrontActionBase
+class BroadcomEducation_StudentListAction extends BroadcomEducationActionBase
 {
 
     /**
@@ -61,11 +61,7 @@ class BroadcomFront_SchoolLeadsAction extends BroadcomFrontActionBase
             return $err;
         }
         $school_id = $position_info["school_id"];
-        $follow_status_array = array(
-            BroadcomStudentEntity::FOLLOW_STATUS_1,
-            BroadcomStudentEntity::FOLLOW_STATUS_2
-        );
-        $student_info_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id, null, $follow_status_array);
+        $student_info_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id, null, BroadcomStudentEntity::FOLLOW_STATUS_3);
         if ($controller->isError($student_info_list)) {
             $student_info_list->setPos(__FILE__, __LINE__);
             return $student_info_list;
@@ -86,6 +82,7 @@ class BroadcomFront_SchoolLeadsAction extends BroadcomFrontActionBase
         }
         $request->setAttribute("student_info_list", $student_info_list);
         $request->setAttribute("member_name_list", $member_name_list);
+//Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 }

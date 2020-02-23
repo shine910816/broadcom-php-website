@@ -28,7 +28,7 @@ class BroadcomStudentInfoDBI
         return $data;
     }
 
-    public static function selectLeadsStudentInfo($school_id, $member_id = null)
+    public static function selectLeadsStudentInfo($school_id, $member_id = null, $follow_status = null)
     {
         $dbi = Database::getInstance();
         $sql = "SELECT student_id," .
@@ -49,6 +49,12 @@ class BroadcomStudentInfoDBI
                " AND school_id = " . $school_id;
         if (!is_null($member_id)) {
             $sql .= " AND member_id = " . $member_id;
+        }
+        if (!is_null($follow_status)) {
+            if (!is_array($follow_status)) {
+                $follow_status = array($follow_status);
+            }
+            $sql .= " AND follow_status IN (" . implode(", ", $follow_status) . ")";
         }
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
