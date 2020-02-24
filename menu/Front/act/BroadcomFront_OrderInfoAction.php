@@ -87,18 +87,22 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
             $item_list->setPos(__FILE__, __LINE__);
             return $item_list;
         }
-        $passable_flg = false;
+        $pass_able_flg = false;
+        $cancel_able_flg = false;
         // TODO 权限设定
-        $passable_auth_flg = false;
+        $auth_able_flg = false;
         if ($user->isAdmin()) {
-            $passable_auth_flg = true;
+            $auth_able_flg = true;
         }
         $passable_order_status_array = array(
             BroadcomOrderEntity::ORDER_STATUS_1,
             BroadcomOrderEntity::ORDER_STATUS_2
         );
-        if ($passable_auth_flg && in_array($order_info["order_status"], $passable_order_status_array)) {
-            $passable_flg = true;
+        if ($auth_able_flg && $order_info["order_status"] == BroadcomOrderEntity::ORDER_STATUS_2) {
+            $pass_able_flg = true;
+        }
+        if ($auth_able_flg && in_array($order_info["order_status"], $passable_order_status_array)) {
+            $cancel_able_flg = true;
         }
         $back_link = "./?menu=front&act=order_list";
         if ($request->hasParameter("b")) {
@@ -114,7 +118,8 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         $request->setAttribute("item_method_list", BroadcomItemEntity::getItemMethodList());
         $request->setAttribute("item_grade_list", BroadcomItemEntity::getItemGradeList());
         $request->setAttribute("item_unit_list", BroadcomItemEntity::getItemUnitList());
-        $request->setAttribute("passable_flg", $passable_flg);
+        $request->setAttribute("pass_able_flg", $pass_able_flg);
+        $request->setAttribute("cancel_able_flg", $cancel_able_flg);
         $request->setAttribute("order_status_list", BroadcomOrderEntity::getOrderStatusList());
         $request->setAttribute("back_link", $back_link);
         return VIEW_DONE;
@@ -134,10 +139,16 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
 
     private function _doPassExecute(Controller $controller, User $user, Request $request)
     {
+        if (!$request->getAttribute("pass_able_flg")) {
+            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
         $order_id = $request->getAttribute("order_id");
         $order_item_info = $request->getAttribute("order_item_info");
         $student_id = $request->getAttribute("student_id");
         $student_info = $request->getAttribute("student_info");
+        $item_list = $request->getAttribute("item_list");
         $dbi = Database::getInstance();
         $begin_res = $dbi->begin();
         if ($controller->isError($begin_res)) {
@@ -155,9 +166,15 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
             $dbi->rollback();
             return $order_update_res;
         }
-        $order_item_update_data = array();
-        $order_item_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_2;
         foreach ($order_item_info as $order_item_id => $order_item_tmp) {
+            $item_info = $item_list[$order_item_tmp["item_id"]];
+            $order_item_update_data = array();
+            $order_item_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_2;
+            if ($item_info["item_method"] == BroadcomItemEntity::ITEM_METHOD_CLASS) {
+                $order_item_update_data["order_item_remain"] = $order_item_tmp["order_item_amount"] * $item_info["item_unit_amount"] * $item_info["item_unit_hour"];
+            } else {
+                $order_item_update_data["order_item_remain"] = $order_item_tmp["order_item_amount"];
+            }
             $order_item_update_res = BroadcomOrderDBI::updateOrderItem($order_item_update_data, $order_item_id);
             if ($controller->isError($order_item_update_res)) {
                 $order_item_update_res->setPos(__FILE__, __LINE__);
@@ -184,6 +201,11 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
 
     private function _doCancelExecute(Controller $controller, User $user, Request $request)
     {
+        if (!$request->getAttribute("cancel_able_flg")) {
+            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
         $order_id = $request->getAttribute("order_id");
         $order_info = $request->getAttribute("order_info");
         $order_item_info = $request->getAttribute("order_item_info");

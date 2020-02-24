@@ -19,6 +19,7 @@ class BroadcomEducationActionBase extends ActionBase
     {
         $result = array();
         $result[] = array("student_list", "学员管理");
+        $result[] = array("class_schedule", "班课课程管理");
         $request->setAttribute("left_content", $result);
         return VIEW_DONE;
     }

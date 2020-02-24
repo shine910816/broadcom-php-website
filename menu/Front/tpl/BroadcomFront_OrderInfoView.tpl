@@ -78,8 +78,10 @@
   <div class="table-line"></div>
   <div class="table-line">
     <a href="{^$back_link^}" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>
-{^if $passable_flg^}
+{^if $cancel_able_flg^}
     <button type="submit" name="do_cancel" value="1" class="button-field ui-btn-purple"><i class="fa fa-close"></i> 审核未通过并退款</button>
+{^/if^}
+{^if $pass_able_flg^}
     <button type="submit" name="do_pass" value="1" class="button-field ui-btn-green"><i class="fa fa-check"></i> 审核通过</button>
 {^/if^}
   </div>

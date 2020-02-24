@@ -39,8 +39,8 @@
           <th>课程类型</th>
           <th>授课方式</th>
           <th>年级</th>
-          <th>数量</th>
           <th>状态</th>
+          <th>课时余量</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -52,8 +52,8 @@
           <td>{^$item_type_list[$item_list[$order_item_data["item_id"]]["item_type"]]^}</td>
           <td>{^$item_method_list[$item_list[$order_item_data["item_id"]]["item_method"]]^}</td>
           <td>{^$item_grade_list[$item_list[$order_item_data["item_id"]]["item_grade"]]^}</td>
-          <td>{^$order_item_data["order_item_amount"]^}</td>
           <td>{^$order_item_status_list[$order_item_data["order_item_status"]]^}</td>
+          <td>{^$order_item_data["order_item_remain"]^}</td>
           <td></td>
         </tr>
 {^/foreach^}
