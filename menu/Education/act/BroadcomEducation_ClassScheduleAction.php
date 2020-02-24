@@ -33,10 +33,6 @@ class BroadcomEducation_ClassScheduleAction extends BroadcomEducationActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
-        $request->setAttribute("media_channel_list", BroadcomStudentEntity::getMediaChannelList());
-        $request->setAttribute("purpose_level_list", BroadcomStudentEntity::getPurposeLevelList());
-        $request->setAttribute("follow_status_list", BroadcomStudentEntity::getFollowStatusList());
-        $request->setAttribute("student_level_list", BroadcomStudentEntity::getStudentLevelList());
         return VIEW_DONE;
     }
 
@@ -61,8 +57,20 @@ class BroadcomEducation_ClassScheduleAction extends BroadcomEducationActionBase
             return $err;
         }
         $school_id = $position_info["school_id"];
+        $schedule_info_list = BroadcomScheduleInfoDBI::selectPeriodSchedule($school_id, date("Y-m-d H:i:s"));
+        if ($controller->isError($schedule_info_list)) {
+            $schedule_info_list->setPos(__FILE__, __LINE__);
+            return $schedule_info_list;
+        }
+        $item_list = BroadcomItemInfoDBI::selectItemInfoList();
+        if ($controller->isError($item_list)) {
+            $item_list->setPos(__FILE__, __LINE__);
+            return $item_list;
+        }
         $request->setAttribute("member_id", $member_id);
         $request->setAttribute("school_id", $school_id);
+        $request->setAttribute("schedule_info_list", $schedule_info_list);
+        $request->setAttribute("item_list", $item_list);
 Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
