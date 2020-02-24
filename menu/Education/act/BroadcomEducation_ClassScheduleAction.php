@@ -71,7 +71,7 @@ class BroadcomEducation_ClassScheduleAction extends BroadcomEducationActionBase
         $request->setAttribute("school_id", $school_id);
         $request->setAttribute("schedule_info_list", $schedule_info_list);
         $request->setAttribute("item_list", $item_list);
-Utility::testVariable($request->getAttributes());
+//Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 }
