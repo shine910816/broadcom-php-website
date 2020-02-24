@@ -35,7 +35,9 @@ class Config
         $result["education"]["top"] = SYSTEM_AUTH_ADMIN;
         $result["education"]["student_list"] = SYSTEM_AUTH_ADMIN;
         $result["education"]["student_info"] = SYSTEM_AUTH_ADMIN;
-        $result["education"]["class_schedule"] = SYSTEM_AUTH_ADMIN;
+        $result["education"]["schedule_list"] = SYSTEM_AUTH_ADMIN;
+        $result["education"]["schedule_create"] = SYSTEM_AUTH_ADMIN;
+        $result["education"]["schedule_info"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["top"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["school_list"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["room_info"] = SYSTEM_AUTH_ADMIN;
@@ -73,7 +75,9 @@ class Config
         $result["education"]["top"] = array("学员教务");
         $result["education"]["student_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "学员管理");
         $result["education"]["student_info"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=student_list">学员管理</a>', "学员信息");
-        $result["education"]["class_schedule"] = array('<a href="./?menu=education&act=top">学员教务</a>', "班课课程管理");
+        $result["education"]["schedule_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "班课课程管理");
+        $result["education"]["schedule_create"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=schedule_list">班课课程管理</a>', "添加课表");
+        $result["education"]["schedule_info"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=schedule_list">班课课程管理</a>', "课表详情");
         $result["admin"]["top"] = array("后台管理");
         $result["admin"]["school_list"] = array('<a href="./?menu=admin&act=top">后台管理</a>', "校区管理");
         $result["admin"]["room_info"] = array('<a href="./?menu=admin&act=top">后台管理</a>', '<a href="./?menu=admin&act=school_list">校区管理</a>', "教室管理");
