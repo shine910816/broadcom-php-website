@@ -171,8 +171,10 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
             $order_item_update_data = array();
             $order_item_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_2;
             if ($item_info["item_method"] == BroadcomItemEntity::ITEM_METHOD_CLASS) {
+                $order_item_update_data["order_item_trans_price"] = round($order_item_tmp["order_item_payable_amount"] / $order_item_tmp["order_item_amount"] / $item_info["item_unit_amount"], 2);
                 $order_item_update_data["order_item_remain"] = $order_item_tmp["order_item_amount"] * $item_info["item_unit_amount"] * $item_info["item_unit_hour"];
             } else {
+                $order_item_update_data["order_item_trans_price"] = round($order_item_tmp["order_item_payable_amount"] / $order_item_tmp["order_item_amount"], 2);
                 $order_item_update_data["order_item_remain"] = $order_item_tmp["order_item_amount"];
             }
             $order_item_update_res = BroadcomOrderDBI::updateOrderItem($order_item_update_data, $order_item_id);
