@@ -216,6 +216,7 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
             );
             $main_order_item_insert_data = array();
             $main_order_item_insert_data["contract_number"] = $main_contract_number;
+            $main_order_item_insert_data["student_id"] = $student_id;
             $main_order_item_insert_data["order_id"] = $order_id;
             $main_order_item_insert_data["item_id"] = $main_item_id;
             $main_order_item_insert_data["main_order_item_id"] = null;
@@ -241,6 +242,7 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
                     }
                     $sub_order_item_insert_data = array();
                     $sub_order_item_insert_data["contract_number"] = $main_contract_number . "-" . ($sub_contract_number + 1);
+                    $sub_order_item_insert_data["student_id"] = $student_id;
                     $sub_order_item_insert_data["order_id"] = $order_id;
                     $sub_order_item_insert_data["item_id"] = $sub_item_id;
                     $sub_order_item_insert_data["main_order_item_id"] = $main_order_item_id;

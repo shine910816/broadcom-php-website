@@ -54,7 +54,12 @@
           <td>{^$item_grade_list[$item_list[$order_item_data["item_id"]]["item_grade"]]^}</td>
           <td>{^$order_item_status_list[$order_item_data["order_item_status"]]^}</td>
           <td>{^$order_item_data["order_item_remain"]^}</td>
-          <td></td>
+          <td>
+            <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
+            <div class="operate-option">
+              <a href="./?menu=education&act=course_create&order_item_id={^$order_item_id|escape^}">课程安排</a>
+            </div>
+          </td>
         </tr>
 {^/foreach^}
       </tbody>

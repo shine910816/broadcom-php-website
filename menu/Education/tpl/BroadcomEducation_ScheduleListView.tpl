@@ -2,8 +2,8 @@
   <div class="table-line">
     <a href="./?menu=education&act=schedule_create" class="button-field ui-btn-purple"><i class="fa fa-plus"></i> 添加课表</a>
   </div>
-  <div class="main-table{^if empty($student_info_list)^} pb_15{^/if^}">
-    <h2>班课课程管理</h2>
+  <div class="main-table{^if empty($schedule_info_list)^} pb_15{^/if^}">
+    <h2>课表管理</h2>
 {^if empty($schedule_info_list)^}
     <p>暂无课表</p>
 {^else^}
@@ -26,6 +26,7 @@
           <td>{^$schedule_item["item_unit_hour"]^}小时</td>
           <td>{^$schedule_item["schedule_start_date"]|date_format:"%Y-%m-%d"^}</td>
           <td>{^$schedule_item["schedule_expire_date"]|date_format:"%Y-%m-%d"^}</td>
+          <td>
             <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
             <div class="operate-option">
               <a href="./?menu=education&act=schedule_info&schedule_id={^$schedule_item["schedule_id"]|escape^}">详细</a>

@@ -26,7 +26,7 @@
           <td>{^$item_method_list[$item_info["item_method"]]^}</td>
           <td>{^$item_grade_list[$item_info["item_grade"]]^}</td>
           <td>{^$item_info["item_price"]|escape^}{^$item_unit_list[$item_info["item_unit"]]^}</td>
-          <td>{^if $item_info["item_method"] eq "4"^}每期{^$item_info["item_unit_amount"]|escape^}节 每节{^$item_info["item_unit_hour"]|escape^}小时{^else^}自由排课{^/if^}</td>
+          <td>{^if $item_info["item_method"] eq "4"^}{^$item_info["item_unit_hour"]|escape^}小时/节 (共{^$item_info["item_unit_amount"]|escape^}节){^else^}自由排课{^/if^}</td>
           <td>{^$item_sale_status_list[$item_info["item_sale_status"]]^}</td>
           <td>{^$item_info["item_id"]|escape^}</td>
         </tr>
