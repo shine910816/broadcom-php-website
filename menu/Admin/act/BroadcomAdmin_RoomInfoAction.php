@@ -122,15 +122,17 @@ class BroadcomAdmin_RoomInfoAction extends BroadcomAdminActionBase
         }
         if (!empty($insert_list)) {
             foreach ($insert_list as $room_name) {
-                $insert_data = array();
-                $insert_data["school_id"] = $school_id;
-                $insert_data["room_name"] = $room_name;
-                $insert_data["usable_flg"] = "1";
-                $insert_res = BroadcomRoomInfoDBI::insertRoom($insert_data);
-                if ($controller->isError($insert_res)) {
-                    $insert_res->setPos(__FILE__, __LINE__);
-                    $dbi->rollback();
-                    return $insert_res;
+                if ($room_name != "") {
+                    $insert_data = array();
+                    $insert_data["school_id"] = $school_id;
+                    $insert_data["room_name"] = $room_name;
+                    $insert_data["usable_flg"] = "1";
+                    $insert_res = BroadcomRoomInfoDBI::insertRoom($insert_data);
+                    if ($controller->isError($insert_res)) {
+                        $insert_res->setPos(__FILE__, __LINE__);
+                        $dbi->rollback();
+                        return $insert_res;
+                    }
                 }
             }
         }
