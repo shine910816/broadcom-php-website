@@ -75,7 +75,27 @@ class BroadcomOrderDBI
     public static function selectOrderItem($order_item_id)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT * FROM order_item_info WHERE del_flg = 0 AND order_item_id = " . $order_item_id . " LIMIT 1";
+        $sql = "SELECT oi.order_item_id," .
+               " oi.contract_number," .
+               " oi.order_id," .
+               " o.order_number," .
+               " oi.student_id," .
+               " s.student_name," .
+               " s.student_entrance_year," .
+               " s.school_id," .
+               " oi.item_id," .
+               " i.item_name," .
+               " i.item_method" .
+               " FROM order_item_info oi" .
+               " LEFT OUTER JOIN order_info o ON o.order_id = oi.order_id" .
+               " LEFT OUTER JOIN student_info s ON s.student_id = oi.student_id" .
+               " LEFT OUTER JOIN item_info i ON i.item_id = oi.item_id" .
+               " WHERE oi.del_flg = 0" .
+               " AND o.del_flg = 0" .
+               " AND s.del_flg = 0" .
+               " AND i.del_flg = 0" .
+               " AND oi.order_item_id = " . $order_item_id .
+               " LIMIT 1";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);

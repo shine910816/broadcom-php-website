@@ -8,6 +8,26 @@
 class BroadcomScheduleInfoDBI
 {
 
+    public static function selectPeriodScheduleByItem($school_id, $item_id, $start_date)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM schedule_info WHERE del_flg = 0" .
+               " AND school_id = " . $school_id .
+               " AND item_id = " . $item_id .
+               " AND schedule_start_date >= " . $dbi->quote($start_date);
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["schedule_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function selectPeriodSchedule($school_id, $expire_date, $before_flg = false)
     {
         $dbi = Database::getInstance();

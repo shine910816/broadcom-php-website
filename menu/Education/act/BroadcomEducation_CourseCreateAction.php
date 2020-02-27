@@ -42,8 +42,14 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
         $student_id = "";
+        $student_info = array();
+        $school_id = "";
         $order_item_info = array();
         $course_type = BroadcomCourseEntity::COURSE_TYPE_AUDITION;
+        $schedule_list = array();
+        $create_able_flg = false;
+        $set_course_info = array();
+        $others_course_info = array();
         if ($request->hasParameter("order_item_id")) {
             $order_item_id = $request->getParameter("order_item_id");
             $order_item_info = BroadcomOrderDBI::selectOrderItem($order_item_id);
@@ -57,7 +63,38 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 return $err;
             }
             $student_id = $order_item_info["student_id"];
-Utility::testVariable($order_item_info);
+            $student_info["student_id"] = $student_id;
+            $student_info["student_name"] = $order_item_info["student_name"];
+            $student_info["grade_name"] = BroadcomStudentEntity::getGradeName($order_item_info["student_entrance_year"]);
+            $school_id = $order_item_info["school_id"];
+            $item_id = $order_item_info["item_id"];
+            $set_course_info = BroadcomCourseInfoDBI::selectCourseInfoByOrderItem($order_item_id);
+            if ($controller->isError($set_course_info)) {
+                $set_course_info->setPos(__FILE__, __LINE__);
+                return $set_course_info;
+            }
+            if ($order_item_info["item_method"] == BroadcomItemEntity::ITEM_METHOD_CLASS) {
+                $course_type = BroadcomCourseEntity::COURSE_TYPE_CLASS;
+                if (empty($set_course_info)) {
+                    $create_able_flg = true;
+                    $schedule_list = BroadcomScheduleInfoDBI::selectPeriodScheduleByItem($school_id, $item_id, date("Y-m-d H:i:s"));
+                    if ($controller->isError($schedule_list)) {
+                        $schedule_list->setPos(__FILE__, __LINE__);
+                        return $schedule_list;
+                    }
+                }
+            } elseif ($order_item_info["item_method"] == BroadcomItemEntity::ITEM_METHOD_1_TO_1) {
+                $course_type = BroadcomCourseEntity::COURSE_TYPE_SINGLE;
+                $create_able_flg = true;
+            } else {
+                $course_type = BroadcomCourseEntity::COURSE_TYPE_MULTI;
+                $create_able_flg = true;
+                $others_course_info = BroadcomCourseInfoDBI::selectMultiCourseInfoByItem($item_id, $student_id);
+                if ($controller->isError($others_course_info)) {
+                    $others_course_info->setPos(__FILE__, __LINE__);
+                    return $others_course_info;
+                }
+            }
         } else {
             if (!$request->hasParameter("student_id")) {
                 $err = $controller->raiseError();
@@ -65,18 +102,38 @@ Utility::testVariable($order_item_info);
                 return $err;
             }
             $student_id = $request->getParameter("student_id");
+            $student_info_data = BroadcomStudentInfoDBI::selectStudentInfo($student_id);
+            if ($controller->isError($student_info_data)) {
+                $student_info_data->setPos(__FILE__, __LINE__);
+                return $student_info_data;
+            }
+            if (empty($student_info_data)) {
+                $err = $controller->raiseError();
+                $err->setPos(__FILE__, __LINE__);
+                return $err;
+            }
+            $school_id = $student_info_data["school_id"];
+            $student_info["student_id"] = $student_info_data["student_id"];
+            $student_info["student_name"] = $student_info_data["student_name"];
+            $student_info["grade_name"] = BroadcomStudentEntity::getGradeName($student_info_data["student_entrance_year"]);
+            $set_course_info = BroadcomCourseInfoDBI::selectAuditionCourseInfoByStudent($student_id);
+            if ($controller->isError($set_course_info)) {
+                $set_course_info->setPos(__FILE__, __LINE__);
+                return $set_course_info;
+            }
+            if ($student_info_data["audition_hours"] > 0) {
+                $create_able_flg = true;
+            }
         }
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($user->getMemberId());
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError();
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $school_id = $position_info["school_id"];
+        $request->setAttribute("school_id", $school_id);
+        $request->setAttribute("student_id", $student_id);
+        $request->setAttribute("student_info", $student_info);
+        $request->setAttribute("order_item_info", $order_item_info);
+        $request->setAttribute("course_type", $course_type);
+        $request->setAttribute("create_able_flg", $create_able_flg);
+        $request->setAttribute("set_course_info", $set_course_info);
+        $request->setAttribute("schedule_list", $schedule_list);
+        $request->setAttribute("others_course_info", $others_course_info);
         return VIEW_DONE;
     }
 
@@ -89,6 +146,7 @@ Utility::testVariable($order_item_info);
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
+Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 
