@@ -134,6 +134,8 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
         $request->setAttribute("set_course_info", $set_course_info);
         $request->setAttribute("schedule_list", $schedule_list);
         $request->setAttribute("others_course_info", $others_course_info);
+        $request->setAttribute("course_type_list", BroadcomCourseEntity::getCourseTypeList());
+        $request->setAttribute("item_method_list", BroadcomItemEntity::getItemMethodList());
         return VIEW_DONE;
     }
 
@@ -146,7 +148,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-Utility::testVariable($request->getAttributes());
+//Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 

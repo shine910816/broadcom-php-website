@@ -66,7 +66,6 @@
       </tbody>
     </table>
   </div>
-
 {^else^}
   <h1>课程选择</h1>
   <div class="table-line">
