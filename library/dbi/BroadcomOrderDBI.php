@@ -85,7 +85,9 @@ class BroadcomOrderDBI
                " s.school_id," .
                " oi.item_id," .
                " i.item_name," .
-               " i.item_method" .
+               " i.item_method," .
+               " i.item_labels," .
+               " oi.order_item_trans_price" .
                " FROM order_item_info oi" .
                " LEFT OUTER JOIN order_info o ON o.order_id = oi.order_id" .
                " LEFT OUTER JOIN student_info s ON s.student_id = oi.student_id" .

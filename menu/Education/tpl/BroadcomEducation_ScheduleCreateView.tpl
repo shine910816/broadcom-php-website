@@ -43,7 +43,7 @@
           <td>
             <select name="course_info[{^$course_idx^}][room_id]" class="table-text-field">
 {^foreach from=$room_list key=room_id item=room_name^}
-              <option value="{^$room_name^}">{^$room_name^}</option>
+              <option value="{^$room_id^}">{^$room_name^}</option>
 {^/foreach^}
             </select>
           </td>

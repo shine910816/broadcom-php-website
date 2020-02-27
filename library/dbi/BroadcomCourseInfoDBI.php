@@ -11,9 +11,9 @@ class BroadcomCourseInfoDBI
     public static function selectAuditionCourseInfoByStudent($student_id)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT * FROM course_info WHERE del_flg = 0" .
-               " AND student_id = " . $student_id .
-               " AND course_type = " . BroadcomCourseEntity::COURSE_TYPE_AUDITION;
+        $sql = "SELECT * FROM course_info WHERE del_flg = 0 AND student_id = " . $student_id .
+               " AND course_type = " . BroadcomCourseEntity::COURSE_TYPE_AUDITION .
+               " ORDER BY course_start_date ASC";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
@@ -30,7 +30,9 @@ class BroadcomCourseInfoDBI
     public static function selectCourseInfoByOrderItem($order_item_id)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT * FROM course_info WHERE del_flg = 0 AND order_item_id = " . $order_item_id;
+        $sql = "SELECT * FROM course_info WHERE del_flg = 0" .
+               " AND order_item_id = " . $order_item_id .
+               " ORDER BY course_start_date ASC";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
@@ -44,14 +46,17 @@ class BroadcomCourseInfoDBI
         return $data;
     }
 
-    public static function selectMultiCourseInfoByItem($item_id, $student_id = null)
+    public static function selectMultiCourseInfoByItem($student_id, $start_date, $item_id = null)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT * FROM course_info WHERE del_flg = 0 AND item_id = " . $item_id;
-        if (!is_null($student_id)) {
-            $sql .= " AND student_id != " . $student_id;
+        $sql = "SELECT * FROM course_info WHERE del_flg = 0" .
+               " AND student_id != " . $student_id .
+               " AND course_start_date >= " . $dbi->quote($start_date);
+        if (!is_null($item_id)) {
+            $sql .= " AND item_id = " . $item_id;
+        } else {
+            $sql .= " AND course_type = " . BroadcomCourseEntity::COURSE_TYPE_AUDITION;
         }
-        $sql .= " AND student_id != " . $student_id;
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);

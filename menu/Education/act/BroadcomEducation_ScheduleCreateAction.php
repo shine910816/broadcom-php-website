@@ -172,7 +172,7 @@ class BroadcomEducation_ScheduleCreateAction extends BroadcomEducationActionBase
         $schedule_content = array();
         foreach ($course_info as $course_idx => $course_item) {
             $start_date_ts = strtotime($course_item["start_date"] . " " . $course_item["start_time"] . ":00");
-            $end_date_ts = $start_date_ts + $item_info["item_unit_hour"] * 60 * 60 - 1;
+            $end_date_ts = $start_date_ts + $item_info["item_unit_hour"] * 60 * 60;
             $schedule_content_item = array();
             $schedule_content_item["start"] = date("Y-m-d H:i:s", $start_date_ts);
             $schedule_content_item["end"] = date("Y-m-d H:i:s", $end_date_ts);
