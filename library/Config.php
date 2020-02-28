@@ -39,6 +39,8 @@ class Config
         $result["education"]["schedule_create"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["schedule_info"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["course_create"] = SYSTEM_AUTH_LOGIN;
+        $result["education"]["course_list"] = SYSTEM_AUTH_LOGIN;
+        $result["education"]["course_confirm"] = SYSTEM_AUTH_LOGIN;
         $result["admin"]["top"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["school_list"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["room_info"] = SYSTEM_AUTH_ADMIN;
@@ -80,6 +82,8 @@ class Config
         $result["education"]["schedule_create"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=schedule_list">班课课程管理</a>', "添加课表");
         $result["education"]["schedule_info"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=schedule_list">班课课程管理</a>', "课表详情");
         $result["education"]["course_create"] = array('<a href="./?menu=education&act=top">学员教务</a>', "课程安排");
+        $result["education"]["course_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "排课列表");
+        $result["education"]["course_confirm"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=course_list">排课列表</a>', "排课确认");
         $result["admin"]["top"] = array("后台管理");
         $result["admin"]["school_list"] = array('<a href="./?menu=admin&act=top">后台管理</a>', "校区管理");
         $result["admin"]["room_info"] = array('<a href="./?menu=admin&act=top">后台管理</a>', '<a href="./?menu=admin&act=school_list">校区管理</a>', "教室管理");
