@@ -26,6 +26,41 @@
       </div>
     </div>
   </div>
+  <div class="main-table{^if empty($course_list)^} pb_15{^/if^}">
+    <h2>课程安排</h2>
+{^if empty($course_list)^}
+    <p>无已排课程</p>
+{^else^}
+    <table class="disp_table">
+      <thead>
+        <tr>
+          <th style="width:200px;">课程类型</th>
+          <th style="width:300px;">课程名</th>
+          <th style="width:300px;">时间</th>
+          <th style="width:200px;">教室</th>
+          <th style="width:200px;">教师</th>
+          <th style="width:200px;">学科</th>
+          <th style="width:200px;">状态</th>
+          <th style="width:200px;">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+{^foreach from=$course_list key=course_id item=course_info^}
+        <tr>
+          <td>{^$course_type_list[$course_info["course_type"]]^}</td>
+          <td>{^if $course_info["course_type"] neq "1"^}{^$item_list[$course_info["item_id"]]["item_name"]^}{^else^}一对多试听课{^/if^}</td>
+          <td>{^$course_info["course_start_date"]|date_format:"%Y-%m-%d %H:%M"^}~{^$course_info["course_expire_date"]|date_format:"%H:%M"^}</td>
+          <td>{^$room_list[$course_info["room_id"]]^}</td>
+          <td>{^$teacher_info[$course_info["teacher_member_id"]]["m_name"]^}</td>
+          <td>{^$subject_list[$course_info["subject_id"]]^}</td>
+          <td>{^if $course_info["teacher_confirm_flg"]^}{^if $course_info["reset_examine_flg"]^}已返课{^else^}已消课{^/if^}{^else^}未消课{^/if^}</td>
+          <td></td>
+        </tr>
+{^/foreach^}
+      </tbody>
+    </table>
+{^/if^}
+  </div>
   <div class="main-table{^if empty($order_item_list)^} pb_15{^/if^}">
     <h2>已购课程</h2>
 {^if empty($order_item_list)^}

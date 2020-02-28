@@ -8,6 +8,24 @@
 class BroadcomCourseInfoDBI
 {
 
+    public static function selectCourseInfoByStudent($student_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM course_info WHERE del_flg = 0 AND student_id = " . $student_id .
+               " ORDER BY teacher_confirm_flg ASC, course_start_date ASC";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["course_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function selectAuditionCourseInfoByStudent($student_id)
     {
         $dbi = Database::getInstance();
