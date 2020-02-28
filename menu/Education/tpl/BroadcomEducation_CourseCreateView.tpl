@@ -119,6 +119,8 @@
 {^/if^}
             </select>
           </td>
+{^else^}
+          <input type="hidden" name="course_info[{^$course_idx^}][refer]" value="0" />
 {^/if^}
           <td>
             <input type="date" name="course_info[{^$course_idx^}][start_date]" class="table-text-field" style="width:150px;" />
