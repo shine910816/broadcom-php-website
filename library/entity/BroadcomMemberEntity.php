@@ -15,12 +15,14 @@ class BroadcomMemberEntity
     const POSITION_DIRECTOR_EDUCATION = "1150";
     const POSITION_REGIONAL_MANAGER = "2100";
     const POSITION_HEADMASTER = "3100";
-    const POSITION_EDUCATE_MANAGER = "3110";
-    const POSITION_MARKETING = "3111";
-    const POSITION_MANAGER = "3112";
-    const POSITION_TEACH_MANAGER = "3120";
-    const POSITION_TEACHER = "3121";
-    const POSITION_CONCURRENT_TEACHER = "3122";
+    const POSITION_ADVISER_MANAGER = "3110";
+    const POSITION_ADVISER = "3111";
+    const POSITION_MARKETING = "3112";
+    const POSITION_ASSIST_MANAGER = "3120";
+    const POSITION_ASSISTANT = "3121";
+    const POSITION_TEACH_MANAGER = "3130";
+    const POSITION_TEACHER = "3131";
+    const POSITION_CONCURRENT_TEACHER = "3132";
     const POSITION_HR_FINANCE = "3200";
 
     const POSITION_LEVEL_0 = "0";
@@ -85,9 +87,11 @@ class BroadcomMemberEntity
             //self::POSITION_DIRECTOR_EDUCATION => "教学总监",
             //self::POSITION_REGIONAL_MANAGER => "区域经理",
             self::POSITION_HEADMASTER => "校长",
-            self::POSITION_EDUCATE_MANAGER => "学管主管",
+            self::POSITION_ADVISER_MANAGER => "营销主管",
+            self::POSITION_ADVISER => "课程顾问",
             self::POSITION_MARKETING => "市场专员",
-            self::POSITION_MANAGER => "学管",
+            self::POSITION_ASSIST_MANAGER => "学管主管",
+            self::POSITION_ASSISTANT => "学管",
             self::POSITION_TEACH_MANAGER => "教学主管",
             self::POSITION_TEACHER => "教师",
             self::POSITION_CONCURRENT_TEACHER => "兼职教师",

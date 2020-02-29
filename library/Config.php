@@ -95,6 +95,63 @@ class Config
     public static function getPositionAllowedCurrent()
     {
         $result = array();
+        $result["front"]["create_leads"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,
+            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,
+            BroadcomMemberEntity::POSITION_MARKETING,
+            BroadcomMemberEntity::POSITION_ASSISTANT,
+            BroadcomMemberEntity::POSITION_TEACH_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER
+        );
+        $result["front"]["cart_fill"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,
+            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,
+            BroadcomMemberEntity::POSITION_MARKETING,
+            BroadcomMemberEntity::POSITION_ASSISTANT,
+            BroadcomMemberEntity::POSITION_TEACH_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER
+        );
+        $result["front"]["cart_info"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,
+            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,
+            BroadcomMemberEntity::POSITION_MARKETING,
+            BroadcomMemberEntity::POSITION_ASSISTANT,
+            BroadcomMemberEntity::POSITION_TEACH_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER
+        );
+        $result["front"]["order_create"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,
+            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,
+            BroadcomMemberEntity::POSITION_MARKETING,
+            BroadcomMemberEntity::POSITION_ASSISTANT,
+            BroadcomMemberEntity::POSITION_TEACH_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER
+        );
+        $result["education"]["course_create"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,
+            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,
+            BroadcomMemberEntity::POSITION_MARKETING,
+            BroadcomMemberEntity::POSITION_ASSISTANT,
+            BroadcomMemberEntity::POSITION_TEACH_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER
+        );
+        $result["education"]["course_confirm"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,
+            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,
+            BroadcomMemberEntity::POSITION_MARKETING,
+            BroadcomMemberEntity::POSITION_ASSISTANT,
+            BroadcomMemberEntity::POSITION_TEACH_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER,
+            BroadcomMemberEntity::POSITION_TEACH_MANAGER,
+            BroadcomMemberEntity::POSITION_TEACHER,
+            BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER
+        );
         $result["human_resource"]["member_info"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,
             BroadcomMemberEntity::POSITION_HR_FINANCE

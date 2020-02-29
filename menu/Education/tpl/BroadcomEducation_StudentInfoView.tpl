@@ -8,7 +8,7 @@
       </div>
       <div class="table-item-b">
         <div class="table-item-name">性别</div>
-        <div class="table-item-value">{^if $student_info["student_gender"] eq "1"^}男{^else^}>女<{^/if^}</div>
+        <div class="table-item-value">{^if $student_info["student_gender"] eq "1"^}男{^else^}女{^/if^}</div>
       </div>
       <div class="table-item-b">
         <div class="table-item-name">年级</div>
@@ -53,7 +53,7 @@
           <td>{^$room_list[$course_info["room_id"]]^}</td>
           <td>{^$teacher_info[$course_info["teacher_member_id"]]["m_name"]^}</td>
           <td>{^$subject_list[$course_info["subject_id"]]^}</td>
-          <td>{^if $course_info["teacher_confirm_flg"]^}{^if $course_info["reset_examine_flg"]^}已返课{^else^}已消课{^/if^}{^else^}未消课{^/if^}</td>
+          <td>{^if $course_info["confirm_flg"]^}{^if $course_info["reset_examine_flg"]^}已返课{^else^}已消课{^/if^}{^else^}未消课{^/if^}</td>
           <td></td>
         </tr>
 {^/foreach^}

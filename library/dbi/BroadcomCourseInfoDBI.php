@@ -8,11 +8,85 @@
 class BroadcomCourseInfoDBI
 {
 
+    public static function selectCourseInfo($course_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM course_info WHERE del_flg = 0 AND course_id = " . $course_id . " LIMIT 1";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        $result->free();
+        if (count($data) == 1) {
+            return $data[0];
+        }
+        return $data;
+    }
+
+    public static function selectCourseInfoByMember($member_id, $course_date_from, $course_date_to, $teacher_flg = false)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM course_info WHERE del_flg = 0";
+        if ($teacher_flg) {
+            $sql .= " AND teacher_member_id = " . $member_id;
+        } else {
+            $sql .= " AND operated_by = " . $member_id;
+        }
+        $sql .= " AND course_start_date <= " . $dbi->quote($course_date_to);
+        $sql .= " AND course_expire_date >= " . $dbi->quote($course_date_from);
+        $sql .= " ORDER BY confirm_flg ASC, course_start_date ASC";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["course_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function selectCourseInfoByStudent($student_id)
     {
         $dbi = Database::getInstance();
         $sql = "SELECT * FROM course_info WHERE del_flg = 0 AND student_id = " . $student_id .
-               " ORDER BY teacher_confirm_flg ASC, course_start_date ASC";
+               " ORDER BY confirm_flg ASC, course_start_date ASC";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["course_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
+    public static function selectClassCourseInfoBySchedule($schedule_id, $schedule_index)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT c.course_id," .
+               " c.order_item_id," .
+               " c.course_hours," .
+               " oi.order_item_trans_price," .
+               " oi.order_item_status," .
+               " oi.order_item_remain" .
+               " FROM course_info c" .
+               " LEFT OUTER JOIN order_item_info oi ON oi.order_item_id = c.order_item_id" .
+               " WHERE c.del_flg = 0" .
+               " AND oi.del_flg = 0" .
+               " AND c.course_type = " . BroadcomCourseEntity::COURSE_TYPE_CLASS .
+               " AND c.schedule_id = " . $schedule_id .
+               " AND c.schedule_index = " . $schedule_index;
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
@@ -102,7 +176,7 @@ class BroadcomCourseInfoDBI
     public static function updateCourseInfo($update_data, $course_id)
     {
         $dbi = Database::getInstance();
-        $result = $dbi->insert("course_info", $update_data, "course_id = " . $course_id);
+        $result = $dbi->update("course_info", $update_data, "course_id = " . $course_id);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
             return $result;

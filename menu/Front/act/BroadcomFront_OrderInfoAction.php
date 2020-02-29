@@ -89,9 +89,9 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         }
         $pass_able_flg = false;
         $cancel_able_flg = false;
-        // TODO 权限设定
+        // TODO 权限设定Admin?
         $auth_able_flg = false;
-        if ($user->isAdmin()) {
+        if ($user->isAdmin() || $user->getMemberPosition() == BroadcomMemberEntity::POSITION_HR_FINANCE) {
             $auth_able_flg = true;
         }
         $passable_order_status_array = array(

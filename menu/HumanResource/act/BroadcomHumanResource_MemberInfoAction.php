@@ -319,7 +319,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
                 return $commit_res;
             }
         }
-        $controller->redirect("?menu=human_resource&act=top");
+        $controller->redirect("?menu=human_resource&act=member_list");
         return VIEW_NONE;
     }
 

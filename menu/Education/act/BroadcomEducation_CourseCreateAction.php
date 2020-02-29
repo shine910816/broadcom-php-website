@@ -226,7 +226,6 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 $insert_data["course_start_date"] = $schedule_refer["start"];
                 $insert_data["course_expire_date"] = $schedule_refer["end"];
                 $insert_data["course_hours"] = $schedule_refer["period"];
-                $insert_data["trans_price"] = $order_item_info["order_item_trans_price"];
                 $insert_res = BroadcomCourseInfoDBI::insertCourseInfo($insert_data);
                 if ($controller->isError($insert_res)) {
                     $insert_res->setPos(__FILE__, __LINE__);
@@ -270,9 +269,6 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                         $order_item_info = $request->getAttribute("order_item_info");
                         $insert_data["order_item_id"] = $order_item_id;
                         $insert_data["item_id"] = $item_id;
-                        $insert_data["trans_price"] = $order_item_info["order_item_trans_price"];
-                    } else {
-                        $insert_data["trans_price"] = "0";
                     }
                     $insert_res = BroadcomCourseInfoDBI::insertCourseInfo($insert_data);
                     if ($controller->isError($insert_res)) {
