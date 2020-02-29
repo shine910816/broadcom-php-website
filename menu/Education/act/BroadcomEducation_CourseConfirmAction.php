@@ -197,10 +197,6 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
             $item_list->setPos(__FILE__, __LINE__);
             return $item_list;
         }
-        // START FOR TEST MODIFY VARIABLE
-        $confirm_able_flg = true;
-        $reset_able_flg = true;
-        // END FOR TEST MODIFY VARIABLE
         $request->setAttribute("course_id", $course_id);
         $request->setAttribute("member_id", $member_id);
         $request->setAttribute("teacher_flg", $teacher_flg);
@@ -346,6 +342,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
     {
         $reset_able_flg = $request->getAttribute("reset_able_flg");
         if ($reset_able_flg) {
+            $member_id = $request->getAttribute("member_id");
             $course_id = $request->getAttribute("course_id");
             $reset_flg = $request->getParameter("reset_flg");
             $course_update_data = array();

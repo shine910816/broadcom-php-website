@@ -8,7 +8,7 @@
     <div class="table-line">
       <div class="table-item-b">
         <div class="table-item-name">学员姓名</div>
-        <div class="table-item-value">{^$student_list[$course_info["student_id"]]["student_name"]^}{^if $confirm_able_flg and $course_info["course_type"] eq "4"^} 等{^$class_course_list|count^}名学员{^/if^}</div>
+        <div class="table-item-value">{^$student_list[$course_info["student_id"]]["student_name"]^}{^if $course_info["course_type"] eq "4"^} 等{^$class_course_list|count^}名学员{^/if^}</div>
       </div>
       <div class="table-item-b">
         <div class="table-item-name">形式</div>
