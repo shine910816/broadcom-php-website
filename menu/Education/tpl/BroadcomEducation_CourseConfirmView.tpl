@@ -40,7 +40,7 @@
       </div>
       <div class="table-item-b">
         <div class="table-item-name">消课情况</div>
-        <div class="table-item-value">{^if $course_info["confirm_flg"]^}{^if $course_info["reset_examine_flg"]^}已返课{^else^}已消课{^/if^}{^else^}未消课{^/if^}</div>
+        <div class="table-item-value">{^if $course_info["reset_examine_flg"]^}已返课{^else^}{^if $course_info["reset_flg"]^}待返课审核{^else^}{^if $course_info["confirm_flg"]^}已消课{^else^}未消课{^/if^}{^/if^}{^/if^}</div>
       </div>
     </div>
   </div>

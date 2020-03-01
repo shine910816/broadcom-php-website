@@ -33,7 +33,7 @@
           <td>{^$room_list[$course_info["room_id"]]^}</td>
           <td>{^$teacher_info[$course_info["teacher_member_id"]]["m_name"]^}</td>
           <td>{^$subject_list[$course_info["subject_id"]]^}</td>
-          <td>{^if $course_info["confirm_flg"]^}{^if $course_info["reset_examine_flg"]^}已返课{^else^}已消课{^/if^}{^else^}未消课{^/if^}</td>
+          <td>{^if $course_info["reset_examine_flg"]^}已返课{^else^}{^if $course_info["reset_flg"]^}待返课审核{^else^}{^if $course_info["confirm_flg"]^}已消课{^else^}未消课{^/if^}{^/if^}{^/if^}</td>
           <td>
             <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
             <div class="operate-option">

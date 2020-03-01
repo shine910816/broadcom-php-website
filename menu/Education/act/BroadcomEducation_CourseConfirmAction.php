@@ -160,8 +160,15 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
             }
         }
         if ($ready_cnf_flg) {
-            if ($user->isAdmin() || $position_info["member_position"] == BroadcomMemberEntity::POSITION_HEADMASTER) {
+            if ($user->isAdmin()) {
                 $confirm_able_flg = true;
+            } elseif ($position_info["member_position"] == BroadcomMemberEntity::POSITION_HEADMASTER) {
+                $confirm_from_date_ts = strtotime($course_info["course_expire_date"]);
+                $confirm_to_date_ts = mktime(0, 0, -1, date("n", $confirm_from_date_ts), date("j", $confirm_from_date_ts) + 1, date("Y", $confirm_from_date_ts));
+                $current_ts = time();
+                if ($current_ts > $confirm_to_date_ts) {
+                    $confirm_able_flg = true;
+                }
             } else {
                 $confirm_from_date_ts = strtotime($course_info["course_expire_date"]);
                 $confirm_to_date_ts = mktime(0, 0, -1, date("n", $confirm_from_date_ts), date("j", $confirm_from_date_ts) + 1, date("Y", $confirm_from_date_ts));

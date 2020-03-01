@@ -63,7 +63,7 @@
           <td>{^$room_list[$course_item["room_id"]]^}</td>
           <td>{^$teacher_info[$course_item["teacher_member_id"]]["m_name"]^}</td>
           <td>{^$subject_list[$course_item["subject_id"]]^}</td>
-          <td>{^if $course_item["confirm_flg"]^}{^if $course_item["reset_examine_flg"]^}已返课{^else^}已消课{^/if^}{^else^}未消课{^/if^}</td>
+          <td>{^if $course_item["reset_examine_flg"]^}已返课{^else^}{^if $course_item["reset_flg"]^}待返课审核{^else^}{^if $course_item["confirm_flg"]^}已消课{^else^}未消课{^/if^}{^/if^}{^/if^}</td>
         </tr>
 {^/foreach^}
       </tbody>
