@@ -164,7 +164,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
         }
         $content_data = array();
         if (!$edit_mode || ($edit_mode && $getting_member_info["m_name"] != $member_info["m_name"])) {
-            $content_data["m_name"] = $getting_member_info["m_name"];
+            $content_data["m_name"] = strtolower($getting_member_info["m_name"]);
         }
         if (!$edit_mode || ($getting_member_info["m_birthday"] != $member_info["m_birthday"])) {
             $content_data["m_birthday"] = $getting_member_info["m_birthday"];

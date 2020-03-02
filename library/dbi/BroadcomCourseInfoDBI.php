@@ -162,6 +162,24 @@ class BroadcomCourseInfoDBI
         return $data;
     }
 
+    public static function selectResetCourseInfo($school_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM course_info WHERE del_flg = 0" .
+               " AND confirm_flg = 1 AND reset_flg != 0 AND school_id = " . $school_id;
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["course_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function insertCourseInfo($insert_data)
     {
         $dbi = Database::getInstance();
