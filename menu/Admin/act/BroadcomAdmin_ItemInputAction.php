@@ -118,7 +118,7 @@ class BroadcomAdmin_ItemInputAction extends BroadcomAdminActionBase
         } else {
             $item_info["item_labels"] = "";
         }
-        $insert_res = BroadcomItemInfoDBI::insertSchoolInfo($item_info);
+        $insert_res = BroadcomItemInfoDBI::insertItemInfo($item_info);
         if ($controller->isError($insert_res)) {
             $insert_res->setPos(__FILE__, __LINE__);
             return $insert_res;

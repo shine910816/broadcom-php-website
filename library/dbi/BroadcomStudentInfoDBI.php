@@ -87,7 +87,7 @@ class BroadcomStudentInfoDBI
         return $data[0];
     }
 
-    public static function insertSchoolInfo($insert_data)
+    public static function insertStudentInfo($insert_data)
     {
         $dbi = Database::getInstance();
         $result = $dbi->insert("student_info", $insert_data);
@@ -98,7 +98,7 @@ class BroadcomStudentInfoDBI
         return $result;
     }
 
-    public static function updateSchoolInfo($update_data, $student_id)
+    public static function updateStudentInfo($update_data, $student_id)
     {
         $dbi = Database::getInstance();
         $result = $dbi->update("student_info", $update_data, "student_id = " . $student_id);

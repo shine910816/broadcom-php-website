@@ -86,7 +86,7 @@ class BroadcomItemInfoDBI
         return $data;
     }
 
-    public static function insertSchoolInfo($insert_data)
+    public static function insertItemInfo($insert_data)
     {
         $dbi = Database::getInstance();
         $result = $dbi->insert("item_info", $insert_data);
@@ -97,7 +97,7 @@ class BroadcomItemInfoDBI
         return $result;
     }
 
-    public static function updateSchoolInfo($update_data, $item_id)
+    public static function updateItemInfo($update_data, $item_id)
     {
         $dbi = Database::getInstance();
         $result = $dbi->update("item_info", $update_data, "item_id = " . $item_id);

@@ -370,38 +370,44 @@ class Utility
         return $result;
     }
 
-    public static function getDateWeek($date_str)
+    public static function getWeeklyList($param, $period_month = 3)
     {
-        return date("oW", strtotime($date_str));
-        //$date_ts = strtotime($date_str);
-        //$year = date("Y", $date_ts);
-        //$month = date("n", $date_ts);
-        //$week = date("W", $date_ts);
-        //if ($week == "01" && $month == "12") {
-        //    $year++;
-        //}
-        //if ($week == "53" && $month == "1") {
-        //    $year--;
-        //}
-        //return $year . $week;
-    }
-
-    public static function getWeeklyList($param_year)
-    {
-        $days_max = 365;
-        if (date("L", strtotime($param_year . "-01-01 00:00:00")) == "1") {
-            $days_max = 366;
+        $current_ts = strtotime($param);
+        $max_month = $period_month;
+        if (date("j", $current_ts) > 20) {
+            $max_month++;
         }
-        $result = array(
-            "week" => array(),
-            "day" => array()
-        );
-        for ($i = -6; $i <= $days_max + 7; $i++) {
-            $current_time = mktime(0, 0, 0, 1, $i, $param_year);
-            $column_key = date("oW", $current_time);
-            $column_value = date("Ymd", $current_time);
-            $result["week"][$column_key][] = $column_value;
-            $result["day"][$column_value] = $column_key;
+        $result = array();
+        for ($i = 0; $i < $max_month; $i++) {
+            $first_day_ts = mktime(0, 0, 0, date("n", $current_ts) + $i, 1, date("Y", $current_ts));
+            $key_year = date("Y", $first_day_ts);
+            $key_month = date("n", $first_day_ts);
+            $key_last_day = date("t", $first_day_ts);
+            $weekly_day_list = array();
+            for ($day = 1; $day <= $key_last_day; $day++) {
+                $day_ts = mktime(0, 0, 0, date("n", $first_day_ts), $day, date("Y", $first_day_ts));
+                $week_idx = date("N", $day_ts);
+                $weekly_day_list[$week_idx] = array(
+                    "key" => date("Ymd", $day_ts),
+                    "date" => date("Y-m-d", $day_ts),
+                    "day" => date("j", $day_ts) . "日",
+                    "monthday" => date("n", $day_ts) . "月" . date("j", $day_ts) . "日"
+                );
+                if ($day == 1 && $week_idx != "1") {
+                    for ($j = 1; $j < $week_idx; $j++) {
+                        $weekly_day_list[$j] = array();
+                    }
+                } elseif ($day == $key_last_day && $week_idx != "7") {
+                    for ($j = $week_idx + 1; $j < 8; $j++) {
+                        $weekly_day_list[$j] = array();
+                    }
+                }
+                if (count($weekly_day_list) == 7) {
+                    ksort($weekly_day_list);
+                    $result[$key_year][$key_month][] = $weekly_day_list;
+                    $weekly_day_list = array();
+                }
+            }
         }
         return $result;
     }
