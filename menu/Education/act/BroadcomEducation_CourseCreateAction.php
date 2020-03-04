@@ -56,6 +56,11 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
         $allow_subject_list = array_keys($subject_list);
         $hint_context = "";
         if ($request->hasParameter("order_item_id")) {
+            // TODO 
+            //BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            //BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
+            //BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
+            // 以上权限能排正课
             $order_item_id = $request->getParameter("order_item_id");
             $order_item_info = BroadcomOrderDBI::selectOrderItem($order_item_id);
             if ($controller->isError($order_item_info)) {
