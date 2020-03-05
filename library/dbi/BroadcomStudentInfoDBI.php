@@ -28,7 +28,7 @@ class BroadcomStudentInfoDBI
         return $data;
     }
 
-    public static function selectLeadsStudentInfo($school_id, $member_id = null, $follow_status = null)
+    public static function selectLeadsStudentInfo($school_id, $assign_member_id = null, $follow_status = null)
     {
         $dbi = Database::getInstance();
         $sql = "SELECT student_id," .
@@ -40,15 +40,15 @@ class BroadcomStudentInfoDBI
                " purpose_level," .
                " follow_status," .
                " student_school_name," .
-               " member_id," .
-               " accept_date," .
+               " assign_member_id," .
+               " assign_date," .
                " operated_by," .
                " insert_date" .
                " FROM student_info" .
                " WHERE del_flg = 0" .
                " AND school_id = " . $school_id;
-        if (!is_null($member_id)) {
-            $sql .= " AND member_id = " . $member_id;
+        if (!is_null($assign_member_id)) {
+            $sql .= " AND assign_member_id = " . $assign_member_id;
         }
         if (!is_null($follow_status)) {
             if (!is_array($follow_status)) {

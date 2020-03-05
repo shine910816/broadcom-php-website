@@ -41,6 +41,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
+        $member_id = $user->getMemberId();
         $student_id = "";
         $student_info = array();
         $school_id = "";
@@ -159,6 +160,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
             $student_list->setPos(__FILE__, __LINE__);
             return $student_list;
         }
+        $request->setAttribute("member_id", $member_id);
         $request->setAttribute("school_id", $school_id);
         $request->setAttribute("student_id", $student_id);
         $request->setAttribute("student_info", $student_info);
@@ -199,6 +201,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
 
     private function _doCreateExecute(Controller $controller, User $user, Request $request)
     {
+        $member_id = $request->getAttribute("member_id");
         $course_type = $request->getAttribute("course_type");
         $school_id = $request->getAttribute("school_id");
         $student_id = $request->getAttribute("student_id");
@@ -231,6 +234,8 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 $insert_data["course_start_date"] = $schedule_refer["start"];
                 $insert_data["course_expire_date"] = $schedule_refer["end"];
                 $insert_data["course_hours"] = $schedule_refer["period"];
+                $insert_data["assign_member_id"] = $member_id;
+                $insert_data["assign_date"] = date("Y-m-d H:i:s");
                 $insert_res = BroadcomCourseInfoDBI::insertCourseInfo($insert_data);
                 if ($controller->isError($insert_res)) {
                     $insert_res->setPos(__FILE__, __LINE__);

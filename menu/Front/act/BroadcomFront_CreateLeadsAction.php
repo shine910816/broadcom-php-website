@@ -119,12 +119,12 @@ class BroadcomFront_CreateLeadsAction extends BroadcomFrontActionBase
             return $err;
         }
         $school_id = $position_info["school_id"];
-        $student_info["member_id"] = $member_id;
+        $student_info["assign_member_id"] = $member_id;
         $student_info["school_id"] = $school_id;
         $student_info["follow_status"] = BroadcomStudentEntity::FOLLOW_STATUS_1;
         $student_info["student_level"] = BroadcomStudentEntity::STUDENT_LEVEL_NONE;
         $student_info["audition_hours"] = "2";
-        $student_info["accept_date"] = date("Y-m-d H:i:s");
+        $student_info["assign_date"] = date("Y-m-d H:i:s");
         $insert_res = BroadcomStudentInfoDBI::insertStudentInfo($student_info);
         if ($controller->isError($insert_res)) {
             $insert_res->setPos(__FILE__, __LINE__);

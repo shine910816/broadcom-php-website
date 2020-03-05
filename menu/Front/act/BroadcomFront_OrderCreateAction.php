@@ -139,6 +139,7 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
 
     private function _doCreateExecute(Controller $controller, User $user, Request $request)
     {
+        $member_id = $user->getMemberId();
         $student_id = $request->getAttribute("student_id");
         $cart_list = $request->getAttribute("cart_list");
         $cart_item_info = $request->getAttribute("cart_item_info");
@@ -183,6 +184,8 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
         $order_insert_data["order_examine_flg"] = "0";
         $order_insert_data["order_examiner_id"] = null;
         $order_insert_data["order_examine_date"] = null;
+        $order_insert_data["assign_member_id"] = $member_id;
+        $order_insert_data["assign_date"] = date("Y-m-d H:i:s");
         $order_id = BroadcomOrderDBI::insertOrder($order_insert_data);
         if ($controller->isError($order_id)) {
             $order_id->setPos(__FILE__, __LINE__);
@@ -226,6 +229,8 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
             $main_order_item_insert_data["order_item_discount_amount"] = $cart_item_info[$main_item_id]["item_discount_amount"];
             $main_order_item_insert_data["order_item_payable_amount"] = $payable_price_list[$main_item_id];
             $main_order_item_insert_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_1;
+            $main_order_item_insert_data["assign_member_id"] = $member_id;
+            $main_order_item_insert_data["assign_date"] = date("Y-m-d H:i:s");
             $main_order_item_id = BroadcomOrderDBI::insertOrderItem($main_order_item_insert_data);
             if ($controller->isError($main_order_item_id)) {
                 $main_order_item_id->setPos(__FILE__, __LINE__);
@@ -252,6 +257,8 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
                     $sub_order_item_insert_data["order_item_discount_amount"] = $cart_item_info[$sub_item_id]["item_discount_amount"];
                     $sub_order_item_insert_data["order_item_payable_amount"] = $payable_price_list[$sub_item_id];
                     $sub_order_item_insert_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_1;
+                    $sub_order_item_insert_data["assign_member_id"] = $member_id;
+                    $sub_order_item_insert_data["assign_date"] = date("Y-m-d H:i:s");
                     $sub_insert_res = BroadcomOrderDBI::insertOrderItem($sub_order_item_insert_data);
                     if ($controller->isError($sub_insert_res)) {
                         $sub_insert_res->setPos(__FILE__, __LINE__);
