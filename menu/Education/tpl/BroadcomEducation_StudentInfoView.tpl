@@ -92,7 +92,7 @@
             <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
             <div class="operate-option">
               <a href="./?menu=education&act=course_create&order_item_id={^$order_item_id|escape^}">课程安排</a>
-              <a href="#">退款转让</a>
+              <a href="./?menu=education&act=contract_refund&order_item_id={^$order_item_id|escape^}">退款转让</a>
             </div>
 {^/if^}
           </td>
