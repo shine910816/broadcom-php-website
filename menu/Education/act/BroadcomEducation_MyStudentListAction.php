@@ -61,7 +61,7 @@ class BroadcomEducation_MyStudentListAction extends BroadcomEducationActionBase
             return $err;
         }
         $school_id = $position_info["school_id"];
-        $student_info_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id, null, BroadcomStudentEntity::FOLLOW_STATUS_3);
+        $student_info_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id, $member_id, BroadcomStudentEntity::FOLLOW_STATUS_3);
         if ($controller->isError($student_info_list)) {
             $student_info_list->setPos(__FILE__, __LINE__);
             return $student_info_list;

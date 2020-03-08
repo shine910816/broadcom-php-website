@@ -33,6 +33,67 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
+        $current_date = date("Ymd");
+        if ($request->hasParameter("date")) {
+            $current_date = $request->getParameter("date");
+        }
+        $current_year = substr($current_date, 0, 4);
+        $current_month = substr($current_date, 4, 2);
+        $current_day = substr($current_date, 6, 2);
+        $current_date_ts = mktime(0, 0, 0, $current_month, $current_day, $current_year);
+        $course_date_from = date("Y-m-d H:i:s", $current_date_ts);
+        $course_date_to = date("Y-m-d H:i:s", $current_date_ts + 24 * 60 * 60 - 1);
+        $prev_date = date("Ymd", $current_date_ts - 24 * 60 * 60);
+        $next_date = date("Ymd", $current_date_ts + 24 * 60 * 60);
+        $current_date_text = date("Y", $current_date_ts) . "年" . date("n", $current_date_ts) . "月" . date("j", $current_date_ts) . "日";
+        $member_id = $user->getMemberId();
+        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
+        if ($controller->isError($position_info)) {
+            $position_info->setPos(__FILE__, __LINE__);
+            return $position_info;
+        }
+        if (empty($position_info)) {
+            $err = $controller->raiseError();
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        $school_id = $position_info["school_id"];
+        $course_list = BroadcomCourseInfoDBI::selectCourseInfoBySchool($school_id, $course_date_from, $course_date_to);
+        if ($controller->isError($course_list)) {
+            $course_list->setPos(__FILE__, __LINE__);
+            return $course_list;
+        }
+        $room_list = BroadcomRoomInfoDBI::selectUsableRoomList($school_id);
+        if ($controller->isError($room_list)) {
+            $room_list->setPos(__FILE__, __LINE__);
+            return $room_list;
+        }
+        $teacher_info = BroadcomTeacherDBI::selectTeacherInfoList($school_id);
+        if ($controller->isError($teacher_info)) {
+            $teacher_info->setPos(__FILE__, __LINE__);
+            return $teacher_info;
+        }
+        $student_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id);
+        if ($controller->isError($student_list)) {
+            $student_list->setPos(__FILE__, __LINE__);
+            return $student_list;
+        }
+        $item_list = BroadcomItemInfoDBI::selectItemInfoList();
+        if ($controller->isError($item_list)) {
+            $item_list->setPos(__FILE__, __LINE__);
+            return $item_list;
+        }
+        $request->setAttribute("member_id", $member_id);
+        $request->setAttribute("course_list", $course_list);
+        $request->setAttribute("prev_date", $prev_date);
+        $request->setAttribute("next_date", $next_date);
+        $request->setAttribute("current_date_text", $current_date_text);
+        $request->setAttribute("course_type_list", BroadcomCourseEntity::getCourseTypeList());
+        $request->setAttribute("subject_list", BroadcomSubjectEntity::getSubjectList());
+        $request->setAttribute("room_list", $room_list);
+        $request->setAttribute("teacher_info", $teacher_info);
+        $request->setAttribute("student_list", $student_list);
+        $request->setAttribute("item_list", $item_list);
         return VIEW_DONE;
     }
 

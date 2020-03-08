@@ -53,6 +53,27 @@ class BroadcomCourseInfoDBI
         return $data;
     }
 
+    public static function selectCourseInfoBySchool($school_id, $course_date_from, $course_date_to)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM course_info WHERE del_flg = 0" .
+               " AND school_id = " . $school_id .
+               " AND course_start_date <= " . $dbi->quote($course_date_to) .
+               " AND course_expire_date >= " . $dbi->quote($course_date_from) .
+               " ORDER BY confirm_flg ASC, course_start_date ASC";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["course_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function selectCourseInfoByStudent($student_id)
     {
         $dbi = Database::getInstance();

@@ -9,8 +9,6 @@
           <th>手机号</th>
           <th>年级</th>
           <th>在读学校</th>
-          <th>受理人</th>
-          <th>受理时间</th>
           <th>创建人</th>
           <th>创建时间</th>
           <th>操作</th>
@@ -23,8 +21,6 @@
           <td>{^$student_info_item["student_mobile_number"]|escape^}</td>
           <td>{^$student_info_item["grade_name"]^}</td>
           <td>{^$student_info_item["student_school_name"]|escape^}</td>
-          <td>{^$member_name_list[$student_info_item["assign_member_id"]]^}</td>
-          <td>{^$student_info_item["assign_date"]|date_format:"%Y-%m-%d"^}</td>
           <td>{^$member_name_list[$student_info_item["operated_by"]]^}</td>
           <td>{^$student_info_item["insert_date"]|date_format:"%Y-%m-%d"^}</td>
           <td>

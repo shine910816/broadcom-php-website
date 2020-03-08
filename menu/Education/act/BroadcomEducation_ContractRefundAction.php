@@ -41,15 +41,100 @@ class BroadcomEducation_ContractRefundAction extends BroadcomEducationActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
-        $member_id = $user->getMemberId();
         if (!$request->hasParameter("order_item_id")) {
             $err = $controller->raiseError();
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
         $order_item_id = $request->getParameter("order_item_id");
+        $member_id = $user->getMemberId();
+        $order_item_info = BroadcomOrderDBI::selectOrderItem($order_item_id);
+        if ($controller->isError($order_item_info)) {
+            $order_item_info->setPos(__FILE__, __LINE__);
+            return $order_item_info;
+        }
+        if (empty($order_item_info)) {
+            $err = $controller->raiseError();
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        $student_id = $order_item_info["student_id"];
+        $student_info = BroadcomStudentInfoDBI::selectStudentInfo($student_id);
+        if ($controller->isError($student_info)) {
+            $student_info->setPos(__FILE__, __LINE__);
+            return $student_info;
+        }
+        if (empty($student_info)) {
+            $err = $controller->raiseError();
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        $school_id = $student_info["school_id"];
+        $refund_list = BroadcomRefundDBI::selectRefundInfoList($school_id);
+        if ($controller->isError($refund_list)) {
+            $refund_list->setPos(__FILE__, __LINE__);
+            return $refund_list;
+        }
+        $student_list_tmp = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id);
+        if ($controller->isError($student_list_tmp)) {
+            $student_list_tmp->setPos(__FILE__, __LINE__);
+            return $student_list_tmp;
+        }
+        $student_list = array();
+        foreach ($student_list_tmp as $student_info_tmp) {
+            if ($student_info_tmp["student_entrance_year"] == $student_info["student_entrance_year"] && $student_info_tmp["student_id"] != $student_id) {
+                $student_list[$student_info_tmp["student_id"]] = $student_info_tmp;
+            }
+        }
+        $allow_refund_flg = false;
+        $allow_refund_method_list = array(
+            BroadcomItemEntity::ITEM_METHOD_1_TO_1,
+            BroadcomItemEntity::ITEM_METHOD_1_TO_2,
+            BroadcomItemEntity::ITEM_METHOD_1_TO_3
+        );
+        $allow_transfer_flg = false;
+        $refund_info = array();
+        if (!isset($refund_list[$order_item_id])) {
+            if (in_array($order_item_info["item_method"], $allow_refund_method_list) && $order_item_info["order_item_status"] == BroadcomOrderEntity::ORDER_ITEM_STATUS_2) {
+                $allow_refund_flg = true;
+            }
+            if (!empty($student_list) && $allow_refund_flg) {
+                $allow_transfer_flg = true;
+            }
+        } else {
+            $refund_info = $refund_list[$order_item_id];
+        }
+        $item_info = BroadcomItemInfoDBI::selectItemInfo($order_item_info["item_id"]);
+        if ($controller->isError($item_info)) {
+            $item_info->setPos(__FILE__, __LINE__);
+            return $item_info;
+        }
+        if (empty($item_info)) {
+            $err = $controller->raiseError();
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        $item_list = BroadcomItemInfoDBI::selectItemInfoList();
+        if ($controller->isError($item_list)) {
+            $item_list->setPos(__FILE__, __LINE__);
+            return $item_list;
+        }
         $request->setAttribute("member_id", $member_id);
+        $request->setAttribute("student_id", $student_id);
+        $request->setAttribute("school_id", $school_id);
         $request->setAttribute("order_item_id", $order_item_id);
+        $request->setAttribute("refund_info", $refund_info);
+        $request->setAttribute("allow_refund_flg", $allow_refund_flg);
+        $request->setAttribute("allow_transfer_flg", $allow_transfer_flg);
+        $request->setAttribute("order_item_info", $order_item_info);
+        $request->setAttribute("student_info", $student_info);
+        $request->setAttribute("student_list", $student_list);
+        $request->setAttribute("item_info", $item_info);
+        $request->setAttribute("item_list", $item_list);
+        $request->setAttribute("item_type_list", BroadcomItemEntity::getItemTypeList());
+        $request->setAttribute("item_method_list", BroadcomItemEntity::getItemMethodList());
+        $request->setAttribute("item_grade_list", BroadcomItemEntity::getItemGradeList());
+        $request->setAttribute("order_item_status_list", BroadcomOrderEntity::getOrderItemStatusList());
         return VIEW_DONE;
     }
 
@@ -68,97 +153,36 @@ class BroadcomEducation_ContractRefundAction extends BroadcomEducationActionBase
     private function _doCreateExecute(Controller $controller, User $user, Request $request)
     {
         $member_id = $request->getAttribute("member_id");
-        $course_type = $request->getAttribute("course_type");
-        $school_id = $request->getAttribute("school_id");
         $student_id = $request->getAttribute("student_id");
-        $getting_course_info = $request->getAttribute("getting_course_info");
-        $dbi = Database::getInstance();
-        $begin_res = $dbi->begin();
-        if ($controller->isError($begin_res)) {
-            $begin_res->setPos(__FILE__, __LINE__);
-            return $begin_res;
-        }
-        if ($course_type == BroadcomCourseEntity::COURSE_TYPE_CLASS) {
-            $schedule_id = $getting_course_info["schedule_id"];
-            $schedule_list = $request->getAttribute("schedule_list");
-            $order_item_id = $request->getAttribute("order_item_id");
-            $item_id = $request->getAttribute("item_id");
-            $order_item_info = $request->getAttribute("order_item_info");
-            $schedule_refer_array = json_decode(base64_decode($schedule_list[$schedule_id]["schedule_content"]), true);
-            foreach ($schedule_refer_array as $schedule_index => $schedule_refer) {
-                $insert_data = array();
-                $insert_data["course_type"] = $course_type;
-                $insert_data["school_id"] = $school_id;
-                $insert_data["room_id"] = $schedule_refer["room"];
-                $insert_data["teacher_member_id"] = $schedule_refer["teacher"];
-                $insert_data["subject_id"] = $schedule_refer["subject"];
-                $insert_data["student_id"] = $student_id;
+        $school_id = $request->getAttribute("school_id");
+        $order_item_id = $request->getAttribute("order_item_id");
+        $refund_type = $request->getParameter("refund_type");
+        $insert_data = array();
+        if ($refund_type == "1") {
+            $allow_refund_flg = $request->getAttribute("allow_refund_flg");
+            $refund_precent = $request->getParameter("refund_precent");
+            if ($allow_refund_flg) {
                 $insert_data["order_item_id"] = $order_item_id;
-                $insert_data["item_id"] = $item_id;
-                $insert_data["schedule_id"] = $schedule_id;
-                $insert_data["schedule_index"] = $schedule_index;
-                $insert_data["course_start_date"] = $schedule_refer["start"];
-                $insert_data["course_expire_date"] = $schedule_refer["end"];
-                $insert_data["course_hours"] = $schedule_refer["period"];
-                $insert_data["assign_member_id"] = $member_id;
-                $insert_data["assign_date"] = date("Y-m-d H:i:s");
-                $insert_res = BroadcomCourseInfoDBI::insertCourseInfo($insert_data);
-                if ($controller->isError($insert_res)) {
-                    $insert_res->setPos(__FILE__, __LINE__);
-                    $dbi->rollback();
-                    return $insert_res;
-                }
+                $insert_data["refund_type"] = "1";
+                $insert_data["school_id"] = $school_id;
+                $insert_data["refund_precent"] = $refund_precent;
             }
         } else {
-            $order_item_info = $request->getAttribute("order_item_info");
-            foreach ($getting_course_info as $course_info) {
-                $insert_data = array();
-                if ($course_info["refer"] != "0") {
-                    $others_course_info = $request->getAttribute("others_course_info");
-                    $refer_course_info = $others_course_info[$course_info["refer"]];
-                    $insert_data["room_id"] = $refer_course_info["room_id"];
-                    $insert_data["teacher_member_id"] = $refer_course_info["teacher_member_id"];
-                    $insert_data["subject_id"] = $refer_course_info["subject_id"];
-                    $insert_data["course_start_date"] = $refer_course_info["course_start_date"];
-                    $insert_data["course_expire_date"] = $refer_course_info["course_expire_date"];
-                    $insert_data["course_hours"] = $refer_course_info["course_hours"];
-                } else {
-                    if ($course_info["start_date"] != "" && $course_info["start_time"] != "") {
-                        $start_ts = strtotime($course_info["start_date"] . " " . $course_info["start_time"] . ":00");
-                        $end_ts = $start_ts + $course_info["course_hours"] * 60 * 60;
-                        $subject_teacher_arr = explode("-", $course_info["subject_teacher"]);
-                        $insert_data["room_id"] = $course_info["room_id"];
-                        $insert_data["teacher_member_id"] = $subject_teacher_arr[1];
-                        $insert_data["subject_id"] = $subject_teacher_arr[0];
-                        $insert_data["course_start_date"] = date("Y-m-d H:i:s", $start_ts);
-                        $insert_data["course_expire_date"] = date("Y-m-d H:i:s", $end_ts);
-                        $insert_data["course_hours"] = $course_info["course_hours"];
-                    }
-                }
-                if (!empty($insert_data)) {
-                    $insert_data["course_type"] = $course_type;
-                    $insert_data["school_id"] = $school_id;
-                    $insert_data["student_id"] = $student_id;
-                    if ($course_type != BroadcomCourseEntity::COURSE_TYPE_AUDITION) {
-                        $order_item_id = $request->getAttribute("order_item_id");
-                        $item_id = $request->getAttribute("item_id");
-                        $order_item_info = $request->getAttribute("order_item_info");
-                        $insert_data["order_item_id"] = $order_item_id;
-                        $insert_data["item_id"] = $item_id;
-                    }
-                    $insert_res = BroadcomCourseInfoDBI::insertCourseInfo($insert_data);
-                    if ($controller->isError($insert_res)) {
-                        $insert_res->setPos(__FILE__, __LINE__);
-                        $dbi->rollback();
-                        return $insert_res;
-                    }
-                }
+            $allow_transfer_flg = $request->getAttribute("allow_transfer_flg");
+            $oppo_student_id = $request->getParameter("oppo_student_id");
+            if ($allow_transfer_flg) {
+                $insert_data["order_item_id"] = $order_item_id;
+                $insert_data["refund_type"] = "2";
+                $insert_data["school_id"] = $school_id;
+                $insert_data["oppo_student_id"] = $oppo_student_id;
             }
         }
-        $commit_res = $dbi->commit();
-        if ($controller->isError($commit_res)) {
-            $commit_res->setPos(__FILE__, __LINE__);
-            return $commit_res;
+        if (!empty($insert_data)) {
+            $insert_res = BroadcomRefundDBI::insertRefund($insert_data);
+            if ($controller->isError($insert_res)) {
+                $insert_res->setPos(__FILE__, __LINE__);
+                return $insert_res;
+            }
         }
         $controller->redirect("./?menu=education&act=student_info&student_id=" . $student_id);
         return VIEW_DONE;

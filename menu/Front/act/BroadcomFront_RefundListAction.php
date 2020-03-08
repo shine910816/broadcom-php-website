@@ -33,6 +33,28 @@ class BroadcomFront_RefundListAction extends BroadcomFrontActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
+        $member_id = $user->getMemberId();
+        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
+        if ($controller->isError($position_info)) {
+            $position_info->setPos(__FILE__, __LINE__);
+            return $position_info;
+        }
+        if (empty($position_info)) {
+            $err = $controller->raiseError();
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        $school_id = $position_info["school_id"];
+        $refund_list = BroadcomRefundDBI::selectRefundInfoList($school_id);
+        if ($controller->isError($refund_list)) {
+            $refund_list->setPos(__FILE__, __LINE__);
+            return $refund_list;
+        }
+        $request->setAttribute("member_id", $member_id);
+        $request->setAttribute("school_id", $school_id);
+        $request->setAttribute("refund_list", $refund_list);
+        $request->setAttribute("item_type_list", BroadcomItemEntity::getItemTypeList());
+        $request->setAttribute("item_method_list", BroadcomItemEntity::getItemMethodList());
         return VIEW_DONE;
     }
 
