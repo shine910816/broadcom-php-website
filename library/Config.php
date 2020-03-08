@@ -32,6 +32,8 @@ class Config
         $result["front"]["order_create"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["order_payment"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["order_info"] = SYSTEM_AUTH_LOGIN;
+        $result["front"]["refund_list"] = SYSTEM_AUTH_LOGIN;
+        $result["front"]["refund_info"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["top"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["my_student_list"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["student_list"] = SYSTEM_AUTH_LOGIN;
@@ -45,7 +47,6 @@ class Config
         $result["education"]["course_confirm"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["reset_list"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["reset_confirm"] = SYSTEM_AUTH_LOGIN;
-        // TODO 
         $result["education"]["student_edit"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["student_assign"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["contract_refund"] = SYSTEM_AUTH_LOGIN;
@@ -79,10 +80,12 @@ class Config
         $result["front"]["create_leads"] = array('<a href="./?menu=front&act=top">前台业务</a>', '<a href="./?menu=front&act=my_leads">我的意向客户</a>', "新增意向客户");
         $result["front"]["cart_fill"] = array('<a href="./?menu=front&act=top">前台业务</a>', "添加课程");
         $result["front"]["cart_info"] = array('<a href="./?menu=front&act=top">前台业务</a>', "已选择课程");
-        $result["front"]["order_list"] = array('<a href="./?menu=front&act=top">前台业务</a>', "订单管理");
+        $result["front"]["order_list"] = array('<a href="./?menu=front&act=top">前台业务</a>', "订单审核退款");
         $result["front"]["order_create"] = array('<a href="./?menu=front&act=top">前台业务</a>', "创建订单");
         $result["front"]["order_payment"] = array('<a href="./?menu=front&act=top">前台业务</a>', "支付订单");
         $result["front"]["order_info"] = array('<a href="./?menu=front&act=top">前台业务</a>', "订单详情");
+        $result["front"]["refund_list"] = array('<a href="./?menu=front&act=top">前台业务</a>', "合同退转审核");
+        $result["front"]["refund_info"] = array('<a href="./?menu=front&act=top">前台业务</a>', '<a href="./?menu=front&act=refund_list">合同退转审核</a>', "退款转让详细");
         $result["education"]["top"] = array("学员教务");
         $result["education"]["my_student_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "我的学员管理");
         $result["education"]["student_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "学员管理");
@@ -104,6 +107,33 @@ class Config
         $result["admin"]["room_info"] = array('<a href="./?menu=admin&act=top">后台管理</a>', '<a href="./?menu=admin&act=school_list">校区管理</a>', "教室管理");
         $result["admin"]["item_list"] = array('<a href="./?menu=admin&act=top">后台管理</a>', "课程管理");
         $result["admin"]["item_input"] = array('<a href="./?menu=admin&act=top">后台管理</a>', '<a href="./?menu=admin&act=item_list">课程管理</a>', "课程信息");
+        return $result;
+    }
+
+    // TODO
+    public static function authoritySynchrion($member_position, $api_flg = false)
+    {
+        $xml = simplexml_load_file(SRC_PATH . "/library/Authority.xml");
+        $result = array();
+        foreach ($xml->functions->function as $function_info) {
+            $menu_act_info = (array) $function_info->attributes();
+            $auth_able_array = array();
+            foreach ($function_info->position as $pos_tmp) {
+                $position = (array) $pos_tmp;
+                if ($position["@attributes"]["value"] == $member_position) {
+                    $auth_able_array["read"] = $position["@attributes"]["readable"];
+                    $auth_able_array["edit"] = $position["@attributes"]["editable"];
+                    break;
+                } else {
+                    continue;
+                }
+            }
+            if ($api_flg) {
+                $result[$menu_act_info["@attributes"]["token"]] = $auth_able_array;
+            } else {
+                $result[$menu_act_info["@attributes"]["menu"]][$menu_act_info["@attributes"]["act"]] = $auth_able_array;
+            }
+        }
         return $result;
     }
 

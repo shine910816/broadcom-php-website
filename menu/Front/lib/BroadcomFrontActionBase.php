@@ -20,7 +20,8 @@ class BroadcomFrontActionBase extends ActionBase
         $result = array();
         $result[] = array("my_leads", "我的意向客户");
         $result[] = array("school_leads", "校区意向客户");
-        $result[] = array("order_list", "订单管理");
+        $result[] = array("order_list", "订单审核退款");
+        $result[] = array("refund_list", "合同退转审核");
         $request->setAttribute("left_content", $result);
         return VIEW_DONE;
     }
