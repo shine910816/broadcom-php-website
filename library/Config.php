@@ -233,6 +233,16 @@ class Config
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
+        // 添加新成员
+        $result["human_resource"]["member_list"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
+        // 教师信息
+        $result["human_resource"]["teacher_list"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
         return $result;
     }
 
