@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="Authority.xsl"?>
+<?xml-stylesheet type="text/xsl" href="AuthorityView.xsl"?>
 <root>
   <functions>
     <function token="CDA2522E-FBC0-EB46-CABC-25AB7F8700AE" menu="front" act="my_leads" name="我的意向客户">
