@@ -42,6 +42,16 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
         $member_id = $user->getMemberId();
+        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
+        if ($controller->isError($position_info)) {
+            $position_info->setPos(__FILE__, __LINE__);
+            return $position_info;
+        }
+        if (empty($position_info)) {
+            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
         $student_id = "";
         $student_info = array();
         $school_id = "";
@@ -57,11 +67,16 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
         $allow_subject_list = array_keys($subject_list);
         $hint_context = "";
         if ($request->hasParameter("order_item_id")) {
-            // TODO 
-            //BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
-            //BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
-            //BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
-            // 以上权限能排正课
+            $allow_create_postion = array(
+                BroadcomMemberEntity::POSITION_HEADMASTER,
+                BroadcomMemberEntity::POSITION_ASSIST_MANAGER,
+                BroadcomMemberEntity::POSITION_ASSISTANT
+            );
+            if (!in_array($position_info["member_position"], $allow_create_postion) && !$user->isAdmin()) {
+                $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
+                $err->setPos(__FILE__, __LINE__);
+                return $err;
+            }
             $order_item_id = $request->getParameter("order_item_id");
             $order_item_info = BroadcomOrderDBI::selectOrderItem($order_item_id);
             if ($controller->isError($order_item_info)) {
@@ -102,9 +117,12 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 $course_type = BroadcomCourseEntity::COURSE_TYPE_MULTI;
                 $create_able_flg = true;
             }
+            if ($order_item_info["assign_member_id"] != $member_id) {
+                $hint_context = "该学员不是本人受理的学员";
+            }
         } else {
             if (!$request->hasParameter("student_id")) {
-                $err = $controller->raiseError();
+                $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
                 $err->setPos(__FILE__, __LINE__);
                 return $err;
             }

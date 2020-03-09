@@ -110,10 +110,9 @@ class Config
         return $result;
     }
 
-    // TODO
     public static function authoritySynchrion($member_position, $api_flg = false)
     {
-        $xml = simplexml_load_file(SRC_PATH . "/library/Authority.xml");
+        $xml = simplexml_load_file(SRC_PATH . "/config/authority.xml");
         $result = array();
         foreach ($xml->functions->function as $function_info) {
             $menu_act_info = (array) $function_info->attributes();

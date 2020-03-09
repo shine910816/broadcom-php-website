@@ -30,6 +30,37 @@ class BroadcomMemberPositionDBI
         return $data;
     }
 
+    public static function selectMemberPositionListBySchool($school_id, $member_position)
+    {
+        $dbi = Database::getInstance();
+        if (!is_array($member_position)) {
+            $member_position = array($member_position);
+        }
+        $sql = "SELECT p.member_id," .
+               " i.m_name," .
+               " p.member_position," .
+               " p.member_position_level," .
+               " p.member_employed_status" .
+               " FROM member_position p" .
+               " LEFT OUTER JOIN member_info i ON i.member_id = p.member_id" .
+               " WHERE p.del_flg = 0" .
+               " AND i.del_flg = 0" .
+               " AND p.member_employed_status != 0" .
+               " AND p.school_id = " . $school_id .
+               " AND p.member_position IN (" . implode(", ", $member_position) . ")";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["member_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function insertMemberPosition($insert_data)
     {
         $dbi = Database::getInstance();

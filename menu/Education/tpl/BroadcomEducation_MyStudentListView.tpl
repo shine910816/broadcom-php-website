@@ -29,6 +29,8 @@
               <a href="./?menu=education&act=course_create&student_id={^$student_info_item["student_id"]|escape^}">安排试听</a>
               <a href="./?menu=front&act=cart_fill&student_id={^$student_info_item["student_id"]|escape^}">添加课程</a>
               <a href="./?menu=front&act=cart_info&student_id={^$student_info_item["student_id"]|escape^}">已选课程</a>
+              <a href="./?menu=education&act=student_edit&student_id={^$student_info_item["student_id"]|escape^}">修改信息</a>
+              <a href="./?menu=education&act=student_assign&student_id={^$student_info_item["student_id"]|escape^}">分配学管</a>
             </div>
           </td>
         </tr>

@@ -72,6 +72,23 @@ class BroadcomOrderDBI
         return $data;
     }
 
+    public static function selectOrderItemByStudent($student_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM order_item_info WHERE del_flg = 0 AND student_id = " . $student_id;
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["order_item_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function selectOrderItem($order_item_id)
     {
         $dbi = Database::getInstance();
@@ -89,7 +106,11 @@ class BroadcomOrderDBI
                " i.item_labels," .
                " oi.order_item_trans_price," .
                " oi.order_item_status," .
-               " oi.order_item_remain" .
+               " oi.order_item_remain," .
+               " oi.assign_member_id," .
+               " oi.assign_date," .
+               " oi.operated_by," .
+               " oi.insert_date" .
                " FROM order_item_info oi" .
                " LEFT OUTER JOIN order_info o ON o.order_id = oi.order_id" .
                " LEFT OUTER JOIN student_info s ON s.student_id = oi.student_id" .

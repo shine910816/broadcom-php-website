@@ -1,4 +1,5 @@
 {^include file=$comheader_file^}
+{^include file=$usererror_file^}
 <form action="./" method="post">
   <input type="hidden" name="menu" value="{^$current_menu^}" />
   <input type="hidden" name="act" value="{^$current_act^}" />
@@ -6,6 +7,11 @@
   <input type="hidden" name="student_id" value="{^$student_id^}" />
 {^else^}
   <input type="hidden" name="order_item_id" value="{^$order_item_id^}" />
+{^/if^}
+{^if $hint_context|strlen gt 0^}
+  <div class="table-line">
+    <div class="table-item-b"><span class="error-hint">{^$hint_context^}</span></div>
+  </div>
 {^/if^}
   <div class="main-table pb_15">
     <h2>学员信息</h2>
@@ -32,14 +38,6 @@
         <div class="table-item-value">{^if !empty($order_item_info)^}{^$item_method_list[$order_item_info["item_method"]]^}{^else^}一对多{^/if^}</div>
       </div>
     </div>
-{^if $hint_context|strlen gt 0^}
-    <div class="table-line">
-      <div class="table-item-b">
-        <div class="table-item-name"></div>
-        <div class="table-item-value"><span class="error-hint">{^$hint_context^}</span></div>
-      </div>
-    </div>
-{^/if^}
   </div>
 {^if !empty($set_course_info)^}
   <div class="main-table">

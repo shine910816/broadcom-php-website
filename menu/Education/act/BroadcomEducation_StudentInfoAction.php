@@ -57,13 +57,10 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
             $order_list->setPos(__FILE__, __LINE__);
             return $order_list;
         }
-        $order_item_list = array();
-        if (!empty($order_list)) {
-            $order_item_list = BroadcomOrderDBI::selectOrderItemByOrderId(array_keys($order_list));
-            if ($controller->isError($order_item_list)) {
-                $order_item_list->setPos(__FILE__, __LINE__);
-                return $order_item_list;
-            }
+        $order_item_list = BroadcomOrderDBI::selectOrderItemByStudent($student_id);
+        if ($controller->isError($order_item_list)) {
+            $order_item_list->setPos(__FILE__, __LINE__);
+            return $order_item_list;
         }
         $item_list = BroadcomItemInfoDBI::selectItemInfoList();
         if ($controller->isError($item_list)) {
