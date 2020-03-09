@@ -117,6 +117,8 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
         $request->setAttribute("payable_price_list", $payable_price_list);
         $request->setAttribute("total_price", $total_price);
         $request->setAttribute("payment_amount", $payment_amount);
+        $request->setAttribute("achieve_type_list", BroadcomOrderEntity::getAchieveTypeList());
+        $request->setAttribute("sub_achieve_type_list", BroadcomOrderEntity::getSubAchieveTypeList());
         return VIEW_DONE;
     }
 
@@ -172,6 +174,9 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
         $order_number = "YPBT" . date("Ymd") . sprintf("%04d", $order_number_count + 1);
         $order_insert_data = array();
         $order_insert_data["order_number"] = $order_number;
+        $order_insert_data["achieve_type"] = $request->getParameter("achieve_type");
+        $order_insert_data["sub_achieve_type"] = $request->getParameter("sub_achieve_type");
+        $order_insert_data["school_id"] = $school_id;
         $order_insert_data["student_id"] = $student_id;
         $order_insert_data["order_payable"] = $total_price;
         $order_insert_data["order_payment"] = $payment_amount;

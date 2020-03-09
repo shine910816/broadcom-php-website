@@ -1,5 +1,34 @@
 {^include file=$comheader_file^}
 {^include file=$usererror_file^}
+<script type="text/javascript">
+{^foreach from=$sub_achieve_type_list key=achieve_type item=achieve_item^}
+var sub_achieve_type_context_{^$achieve_type^} = '<div class="table-item-name">' + "{^$achieve_type_list[$achieve_type]^}" + '类型</div>' +
+    '<div class="table-item-value">' +
+    '<select name="sub_achieve_type" class="text-field">' +
+{^foreach from=$achieve_item key=sub_achieve_type item=sub_achieve_name^}
+    '<option value="' + "{^$sub_achieve_type^}" + '">' + "{^$sub_achieve_name^}" + '</option>' +
+{^/foreach^}
+    '</select></div>';
+{^/foreach^}
+function change_select() {
+    var disp_html_text = "";
+    switch ($("#achieve_type").val()) {
+        case "1":
+            disp_html_text = sub_achieve_type_context_1;
+            break;
+        default:
+            disp_html_text = '<input type="hidden" name="sub_achieve_type" value="0" />';
+            break;
+    }
+    $("#sub_achieve_type_html").empty().html(disp_html_text);
+}
+$(document).ready(function(){
+    change_select();
+    $("#achieve_type").change(function(){
+        change_select();
+    });
+});
+</script>
 <form action="./" method="post">
   <h1>学员信息</h1>
   <div class="table-line">
@@ -79,8 +108,19 @@
   <div class="table-line">
     <div class="table-item-b">
       <div class="table-item-name">本次付款</div>
-      <div class="table-item-value"><input type="text" name="payment_amount" value="{^$payment_amount^}" class="text-field hylight-field" /></div>
+      <div class="table-item-value"><input type="text" name="payment_amount" value="{^$payment_amount^}" class="text-field hylight-field auto-select" /></div>
     </div>
+    <div class="table-item-b">
+      <div class="table-item-name">业绩类型</div>
+      <div class="table-item-value">
+        <select name="achieve_type" class="text-field" id="achieve_type">
+{^foreach from=$achieve_type_list key=achieve_type item=achieve_name^}
+          <option value="{^$achieve_type^}">{^$achieve_name^}</option>
+{^/foreach^}
+        <select>
+      </div>
+    </div>
+    <div class="table-item-b" id="sub_achieve_type_html"></div>
   </div>
 {^/if^}
   <div class="table-line"></div>
