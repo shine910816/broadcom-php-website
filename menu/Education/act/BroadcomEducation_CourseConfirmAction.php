@@ -272,6 +272,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
                     }
                     $order_item_update_data = array();
                     $order_item_update_data["order_item_remain"] = $class_course_info["order_item_remain"] - $actual_course_hours;
+                    $order_item_update_data["order_item_confirm"] = $class_course_info["order_item_confirm"] + $actual_course_hours;
                     if ($order_item_update_data["order_item_remain"] <= 0) {
                         $order_item_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_3;
                         $order_item_update_data["order_item_remain"] = 0;
@@ -314,6 +315,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
                     $course_update_data["course_trans_price"] = round($order_item_info["order_item_trans_price"] * $actual_course_hours, 2);
                     $order_item_update_data = array();
                     $order_item_update_data["order_item_remain"] = $order_item_info["order_item_remain"] - $actual_course_hours;
+                    $order_item_update_data["order_item_confirm"] = $order_item_info["order_item_confirm"] + $actual_course_hours;
                     if ($order_item_update_data["order_item_remain"] <= 0) {
                         $order_item_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_3;
                         $order_item_update_data["order_item_remain"] = 0;

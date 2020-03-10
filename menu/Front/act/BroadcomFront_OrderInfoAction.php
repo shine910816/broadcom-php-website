@@ -177,6 +177,7 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
                 $order_item_update_data["order_item_trans_price"] = round($order_item_tmp["order_item_payable_amount"] / $order_item_tmp["order_item_amount"], 2);
                 $order_item_update_data["order_item_remain"] = $order_item_tmp["order_item_amount"];
             }
+            $order_item_update_data["order_item_confirm"] = "0";
             $order_item_update_res = BroadcomOrderDBI::updateOrderItem($order_item_update_data, $order_item_id);
             if ($controller->isError($order_item_update_res)) {
                 $order_item_update_res->setPos(__FILE__, __LINE__);

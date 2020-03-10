@@ -125,7 +125,8 @@ class BroadcomFront_RefundInfoAction extends BroadcomFrontActionBase
             $payment_insert_data["order_item_id"] = $order_item_id;
             $payment_insert_data["payment_amount"] = 0 - round($refund_info["order_item_payable_amount"] * $refund_info["order_item_remain"] / $refund_info["order_item_amount"] * $refund_info["refund_precent"], 2);
             $order_item_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_4;
-            $order_item_update_data["order_item_remain"] = "0";
+            // TODO 退款后是否清空课时余量
+            //$order_item_update_data["order_item_remain"] = "0";
         } else {
             $order_item_update_data["student_id"] = $refund_info["oppo_student_id"];
         }

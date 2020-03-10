@@ -152,6 +152,7 @@ class BroadcomEducation_ResetConfirmAction extends BroadcomEducationActionBase
         }
         $order_item_update_data = array();
         $order_item_update_data["order_item_remain"] = $order_item_info["order_item_remain"] + $course_info["actual_course_hours"];
+        $order_item_update_data["order_item_confirm"] = $order_item_info["order_item_confirm"] - $course_info["actual_course_hours"];
         if ($order_item_update_data["order_item_status"] == BroadcomOrderEntity::ORDER_ITEM_STATUS_3) {
             $order_item_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_2;
         }

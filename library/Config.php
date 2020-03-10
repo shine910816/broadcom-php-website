@@ -55,6 +55,7 @@ class Config
         $result["admin"]["room_info"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["item_list"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["item_input"] = SYSTEM_AUTH_ADMIN;
+        $result["data"]["top"] = SYSTEM_AUTH_LOGIN;
         $list_data["php"] = $result;
         $result = array();
         $list_data["api"] = $result;

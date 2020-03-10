@@ -148,6 +148,8 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
         $payable_price_list = $request->getAttribute("payable_price_list");
         $total_price = $request->getAttribute("total_price");
         $payment_amount = $request->getAttribute("payment_amount");
+        $achieve_type = $request->getParameter("achieve_type");
+        $sub_achieve_type = $request->getParameter("sub_achieve_type");
         $position_info = BroadcomMemberPositionDBI::selectMemberPosition($user->getMemberId());
         if ($controller->isError($position_info)) {
             $position_info->setPos(__FILE__, __LINE__);
@@ -174,8 +176,8 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
         $order_number = "YPBT" . date("Ymd") . sprintf("%04d", $order_number_count + 1);
         $order_insert_data = array();
         $order_insert_data["order_number"] = $order_number;
-        $order_insert_data["achieve_type"] = $request->getParameter("achieve_type");
-        $order_insert_data["sub_achieve_type"] = $request->getParameter("sub_achieve_type");
+        $order_insert_data["achieve_type"] = $achieve_type;
+        $order_insert_data["sub_achieve_type"] = $sub_achieve_type;
         $order_insert_data["school_id"] = $school_id;
         $order_insert_data["student_id"] = $student_id;
         $order_insert_data["order_payable"] = $total_price;
@@ -224,6 +226,9 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
             );
             $main_order_item_insert_data = array();
             $main_order_item_insert_data["contract_number"] = $main_contract_number;
+            $main_order_item_insert_data["achieve_type"] = $achieve_type;
+            $main_order_item_insert_data["sub_achieve_type"] = $sub_achieve_type;
+            $main_order_item_insert_data["school_id"] = $school_id;
             $main_order_item_insert_data["student_id"] = $student_id;
             $main_order_item_insert_data["order_id"] = $order_id;
             $main_order_item_insert_data["item_id"] = $main_item_id;
@@ -252,6 +257,9 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
                     }
                     $sub_order_item_insert_data = array();
                     $sub_order_item_insert_data["contract_number"] = $main_contract_number . "-" . ($sub_contract_number + 1);
+                    $sub_order_item_insert_data["achieve_type"] = $achieve_type;
+                    $sub_order_item_insert_data["sub_achieve_type"] = $sub_achieve_type;
+                    $sub_order_item_insert_data["school_id"] = $school_id;
                     $sub_order_item_insert_data["student_id"] = $student_id;
                     $sub_order_item_insert_data["order_id"] = $order_id;
                     $sub_order_item_insert_data["item_id"] = $sub_item_id;
