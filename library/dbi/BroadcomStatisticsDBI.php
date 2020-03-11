@@ -75,6 +75,7 @@ class BroadcomStatisticsDBI
         $dbi = Database::getInstance();
         $sql = "SELECT actual_start_date," .
                " teacher_member_id," .
+               " course_type," .
                " MAX(actual_course_hours)" .
                " FROM course_info" .
                " WHERE del_flg = 0" .

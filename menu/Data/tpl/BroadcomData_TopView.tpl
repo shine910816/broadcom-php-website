@@ -33,11 +33,25 @@
       <div class="table-item-name">签单单底/实收单底</div>
       <div class="table-item-value">{^$average_amount^}元/单</div>
     </div>
-    <div class="table-item-a">
-      <div class="table-item-name">消课时长</div>
-      <div class="table-item-value">{^$course_confirm_total_amount^}小时</div>
-    </div>
   </div>
 </div>
-
+<div class="main-table">
+  <h2>消课时长</h2>
+  <table class="disp_table">
+    <thead>
+      <tr>
+{^foreach from=$course_type_list item=course_type_name^}
+        <th style="width:500px;">{^$course_type_name^}</th>
+{^/foreach^}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+{^foreach from=$course_confirm_result_data item=course_confirm_amount^}
+        <td>{^$course_confirm_amount^}小时</td>
+{^/foreach^}
+      </tr>
+    </tbody>
+  </table>
+</div>
 {^include file=$comfooter_file^}

@@ -110,16 +110,22 @@ class BroadcomData_TopAction extends BroadcomDataActionBase
             $course_stats->setPos(__FILE__, __LINE__);
             return $course_stats;
         }
-        $course_confirm_total_amount = 0;
+        $course_confirm_result_data = array(
+                BroadcomCourseEntity::COURSE_TYPE_AUDITION => 0,
+                BroadcomCourseEntity::COURSE_TYPE_SINGLE => 0,
+                BroadcomCourseEntity::COURSE_TYPE_MULTI => 0,
+                BroadcomCourseEntity::COURSE_TYPE_CLASS => 0
+        );
         if (!empty($course_stats)) {
            foreach ($course_stats as $course_tmp) {
-               $course_confirm_total_amount += $course_tmp["MAX(actual_course_hours)"];
+               $course_confirm_result_data[$course_tmp["course_type"]] += $course_tmp["MAX(actual_course_hours)"];
            }
         }
         $request->setAttribute("achieve_type_list", $achieve_type_list);
         $request->setAttribute("result_data", $result_data);
         $request->setAttribute("average_amount", $average_amount);
-        $request->setAttribute("course_confirm_total_amount", $course_confirm_total_amount);
+        $request->setAttribute("course_type_list", BroadcomCourseEntity::getCourseTypeList());
+        $request->setAttribute("course_confirm_result_data", $course_confirm_result_data);
         return VIEW_DONE;
     }
 
