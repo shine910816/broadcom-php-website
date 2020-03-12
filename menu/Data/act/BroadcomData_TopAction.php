@@ -105,27 +105,35 @@ class BroadcomData_TopAction extends BroadcomDataActionBase
         if ($result_data["4"]["order_count"] > 0) {
             $average_amount = round($result_data["4"]["order_amount"] / $result_data["4"]["order_count"], 2);
         }
+        // 消课统计
         $course_stats = BroadcomStatisticsDBI::selectCourseStats($start_date, $end_date, $school_id);
         if ($controller->isError($course_stats)) {
             $course_stats->setPos(__FILE__, __LINE__);
             return $course_stats;
         }
-        $course_confirm_result_data = array(
-                BroadcomCourseEntity::COURSE_TYPE_AUDITION => 0,
-                BroadcomCourseEntity::COURSE_TYPE_SINGLE => 0,
-                BroadcomCourseEntity::COURSE_TYPE_MULTI => 0,
-                BroadcomCourseEntity::COURSE_TYPE_CLASS => 0
-        );
+        $course_type_list = BroadcomItemEntity::getItemMethodList();
+        $course_type_list["5"] = "试听课";
+        $course_type_list["6"] = "赠课";
+        $course_data = array();
+        foreach ($course_type_list as $course_type => $tmp) {
+            $course_data[$course_type] = 0;
+        }
         if (!empty($course_stats)) {
            foreach ($course_stats as $course_tmp) {
-               $course_confirm_result_data[$course_tmp["course_type"]] += $course_tmp["MAX(actual_course_hours)"];
+                if ($course_tmp["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION) {
+                    $course_data["5"] += $course_tmp["course_hours"];
+                } elseif ($course_tmp["item_type"] == BroadcomItemEntity::ITEM_TYPE_PRESENT) {
+                    $course_data["6"] += $course_tmp["course_hours"];
+                } else {
+                    $course_data[$course_tmp["item_method"]] += $course_tmp["course_hours"];
+                }
            }
         }
         $request->setAttribute("achieve_type_list", $achieve_type_list);
         $request->setAttribute("result_data", $result_data);
         $request->setAttribute("average_amount", $average_amount);
-        $request->setAttribute("course_type_list", BroadcomCourseEntity::getCourseTypeList());
-        $request->setAttribute("course_confirm_result_data", $course_confirm_result_data);
+        $request->setAttribute("course_type_list", $course_type_list);
+        $request->setAttribute("course_data", $course_data);
         return VIEW_DONE;
     }
 

@@ -43,13 +43,17 @@
 {^foreach from=$course_type_list item=course_type_name^}
         <th style="width:500px;">{^$course_type_name^}</th>
 {^/foreach^}
+        <th style="width:500px;">合计</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-{^foreach from=$course_confirm_result_data item=course_confirm_amount^}
+{^assign var=course_total value=0^}
+{^foreach from=$course_data item=course_confirm_amount^}
+{^assign var=course_total value=$course_total+$course_confirm_amount^}
         <td>{^$course_confirm_amount^}小时</td>
 {^/foreach^}
+        <td>{^$course_total^}小时</td>
       </tr>
     </tbody>
   </table>
