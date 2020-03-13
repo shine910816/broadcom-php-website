@@ -22,6 +22,7 @@ class Config
         $result["human_resource"]["member_info"] = SYSTEM_AUTH_LOGIN;
         $result["human_resource"]["teacher_list"] = SYSTEM_AUTH_LOGIN;
         $result["human_resource"]["teacher_info"] = SYSTEM_AUTH_LOGIN;
+        $result["human_resource"]["reset_password"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["top"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["my_leads"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["school_leads"] = SYSTEM_AUTH_LOGIN;
@@ -75,6 +76,7 @@ class Config
         $result["human_resource"]["member_info"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', '<a href="./?menu=human_resource&act=member_list">成员列表</a>', "");
         $result["human_resource"]["teacher_list"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', "教师列表");
         $result["human_resource"]["teacher_info"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', '<a href="./?menu=human_resource&act=teacher_list">教师列表</a>', "教师信息");
+        $result["human_resource"]["reset_password"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', '<a href="./?menu=human_resource&act=member_list">成员列表</a>', "重置密码");
         $result["front"]["top"] = array("前台业务");
         $result["front"]["my_leads"] = array('<a href="./?menu=front&act=top">前台业务</a>', "我的意向客户");
         $result["front"]["school_leads"] = array('<a href="./?menu=front&act=top">前台业务</a>', "校区意向客户");
@@ -241,6 +243,10 @@ class Config
         );
         // 教师信息
         $result["human_resource"]["teacher_list"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
+        $result["human_resource"]["reset_password"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
