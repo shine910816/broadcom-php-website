@@ -57,6 +57,11 @@ class Config
         $result["admin"]["item_list"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["item_input"] = SYSTEM_AUTH_ADMIN;
         $result["data"]["top"] = SYSTEM_AUTH_LOGIN;
+        $result["data"]["achieve_info"] = SYSTEM_AUTH_LOGIN;
+        $result["data"]["target_info"] = SYSTEM_AUTH_LOGIN;
+        $result["data"]["target_input"] = SYSTEM_AUTH_LOGIN;
+        $result["data"]["income_info"] = SYSTEM_AUTH_LOGIN;
+        $result["data"]["surplus_info"] = SYSTEM_AUTH_LOGIN;
         $list_data["php"] = $result;
         $result = array();
         $list_data["api"] = $result;
@@ -110,6 +115,7 @@ class Config
         $result["admin"]["room_info"] = array('<a href="./?menu=admin&act=top">后台管理</a>', '<a href="./?menu=admin&act=school_list">校区管理</a>', "教室管理");
         $result["admin"]["item_list"] = array('<a href="./?menu=admin&act=top">后台管理</a>', "课程管理");
         $result["admin"]["item_input"] = array('<a href="./?menu=admin&act=top">后台管理</a>', '<a href="./?menu=admin&act=item_list">课程管理</a>', "课程信息");
+        $result["data"]["achieve_info"] = array('<a href="./?menu=data&act=top">数据统计</a>', "业绩数据");
         return $result;
     }
 
