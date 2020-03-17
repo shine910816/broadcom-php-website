@@ -99,6 +99,15 @@ class BroadcomMemberEntity
         );
     }
 
+    public static function getSectionList()
+    {
+        return array(
+            "1" => "营销部门",
+            "2" => "学管部门",
+            "3" => "教学部门"
+        );
+    }
+
     public static function getPositionLevelList()
     {
         return array(

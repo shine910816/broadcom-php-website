@@ -8,7 +8,7 @@
 class BroadcomStatisticsDBI
 {
 
-    public static function selectOrderItemCount($start_date, $end_date, $school_id)
+    public static function selectOrderItemCount($start_date, $end_date, $school_id, $member_list = null)
     {
         $dbi = Database::getInstance();
         $sql = "SELECT achieve_type," .
@@ -21,8 +21,11 @@ class BroadcomStatisticsDBI
                " AND order_item_status IN (2, 3, 4)" .
                " AND insert_date >= " . $dbi->quote($start_date) .
                " AND insert_date <= " . $dbi->quote($end_date) .
-               " AND school_id = " . $school_id .
-               " GROUP BY achieve_type";
+               " AND school_id = " . $school_id;
+        if (!is_null($member_list)) {
+            $sql .= " AND assign_member_id IN (" . implode(", ", $member_list) . ")";
+        }
+        $sql .= " GROUP BY achieve_type";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
@@ -36,7 +39,7 @@ class BroadcomStatisticsDBI
         return $data;
     }
 
-    public static function selectCancelOrderItemCount($start_date, $end_date, $school_id)
+    public static function selectCancelOrderItemCount($start_date, $end_date, $school_id, $member_list = null)
     {
         $dbi = Database::getInstance();
         $sql = "SELECT * FROM order_item_info" .
@@ -46,6 +49,9 @@ class BroadcomStatisticsDBI
                " AND update_date >= " . $dbi->quote($start_date) .
                " AND update_date <= " . $dbi->quote($end_date) .
                " AND school_id = " . $school_id;
+        if (!is_null($member_list)) {
+            $sql .= " AND assign_member_id IN (" . implode(", ", $member_list) . ")";
+        }
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
@@ -59,7 +65,7 @@ class BroadcomStatisticsDBI
         return $data;
     }
 
-    public static function selectCourseStats($start_date, $end_date, $school_id)
+    public static function selectCourseStats($start_date, $end_date, $school_id, $member_list = null, $teacher_flg = false)
     {
         $dbi = Database::getInstance();
         $sql = "SELECT c.actual_start_date," .
@@ -77,8 +83,15 @@ class BroadcomStatisticsDBI
                " AND c.reset_examine_flg = 0" .
                " AND c.actual_start_date >= " . $dbi->quote($start_date) .
                " AND c.actual_start_date <= " . $dbi->quote($end_date) .
-               " AND c.school_id = " . $school_id .
-               " GROUP BY c.actual_start_date, c.teacher_member_id";
+               " AND c.school_id = " . $school_id;
+        if (!is_null($member_list)) {
+            if ($teacher_flg) {
+                $sql .= " AND teacher_member_id IN (" . implode(", ", $member_list) . ")";
+            } else {
+                $sql .= " AND assign_member_id IN (" . implode(", ", $member_list) . ")";
+            }
+        }
+        $sql .= " GROUP BY c.actual_start_date, c.teacher_member_id";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
