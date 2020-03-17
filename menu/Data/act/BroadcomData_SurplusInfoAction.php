@@ -102,7 +102,6 @@ class BroadcomData_SurplusInfoAction extends BroadcomDataActionBase
         $request->setAttribute("student_count", $student_count);
         $request->setAttribute("total_count", $total_count);
         $request->setAttribute("total_amount", $total_amount);
-Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 }
