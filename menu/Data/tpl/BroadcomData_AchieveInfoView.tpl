@@ -82,12 +82,12 @@ $(document).ready(function(){
 {^foreach from=$achieve_type_list key=achieve_type item=achieve_type_name^}
       <tr>
         <td>{^$achieve_type_name^}</td>
-        <td>{^$result_data[$achieve_type]["order_count"]^}单</td>
-        <td>{^$result_data[$achieve_type]["order_amount"]^}元</td>
-        <td>{^$result_data[$achieve_type]["cancel_order_count"]^}单</td>
-        <td>{^$result_data[$achieve_type]["cancel_order_amount"]^}元</td>
-        <td>{^$result_data[$achieve_type]["total_amount"]^}元</td>
-        <td>{^$result_data[$achieve_type]["calculate_amount"]^}元</td>
+        <td>{^$achieve_data[$achieve_type]["order_count"]^}单</td>
+        <td>{^$achieve_data[$achieve_type]["order_amount"]^}元</td>
+        <td>{^$achieve_data[$achieve_type]["cancel_order_count"]^}单</td>
+        <td>{^$achieve_data[$achieve_type]["cancel_order_amount"]^}元</td>
+        <td>{^$achieve_data[$achieve_type]["total_amount"]^}元</td>
+        <td>{^$achieve_data[$achieve_type]["calculate_amount"]^}元</td>
       </tr>
 {^/foreach^}
     </tbody>
