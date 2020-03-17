@@ -136,5 +136,25 @@ class BroadcomStatisticsDBI
         $result->free();
         return $data;
     }
+
+    public static function selectOrderItemBySchool($school_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM order_item_info WHERE del_flg = 0" .
+               " AND school_id = " . $school_id .
+               " AND order_item_status = " . BroadcomOrderEntity::ORDER_ITEM_STATUS_2 .
+               " ORDER BY student_id ASC, order_item_id ASC";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["student_id"]][$row["order_item_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
 }
 ?>
