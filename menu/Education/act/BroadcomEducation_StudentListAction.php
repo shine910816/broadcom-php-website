@@ -82,7 +82,6 @@ class BroadcomEducation_StudentListAction extends BroadcomEducationActionBase
         }
         $request->setAttribute("student_info_list", $student_info_list);
         $request->setAttribute("member_name_list", $member_name_list);
-//Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 }

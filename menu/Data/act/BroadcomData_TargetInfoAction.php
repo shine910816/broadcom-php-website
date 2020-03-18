@@ -165,7 +165,6 @@ class BroadcomData_TargetInfoAction extends BroadcomDataActionBase
         }
         $request->setAttribute("target_type_list", $target_type_list);
         $request->setAttribute("target_data", $target_result);
-//Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 }
