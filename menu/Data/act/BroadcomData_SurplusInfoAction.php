@@ -77,9 +77,9 @@ class BroadcomData_SurplusInfoAction extends BroadcomDataActionBase
                 if (isset($student_list[$student_id])) {
                     $student_info = $student_list[$student_id];
                     $result_data[$student_id] = array(
-                        "student_name" => $student_info["$student_info"],
-                        "student_mobile_number" => $student_info["$student_mobile_number"],
-                        "student_grade_name" => BroadcomStudentEntity::getGradeName($student_info["$student_entrance_year"]),
+                        "student_name" => $student_info["student_name"],
+                        "student_mobile_number" => $student_info["student_mobile_number"],
+                        "student_grade_name" => BroadcomStudentEntity::getGradeName($student_info["student_entrance_year"]),
                         "student_level" => $student_level_list[$student_info["student_level"]],
                         "student_surplus_count" => 0,
                         "student_surplus_amount" => 0

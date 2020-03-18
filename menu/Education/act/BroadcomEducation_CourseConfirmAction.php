@@ -67,6 +67,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
         $school_id = $position_info["school_id"];
         $teacher_flg = false;
         $teacher_position_list = array(
+            BroadcomMemberEntity::POSITION_TEACH_MANAGER,
             BroadcomMemberEntity::POSITION_TEACHER,
             BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER
         );
