@@ -67,13 +67,14 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
         $school_id = $position_info["school_id"];
         $teacher_flg = false;
         $teacher_position_list = array(
+            BroadcomMemberEntity::POSITION_TEACH_MANAGER,
             BroadcomMemberEntity::POSITION_TEACHER,
             BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER
         );
         if (in_array($position_info["member_position"], $teacher_position_list)) {
             $teacher_flg = true;
         }
-        $course_info = BroadcomCourseInfoDBI::selectCourseInfo($course_id);;
+        $course_info = BroadcomCourseInfoDBI::selectCourseInfo($course_id);
         if ($controller->isError($course_info)) {
             $course_info->setPos(__FILE__, __LINE__);
             return $course_info;
@@ -90,7 +91,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
                 return $err;
             }
         } else {
-            if ($member_id != $course_info["operated_by"] && $position_info["member_position"] != BroadcomMemberEntity::POSITION_HEADMASTER) {
+            if ($member_id != $course_info["assign_member_id"] && $position_info["member_position"] != BroadcomMemberEntity::POSITION_HEADMASTER) {
                 $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
                 $err->setPos(__FILE__, __LINE__);
                 return $err;

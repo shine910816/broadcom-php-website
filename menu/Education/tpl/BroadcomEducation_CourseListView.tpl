@@ -20,6 +20,7 @@
           <th style="width:200px;">教师</th>
           <th style="width:200px;">学科</th>
           <th style="width:200px;">消课情况</th>
+          <th style="width:200px;">操作</th>
         </tr>
       </thead>
       <tbody>
@@ -33,6 +34,7 @@
           <td>{^$teacher_info[$course_info["teacher_member_id"]]["m_name"]^}</td>
           <td>{^$subject_list[$course_info["subject_id"]]^}</td>
           <td>{^if $course_info["reset_examine_flg"]^}已返课{^else^}{^if $course_info["reset_flg"]^}待返课审核{^else^}{^if $course_info["confirm_flg"]^}已消课{^else^}未消课{^/if^}{^/if^}{^/if^}</td>
+          <td><a href="./?menu=education&act=course_confirm&course_id={^$course_info["course_id"]^}" class="button-field ui-btn-orange">详细</a></td>
         </tr>
 {^/foreach^}
       </tbody>

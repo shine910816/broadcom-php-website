@@ -291,6 +291,8 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                     $insert_data["course_type"] = $course_type;
                     $insert_data["school_id"] = $school_id;
                     $insert_data["student_id"] = $student_id;
+                    $insert_data["assign_member_id"] = $member_id;
+                    $insert_data["assign_date"] = date("Y-m-d H:i:s");
                     if ($course_type != BroadcomCourseEntity::COURSE_TYPE_AUDITION) {
                         $order_item_id = $request->getAttribute("order_item_id");
                         $item_id = $request->getAttribute("item_id");
