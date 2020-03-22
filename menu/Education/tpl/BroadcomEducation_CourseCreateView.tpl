@@ -35,7 +35,10 @@
       </div>
       <div class="table-item-b">
         <div class="table-item-name">授课方式</div>
-        <div class="table-item-value">{^if !empty($order_item_info)^}{^$item_method_list[$order_item_info["item_method"]]^}{^else^}一对多{^/if^}</div>
+        <div class="table-item-value">{^if !empty($order_item_info)^}{^$item_method_list[$order_item_info["item_method"]]^}{^else^}<select name="course_type" class="text-field">
+          <option value="5">一对一试听课</option>
+          <option value="6">一对多试听课</option>
+        </select>{^/if^}</div>
       </div>
     </div>
   </div>

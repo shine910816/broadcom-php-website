@@ -10,6 +10,7 @@ class BroadcomOrderEntity
     const ACHIEVE_TYPE_1 = "1";
     const ACHIEVE_TYPE_2 = "2";
     const ACHIEVE_TYPE_3 = "3";
+    const ACHIEVE_TYPE_4 = "4";
 
     const ACHIEVE_TYPE_1_1 = "1";
     const ACHIEVE_TYPE_1_2 = "2";
@@ -53,7 +54,8 @@ class BroadcomOrderEntity
     {
         return array(
             self::ACHIEVE_TYPE_1 => "新签",
-            self::ACHIEVE_TYPE_2 => "推荐",
+            self::ACHIEVE_TYPE_2 => "学管推荐",
+            self::ACHIEVE_TYPE_4 => "教师推荐",
             self::ACHIEVE_TYPE_3 => "续费"
         );
     }

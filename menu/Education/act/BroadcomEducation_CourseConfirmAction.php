@@ -108,7 +108,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
             return $err;
         }
         $order_item_info = array();
-        if ($course_info["course_type"] != BroadcomCourseEntity::COURSE_TYPE_AUDITION) {
+        if ($course_info["course_type"] != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO && $course_info["course_type"] != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
             $order_item_info = BroadcomOrderDBI::selectOrderItem($course_info["order_item_id"]);
             if ($controller->isError($order_item_info)) {
                 $order_item_info->setPos(__FILE__, __LINE__);
@@ -130,7 +130,8 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
         }
         $confirm_able_flg = false;
         $reset_able_flg = false;
-        if ($course_info["course_type"] != BroadcomCourseEntity::COURSE_TYPE_AUDITION &&
+        if ($course_info["course_type"] != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO &&
+            $course_info["course_type"] != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD &&
             $course_info["course_type"] != BroadcomCourseEntity::COURSE_TYPE_CLASS &&
             $course_info["confirm_flg"] && !$course_info["reset_flg"] && !$teacher_flg) {
             $reset_able_flg = true;

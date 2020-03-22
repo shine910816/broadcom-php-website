@@ -16,6 +16,12 @@ function change_select() {
         case "1":
             disp_html_text = sub_achieve_type_context_1;
             break;
+        case "2":
+            // TODO 学员列表
+            break;
+        case "4":
+            // TODO 教师列表
+            break;
         default:
             disp_html_text = '<input type="hidden" name="sub_achieve_type" value="0" />';
             break;

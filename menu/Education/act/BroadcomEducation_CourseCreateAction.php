@@ -58,7 +58,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
         $order_item_id = null;
         $order_item_info = array();
         $item_id = null;
-        $course_type = BroadcomCourseEntity::COURSE_TYPE_AUDITION;
+        $course_type = BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO;
         $schedule_list = array();
         $create_able_flg = false;
         $set_course_info = array();
@@ -151,7 +151,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 $hint_context = "该学员已经试听超过2小时";
             }
         }
-        if ($course_type == BroadcomCourseEntity::COURSE_TYPE_AUDITION || $course_type == BroadcomCourseEntity::COURSE_TYPE_MULTI) {
+        if ($course_type == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD || $course_type == BroadcomCourseEntity::COURSE_TYPE_DOUBLE || $course_type == BroadcomCourseEntity::COURSE_TYPE_TRIBLE) {
             $others_course_info = BroadcomCourseInfoDBI::selectMultiCourseInfoByItem($student_id, date("Y-m-d H:i:s"), $item_id);
             if ($controller->isError($others_course_info)) {
                 $others_course_info->setPos(__FILE__, __LINE__);

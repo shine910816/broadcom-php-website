@@ -125,7 +125,8 @@ class BroadcomCourseInfoDBI
     {
         $dbi = Database::getInstance();
         $sql = "SELECT * FROM course_info WHERE del_flg = 0 AND student_id = " . $student_id .
-               " AND course_type = " . BroadcomCourseEntity::COURSE_TYPE_AUDITION .
+               " AND course_type IN (" . BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO .
+               ", " . BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD . ")" .
                " ORDER BY course_start_date ASC";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
