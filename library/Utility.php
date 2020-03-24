@@ -157,6 +157,18 @@ class Utility
         return $mailer->send($mail_address, $title, $content);
     }
 
+    public static function getObjectId($param)
+    {
+        $object_id_str = strtoupper(md5($param));
+        $object_id_arr = array();
+        $object_id_arr[] = substr($object_id_str, 0, 8);
+        $object_id_arr[] = substr($object_id_str, 8, 4);
+        $object_id_arr[] = substr($object_id_str, 12, 4);
+        $object_id_arr[] = substr($object_id_str, 16, 4);
+        $object_id_arr[] = substr($object_id_str, 20);
+        return implode("-", $object_id_arr);
+    }
+
     /**
      * 数字转文字
      *
@@ -410,6 +422,26 @@ class Utility
             }
         }
         return $result;
+    }
+
+    public static function getJsonRespond($url, $post_data)
+    {
+        $content = http_build_query($post_data);
+        $options = array("http" => array(
+            "method" => "POST",
+            "header" => "Content-Type:application/x-www-form-urlencoded",
+            "content" => $content
+        ));
+        $stream_context = stream_context_create($options);
+        $respond_json = file_get_contents(SYSTEM_API_HOST . $url, false, $stream_context);
+        $respond_json_arr = json_decode($respond_json, true);
+        if ($respond_json_arr["error_code"]) {
+            $err = Error::getInstance();
+            $err->raiseError($respond_json_arr["error_code"], $respond_json_arr["error_message"]);
+            return $err;
+        } else {
+            return $respond_json_arr["result"];
+        }
     }
 
     public static function getContentTypeList()

@@ -53,11 +53,11 @@ class Database
             return $error;
         }
         $now_date = date("Y-m-d H:i:s");
-        $operated_by = "0";
-        if (isset($_SESSION["member_id"])) {
-            $operated_by = $_SESSION["member_id"];
-        }
-        $insertData['operated_by'] = $operated_by;
+        //$operated_by = "0";
+        //if (isset($_SESSION["member_id"])) {
+        //    $operated_by = $_SESSION["member_id"];
+        //}
+        //$insertData['operated_by'] = $operated_by;
         $insertData['insert_date'] = $now_date;
         $insertData['update_date'] = $now_date;
         $insertData['del_flg'] = 0;
