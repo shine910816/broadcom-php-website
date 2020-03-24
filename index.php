@@ -21,12 +21,5 @@ $controller = Controller::getInstance();
 $user = User::getInstance();
 $request = Request::getInstance();
 $launcher = Launcher::getInstance();
-//$launcher->start($controller, $user, $request);
-$file_text = explode("\n", file_get_contents("city.txt"));
-$result = array();
-foreach ($file_text as $city_item) {
-    $info = explode("\t", $city_item);
-    $result[$info[0]][$info[1]] = $info[2];
-}
-Utility::testVariable($result);
+$launcher->start($controller, $user, $request);
 ?>
