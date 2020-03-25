@@ -171,7 +171,7 @@ class BroadcomDataActionBase extends ActionBase
             $course_data[$course_type] = 0;
         }
         if (!empty($course_stats)) {
-           foreach ($course_stats as $course_tmp) {
+            foreach ($course_stats as $course_tmp) {
                 if ($course_tmp["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION) {
                     $course_data["5"] += $course_tmp["course_hours"];
                 } elseif ($course_tmp["item_type"] == BroadcomItemEntity::ITEM_TYPE_PRESENT) {
@@ -179,7 +179,7 @@ class BroadcomDataActionBase extends ActionBase
                 } else {
                     $course_data[$course_tmp["item_method"]] += $course_tmp["course_hours"];
                 }
-           }
+            }
         }
         return array(
             "achieve_type_list" => $achieve_type_list,
