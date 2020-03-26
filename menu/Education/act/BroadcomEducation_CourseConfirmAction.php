@@ -108,7 +108,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
             return $err;
         }
         $order_item_info = array();
-        if ($course_info["course_type"] != BroadcomCourseEntity::COURSE_TYPE_AUDITION) {
+        if ($course_info["course_type"] != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
             $order_item_info = BroadcomOrderDBI::selectOrderItem($course_info["order_item_id"]);
             if ($controller->isError($order_item_info)) {
                 $order_item_info->setPos(__FILE__, __LINE__);
@@ -130,7 +130,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
         }
         $confirm_able_flg = false;
         $reset_able_flg = false;
-        if ($course_info["course_type"] != BroadcomCourseEntity::COURSE_TYPE_AUDITION &&
+        if ($course_info["course_type"] != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD &&
             $course_info["course_type"] != BroadcomCourseEntity::COURSE_TYPE_CLASS &&
             $course_info["confirm_flg"] && !$course_info["reset_flg"] && !$teacher_flg) {
             $reset_able_flg = true;
@@ -149,7 +149,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
                         continue;
                     }
                 }
-            } elseif ($course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION) {
+            } elseif ($course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
                 if ($student_info["audition_hours"] <= 0) {
                     // TODO 无试听时长时不能消试听课？
                     $ready_cnf_flg = false;
@@ -293,7 +293,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
                 $course_update_data["actual_start_date"] = date("Y-m-d H:i:s", $start_date_ts);
                 $course_update_data["actual_expire_date"] = date("Y-m-d H:i:s", $start_end_ts);
                 $course_update_data["actual_course_hours"] = $actual_course_hours;
-                if ($course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION) {
+                if ($course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
                     $student_update_data = array();
                     if ($student_info["audition_hours"] > 0) {
                         $student_update_data["audition_hours"] = $student_info["audition_hours"] - $actual_course_hours;

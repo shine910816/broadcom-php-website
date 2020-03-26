@@ -172,7 +172,7 @@ class BroadcomDataActionBase extends ActionBase
         }
         if (!empty($course_stats)) {
             foreach ($course_stats as $course_tmp) {
-                if ($course_tmp["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION) {
+                if ($course_tmp["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
                     $course_data["5"] += $course_tmp["course_hours"];
                 } elseif ($course_tmp["item_type"] == BroadcomItemEntity::ITEM_TYPE_PRESENT) {
                     $course_data["6"] += $course_tmp["course_hours"];

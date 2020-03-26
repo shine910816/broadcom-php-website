@@ -58,7 +58,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
         $order_item_id = null;
         $order_item_info = array();
         $item_id = null;
-        $course_type = BroadcomCourseEntity::COURSE_TYPE_AUDITION;
+        $course_type = BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD;
         $schedule_list = array();
         $create_able_flg = false;
         $set_course_info = array();
@@ -114,7 +114,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 $course_type = BroadcomCourseEntity::COURSE_TYPE_SINGLE;
                 $create_able_flg = true;
             } else {
-                $course_type = BroadcomCourseEntity::COURSE_TYPE_MULTI;
+                $course_type = BroadcomCourseEntity::COURSE_TYPE_DOUBLE;
                 $create_able_flg = true;
             }
             if ($order_item_info["assign_member_id"] != $member_id) {
@@ -151,7 +151,12 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 $hint_context = "该学员已经试听超过2小时";
             }
         }
-        if ($course_type == BroadcomCourseEntity::COURSE_TYPE_AUDITION || $course_type == BroadcomCourseEntity::COURSE_TYPE_MULTI) {
+        $multi_course_type_list = array(
+            BroadcomCourseEntity::COURSE_TYPE_DOUBLE,
+            BroadcomCourseEntity::COURSE_TYPE_TRIBLE,
+            BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD
+        );
+        if ($course_type == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD || $course_type == BroadcomCourseEntity::COURSE_TYPE_DOUBLE) {
             $others_course_info = BroadcomCourseInfoDBI::selectMultiCourseInfoByItem($student_id, date("Y-m-d H:i:s"), $item_id);
             if ($controller->isError($others_course_info)) {
                 $others_course_info->setPos(__FILE__, __LINE__);
@@ -293,7 +298,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                     $insert_data["student_id"] = $student_id;
                     $insert_data["assign_member_id"] = $member_id;
                     $insert_data["assign_date"] = date("Y-m-d H:i:s");
-                    if ($course_type != BroadcomCourseEntity::COURSE_TYPE_AUDITION) {
+                    if ($course_type != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
                         $order_item_id = $request->getAttribute("order_item_id");
                         $item_id = $request->getAttribute("item_id");
                         $order_item_info = $request->getAttribute("order_item_info");

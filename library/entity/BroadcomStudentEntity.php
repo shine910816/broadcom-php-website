@@ -29,6 +29,7 @@ class BroadcomStudentEntity
     const MEDIA_CHANNEL_1_2 = "2";
     const MEDIA_CHANNEL_1_3 = "3";
     const MEDIA_CHANNEL_1_4 = "4";
+    const MEDIA_CHANNEL_1_5 = "5";
 
     const PURPOSE_LEVEL_HIGH = "3";
     const PURPOSE_LEVEL_MIDDLE = "2";
@@ -101,7 +102,8 @@ class BroadcomStudentEntity
             self::MEDIA_CHANNEL_1_1 => "课程顾问介绍",
             self::MEDIA_CHANNEL_1_2 => "智能营销媒体",
             self::MEDIA_CHANNEL_1_3 => "市场",
-            self::MEDIA_CHANNEL_1_4 => "学习顾问推荐"
+            self::MEDIA_CHANNEL_1_4 => "学习顾问推荐",
+            self::MEDIA_CHANNEL_1_5 => "教师推荐"
         );
     }
 

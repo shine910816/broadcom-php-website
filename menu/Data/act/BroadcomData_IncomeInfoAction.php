@@ -69,7 +69,7 @@ class BroadcomData_IncomeInfoAction extends BroadcomDataActionBase
         }
         if (isset($course_income_info[$school_id])) {
             foreach ($course_income_info[$school_id] as $course_tmp) {
-                if ($course_tmp["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION) {
+                if ($course_tmp["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
                     $course_data["5"]["amount"] += $course_tmp["course_hours"];
                     $course_data["5"]["count"] += 1;
                 } elseif ($course_tmp["item_type"] == BroadcomItemEntity::ITEM_TYPE_PRESENT) {
