@@ -2,19 +2,38 @@
 {^include file=$usererror_file^}
 <script type="text/javascript">
 {^foreach from=$sub_achieve_type_list key=achieve_type item=achieve_item^}
-var sub_achieve_type_context_{^$achieve_type^} = '<div class="table-item-name">' + "{^$achieve_type_list[$achieve_type]^}" + '类型</div>' +
-    '<div class="table-item-value">' +
-    '<select name="sub_achieve_type" class="text-field">' +
+var sub_achieve_type_context_{^$achieve_type^} = '<select name="sub_achieve_type" class="table-text-field">' +
 {^foreach from=$achieve_item key=sub_achieve_type item=sub_achieve_name^}
     '<option value="' + "{^$sub_achieve_type^}" + '">' + "{^$sub_achieve_name^}" + '</option>' +
 {^/foreach^}
-    '</select></div>';
+    '</select>';
 {^/foreach^}
+var audition_teacher_context = '<tr><td><select name="audition_teacher[]" class="table-text-field">' +
+{^foreach from=$audition_teacher_list key=t_member_id item=teacher_name^}
+    '<option value="' + "{^$t_member_id^}" + '">' + "{^$teacher_name^}" + '</option>' +
+{^/foreach^}
+    '</select></td></tr>';
+var achieve_member_context = '<tr><td><select name="achieve_member[]" class="table-text-field">' +
+{^foreach from=$achieve_member_list key=t_member_id item=member_name^}
+    '<option value="' + "{^$t_member_id^}" + '"{^if $member_id eq $t_member_id^} selected{^/if^}>' + "{^$member_name^}" + '</option>' +
+{^/foreach^}
+    '</select></td><td><select name="achieve_ratio[]" class="table-text-field">' +
+{^for $k=0 to 9^}
+{^assign var=ratio_number value=10*(10-$k)^}
+    '<option value="' + "{^$ratio_number^}" + '">' + "{^$ratio_number^}" + '%</option>' +
+{^/for^}
+    '</select></td></tr>';;
 function change_select() {
     var disp_html_text = "";
     switch ($("#achieve_type").val()) {
         case "1":
             disp_html_text = sub_achieve_type_context_1;
+            break;
+        case "2":
+            disp_html_text = sub_achieve_type_context_2;
+            break;
+        case "3":
+            disp_html_text = sub_achieve_type_context_3;
             break;
         default:
             disp_html_text = '<input type="hidden" name="sub_achieve_type" value="0" />';
@@ -22,10 +41,20 @@ function change_select() {
     }
     $("#sub_achieve_type_html").empty().html(disp_html_text);
 }
+function add_achieve_member() {
+    $("#achieve_member_html").append(achieve_member_context);
+}
 $(document).ready(function(){
     change_select();
+    add_achieve_member();
     $("#achieve_type").change(function(){
         change_select();
+    });
+    $("#add_audition_teacher").click(function(){
+        $("#audition_teacher_html").append(audition_teacher_context);
+    });
+    $("#add_achieve_member").click(function(){
+        add_achieve_member();
     });
 });
 </script>
@@ -99,29 +128,67 @@ $(document).ready(function(){
       </tbody>
     </table>
   </div>
-  <div class="table-line">
-    <div class="table-item-b">
-      <div class="table-item-name">合计金额</div>
-      <div class="table-item-value">{^$total_price^}元</div>
-    </div>
-  </div>
-  <div class="table-line">
-    <div class="table-item-b">
-      <div class="table-item-name">本次付款</div>
-      <div class="table-item-value"><input type="text" name="payment_amount" value="{^$payment_amount^}" class="text-field hylight-field auto-select" /></div>
-    </div>
-    <div class="table-item-b">
-      <div class="table-item-name">业绩类型</div>
-      <div class="table-item-value">
-        <select name="achieve_type" class="text-field" id="achieve_type">
+  <div class="main-table">
+    <h2>金额结算</h2>
+    <table class="disp_table">
+      <thead>
+        <tr>
+          <th style="width:500px;">合计金额</th>
+          <th style="width:500px;">本次付款</th>
+          <th style="width:500px;">业绩类型</th>
+          <th style="width:500px;">业绩类型详细</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{^$total_price^}元</td>
+          <td><input type="text" name="payment_amount" value="{^$payment_amount^}" class="table-text-field auto-select" /></td>
+          <td>
+            <select name="achieve_type" class="table-text-field" id="achieve_type">
 {^foreach from=$achieve_type_list key=achieve_type item=achieve_name^}
-          <option value="{^$achieve_type^}">{^$achieve_name^}</option>
+              <option value="{^$achieve_type^}">{^$achieve_name^}</option>
 {^/foreach^}
-        <select>
-      </div>
-    </div>
-    <div class="table-item-b" id="sub_achieve_type_html"></div>
+            <select>
+          </td>
+          <td id="sub_achieve_type_html"></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+{^if !empty($audition_teacher_list)^}
+  <div class="table-line">
+    <button type="button" class="button-field ui-btn-purple" id="add_audition_teacher"><i class="fa fa-plus"></i> 添加试听教师</button>
+  </div>
+  <div class="main-table">
+    <h2>试听教师</h2>
+    <table class="disp_table">
+      <thead>
+        <tr>
+          <th>教师选择</th>
+        </tr>
+      </thead>
+      <tbody id="audition_teacher_html"></tbody>
+    </table>
+  </div>
+{^/if^}
+
+  <div class="table-line">
+    <button type="button" class="button-field ui-btn-purple" id="add_achieve_member"><i class="fa fa-plus"></i> 添加业绩所属人</button>
+  </div>
+  <div class="main-table">
+    <h2>业绩所属人</h2>
+    <table class="disp_table">
+      <thead>
+        <tr>
+          <th>业绩所属人选择</th>
+          <th>业绩比例选择</th>
+        </tr>
+      </thead>
+      <tbody id="achieve_member_html"></tbody>
+    </table>
+  </div>
+
+
 {^/if^}
   <div class="table-line"></div>
   <div class="table-line">
