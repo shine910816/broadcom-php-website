@@ -46,8 +46,8 @@
       <tbody>
 {^foreach from=$course_list key=course_id item=course_info^}
         <tr>
-          <td>{^$course_type_list[$course_info["course_type"]]^}</td>
-          <td>{^if $course_info["course_type"] neq "1"^}{^$item_list[$course_info["item_id"]]["item_name"]^}{^else^}一对多试听课{^/if^}</td>
+          <td>{^if $course_info["course_type"] eq "5" or $course_info["course_type"] eq "6"^}试听课{^else^}{^$course_type_list[$course_info["course_type"]]^}{^/if^}</td>
+          <td>{^if $course_info["course_type"] eq "5" or $course_info["course_type"] eq "6"^}{^$course_type_list[$course_info["course_type"]]^}{^else^}{^$item_list[$course_info["item_id"]]["item_name"]^}{^/if^}</td>
           <td>{^$course_info["course_start_date"]|date_format:"%Y-%m-%d %H:%M"^}~{^$course_info["course_expire_date"]|date_format:"%H:%M"^}</td>
           <td>{^$room_list[$course_info["room_id"]]^}</td>
           <td>{^$teacher_info[$course_info["teacher_member_id"]]["m_name"]^}</td>
