@@ -171,7 +171,6 @@ $(document).ready(function(){
     </table>
   </div>
 {^/if^}
-
   <div class="table-line">
     <button type="button" class="button-field ui-btn-purple" id="add_achieve_member"><i class="fa fa-plus"></i> 添加业绩所属人</button>
   </div>
@@ -187,8 +186,6 @@ $(document).ready(function(){
       <tbody id="achieve_member_html"></tbody>
     </table>
   </div>
-
-
 {^/if^}
   <div class="table-line"></div>
   <div class="table-line">

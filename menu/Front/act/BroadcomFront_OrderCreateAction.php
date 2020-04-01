@@ -231,7 +231,6 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
 
     private function _doCreateExecute(Controller $controller, User $user, Request $request)
     {
-//Utility::testVariable($request->getAttributes());
         $member_id = $user->getMemberId();
         $student_id = $request->getAttribute("student_id");
         $cart_list = $request->getAttribute("cart_list");
