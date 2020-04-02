@@ -38,7 +38,7 @@
       </div>
       <div class="table-item-b">
         <div class="table-item-name">授课方式</div>
-        <div class="table-item-value">{^if !empty($order_item_info)^}{^$item_method_list[$order_item_info["item_method"]]^}{^else^}{^if $course_type eq "5"^}一对一{^else^}一对多{^/if^}试听课{^/if^}</div>
+        <div class="table-item-value">{^if !empty($order_item_info)^}{^$item_method_list[$order_item_info["item_method"]]^}{^else^}{^if $course_type eq "5"^}一对一{^else^}一对多{^/if^}试听课{^/if^}{^if $course_type eq "5" or $course_type eq "6"^} <a href="./?menu={^$current_menu^}&act={^$current_act^}&student_id={^$student_id^}{^if $course_type eq "5"^}&multi=1{^/if^}" class="text-link">切换</a>{^/if^}</div>
       </div>
     </div>
   </div>

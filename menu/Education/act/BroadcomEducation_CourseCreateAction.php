@@ -110,11 +110,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                         return $schedule_list;
                     }
                 }
-            //} elseif ($order_item_info["item_method"] == BroadcomItemEntity::ITEM_METHOD_1_TO_1) {
-            //    $course_type = BroadcomCourseEntity::COURSE_TYPE_SINGLE;
-            //    $create_able_flg = true;
             } else {
-                $course_type = BroadcomCourseEntity::COURSE_TYPE_DOUBLE;
                 $create_able_flg = true;
                 switch ($order_item_info["item_method"]) {
                     case BroadcomItemEntity::ITEM_METHOD_1_TO_2:
