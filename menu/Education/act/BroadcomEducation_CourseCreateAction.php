@@ -161,8 +161,6 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
             if ($student_info_data["audition_hours"] <= 0) {
                 $hint_context = "该学员已经试听超过2小时";
             }
-            if ($request->hasParameter("do_create")) {
-            }
         }
         $multi_course_type_list = array(
             BroadcomCourseEntity::COURSE_TYPE_DOUBLE,
@@ -312,7 +310,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                     $insert_data["student_id"] = $student_id;
                     $insert_data["assign_member_id"] = $member_id;
                     $insert_data["assign_date"] = date("Y-m-d H:i:s");
-                    if ($course_type != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
+                    if ($course_type != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO && $course_type != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
                         $order_item_id = $request->getAttribute("order_item_id");
                         $item_id = $request->getAttribute("item_id");
                         $order_item_info = $request->getAttribute("order_item_info");

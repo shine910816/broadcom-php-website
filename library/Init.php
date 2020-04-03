@@ -25,6 +25,10 @@ define("SYSTEM_DEFAULT_TITLE", "教务管理系统 - 博通教育");
  */
 define("SYSTEM_APP_HOST", "http://" . $_SERVER['HTTP_HOST'] . "/");
 /**
+ * 系统默认API域名
+ */
+define("SYSTEM_API_HOST", "http://" . $_SERVER['HTTP_HOST'] . "/api/");
+/**
  * 系统文件名头
  */
 define("SYSTEM_FILE_HEADER", "Broadcom");

@@ -64,6 +64,7 @@ class Config
         $result["data"]["surplus_info"] = SYSTEM_AUTH_LOGIN;
         $list_data["php"] = $result;
         $result = array();
+        $result["student"]["create"] = SYSTEM_AUTH_COMMON;
         $list_data["api"] = $result;
         return $list_data;
     }
