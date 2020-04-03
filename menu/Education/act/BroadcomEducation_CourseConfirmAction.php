@@ -109,10 +109,10 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
         }
         $order_item_info = array();
         $audition_type_list = array(
-	    BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO,
-	    BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD
-	);
-	if (!in_array($course_info["course_type"], $audition_type_list)) {
+            BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO,
+            BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD
+        );
+        if (!in_array($course_info["course_type"], $audition_type_list)) {
             $order_item_info = BroadcomOrderDBI::selectOrderItem($course_info["order_item_id"]);
             if ($controller->isError($order_item_info)) {
                 $order_item_info->setPos(__FILE__, __LINE__);
