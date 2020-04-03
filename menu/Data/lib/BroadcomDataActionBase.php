@@ -151,11 +151,11 @@ class BroadcomDataActionBase extends ActionBase
             $stats_item["total_amount"] += $achieve_stats_item["total_amount"];
             $stats_item["calculate_amount"] += $achieve_stats_item["calculate_amount"];
         }
-        $achieve_type_list["4"] = "合计";
-        $result_data["4"] = $stats_item;
+        $achieve_type_list["5"] = "合计";
+        $result_data["5"] = $stats_item;
         $average_amount = 0;
-        if ($result_data["4"]["order_count"] > 0) {
-            $average_amount = round($result_data["4"]["order_amount"] / $result_data["4"]["order_count"], 2);
+        if ($result_data["5"]["order_count"] > 0) {
+            $average_amount = round($result_data["5"]["order_amount"] / $result_data["5"]["order_count"], 2);
         }
         // 消课统计
         $course_stats = BroadcomStatisticsDBI::selectCourseStats($start_date, $end_date, $school_id, $member_id_list, $teacher_flg);
