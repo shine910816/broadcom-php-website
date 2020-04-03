@@ -64,6 +64,7 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
+        $school_id = $student_info["school_id"];
         // 判断是否为高中毕业对象
         $scope_out_flg = false;
         $entrance_year = $student_info["student_entrance_year"];
@@ -97,13 +98,98 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
             $payable_price_list[$item_id] = $item_total_price;
             $total_price += $item_total_price;
         }
+        // 业绩类型详细
+        $audition_teacher_list = array();
+        $sub_achieve_type_list = BroadcomOrderEntity::getSubAchieveTypeList();
+        $student_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id);
+        if ($controller->isError($student_list)) {
+            $student_list->setPos(__FILE__, __LINE__);
+            return $student_list;
+        }
+        if (!empty($student_list)) {
+            foreach ($student_list as $student_tmp) {
+                if ($student_tmp["student_id"] != $student_id) {
+                    $sub_achieve_type_list[BroadcomOrderEntity::ACHIEVE_TYPE_2][$student_tmp["student_id"]] = $student_tmp["student_name"];
+                }
+            }
+        }
+        $allow_member_position_list = array(
+            BroadcomMemberEntity::POSITION_TEACH_MANAGER,
+            BroadcomMemberEntity::POSITION_TEACHER
+        );
+        $teacher_tmp_list = BroadcomMemberPositionDBI::selectMemberPositionListBySchool($school_id, $allow_member_position_list);
+        if ($controller->isError($teacher_tmp_list)) {
+            $teacher_tmp_list->setPos(__FILE__, __LINE__);
+            return $teacher_tmp_list;
+        }
+        if (!empty($teacher_tmp_list)) {
+            foreach ($teacher_tmp_list as $teacher_tmp) {
+                $sub_achieve_type_list[BroadcomOrderEntity::ACHIEVE_TYPE_3][$teacher_tmp["member_id"]] = $teacher_tmp["m_name"];
+                if ($teacher_tmp["member_position"] == BroadcomMemberEntity::POSITION_TEACHER) {
+                    $audition_teacher_list[$teacher_tmp["member_id"]] = $teacher_tmp["m_name"];
+                }
+            }
+        }
+        $achieve_member_position_list = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,
+            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,
+            BroadcomMemberEntity::POSITION_ADVISER,
+            BroadcomMemberEntity::POSITION_MARKETING,
+            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,
+            BroadcomMemberEntity::POSITION_ASSISTANT
+        );
+        $achieve_tmp_list = BroadcomMemberPositionDBI::selectMemberPositionListBySchool($school_id, $achieve_member_position_list);
+        if ($controller->isError($achieve_tmp_list)) {
+            $achieve_tmp_list->setPos(__FILE__, __LINE__);
+            return $achieve_tmp_list;
+        }
+        $achieve_member_list = array();
+        if (!empty($achieve_tmp_list)) {
+            foreach ($achieve_tmp_list as $achieve_tmp) {
+                $achieve_member_list[$achieve_tmp["member_id"]] = $achieve_tmp["m_name"];
+            }
+        }
         $payment_amount = "0";
+        $audition_teacher = array();
+        $achieve_member = array();
         if ($request->hasParameter("do_create")) {
             $payment_amount = $request->getParameter("payment_amount");
             if (!Validate::checkNotNull($payment_amount) || !Validate::checkDecimalNumber($payment_amount, array("min" => "1", "max" => $total_price))) {
                 $request->setError("payment_amount", "请填写的有效付款额");
             }
+            if ($request->hasParameter("audition_teacher")) {
+                foreach ($request->getParameter("audition_teacher") as $teacher_member_id) {
+                    $audition_teacher[$teacher_member_id] = array(
+                        "teacher_member_id" => $teacher_member_id
+                    );
+                }
+            }
+            if (!$request->hasParameter("achieve_member") || !$request->hasParameter("achieve_ratio")) {
+                $request->setError("achieve_member", "请添加业绩所属人");
+            } else {
+                $getting_achieve_member = $request->getParameter("achieve_member");
+                $achieve_ratio = $request->getParameter("achieve_ratio");
+                $ratio_total = 0;
+                foreach ($achieve_ratio as $ratio_tmp) {
+                    $ratio_total += $ratio_tmp;
+                }
+                if ($ratio_total != 100) {
+                    $request->setError("achieve_ratio", "业绩比例合计不为100%");
+                } else {
+                    foreach ($getting_achieve_member as $idx => $achieve_member_id) {
+                        $ratio_total += $ratio_tmp;
+                        if (!isset($achieve_member[$achieve_member_id])) {
+                            $achieve_member[$achieve_member_id] = array(
+                                "member_id" => $achieve_member_id,
+                                "achieve_ratio" => 0
+                            );
+                        }
+                        $achieve_member[$achieve_member_id]["achieve_ratio"] += $achieve_ratio[$idx];
+                    }
+                }
+            }
         }
+        $request->setAttribute("member_id", $user->getMemberId());
         $request->setAttribute("student_id", $student_id);
         $request->setAttribute("student_info", $student_info);
         $request->setAttribute("scope_out_flg", $scope_out_flg);
@@ -118,7 +204,11 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
         $request->setAttribute("total_price", $total_price);
         $request->setAttribute("payment_amount", $payment_amount);
         $request->setAttribute("achieve_type_list", BroadcomOrderEntity::getAchieveTypeList());
-        $request->setAttribute("sub_achieve_type_list", BroadcomOrderEntity::getSubAchieveTypeList());
+        $request->setAttribute("sub_achieve_type_list", $sub_achieve_type_list);
+        $request->setAttribute("audition_teacher_list", $audition_teacher_list);
+        $request->setAttribute("achieve_member_list", $achieve_member_list);
+        $request->setAttribute("audition_teacher", $audition_teacher);
+        $request->setAttribute("achieve_member", $achieve_member);
         return VIEW_DONE;
     }
 
@@ -150,6 +240,8 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
         $payment_amount = $request->getAttribute("payment_amount");
         $achieve_type = $request->getParameter("achieve_type");
         $sub_achieve_type = $request->getParameter("sub_achieve_type");
+        $audition_teacher = $request->getAttribute("audition_teacher");
+        $achieve_member = $request->getAttribute("achieve_member");
         $position_info = BroadcomMemberPositionDBI::selectMemberPosition($user->getMemberId());
         if ($controller->isError($position_info)) {
             $position_info->setPos(__FILE__, __LINE__);
@@ -247,6 +339,28 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
                 $dbi->rollback();
                 return $main_order_item_id;
             }
+            if (!empty($audition_teacher)) {
+                foreach ($audition_teacher as $audition_teacher_insert_data) {
+                    $audition_teacher_insert_data["order_item_id"] = $main_order_item_id;
+                    $audition_teacher_insert_data["order_id"] = $order_id;
+                    $audition_teacher_insert_res = BroadcomOrderDBI::insertOrderItemAudition($audition_teacher_insert_data);
+                    if ($controller->isError($audition_teacher_insert_res)) {
+                        $audition_teacher_insert_res->setPos(__FILE__, __LINE__);
+                        $dbi->rollback();
+                        return $audition_teacher_insert_res;
+                    }
+                }
+            }
+            foreach ($achieve_member as $achieve_member_insert_data) {
+                $achieve_member_insert_data["order_item_id"] = $main_order_item_id;
+                $achieve_member_insert_data["order_id"] = $order_id;
+                $achieve_member_insert_res = BroadcomOrderDBI::insertOrderItemAchieve($achieve_member_insert_data);
+                if ($controller->isError($achieve_member_insert_res)) {
+                    $achieve_member_insert_res->setPos(__FILE__, __LINE__);
+                    $dbi->rollback();
+                    return $achieve_member_insert_res;
+                }
+            }
             if (isset($main_item_info["present"])) {
                 foreach ($main_item_info["present"] as $sub_item_id => $sub_item_amount) {
                     $sub_contract_number = BroadcomOrderDBI::selectPresentOrderItemCountForCreate($main_order_item_id);
@@ -277,6 +391,28 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
                         $sub_insert_res->setPos(__FILE__, __LINE__);
                         $dbi->rollback();
                         return $sub_insert_res;
+                    }
+                    if (!empty($audition_teacher)) {
+                        foreach ($audition_teacher as $audition_teacher_insert_data) {
+                            $audition_teacher_insert_data["order_item_id"] = $sub_insert_res;
+                            $audition_teacher_insert_data["order_id"] = $order_id;
+                            $audition_teacher_insert_res = BroadcomOrderDBI::insertOrderItemAudition($audition_teacher_insert_data);
+                            if ($controller->isError($audition_teacher_insert_res)) {
+                                $audition_teacher_insert_res->setPos(__FILE__, __LINE__);
+                                $dbi->rollback();
+                                return $audition_teacher_insert_res;
+                            }
+                        }
+                    }
+                    foreach ($achieve_member as $achieve_member_insert_data) {
+                        $achieve_member_insert_data["order_item_id"] = $sub_insert_res;
+                        $achieve_member_insert_data["order_id"] = $order_id;
+                        $achieve_member_insert_res = BroadcomOrderDBI::insertOrderItemAchieve($achieve_member_insert_data);
+                        if ($controller->isError($achieve_member_insert_res)) {
+                            $achieve_member_insert_res->setPos(__FILE__, __LINE__);
+                            $dbi->rollback();
+                            return $achieve_member_insert_res;
+                        }
                     }
                 }
             }

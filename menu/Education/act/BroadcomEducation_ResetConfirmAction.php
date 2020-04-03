@@ -75,7 +75,7 @@ class BroadcomEducation_ResetConfirmAction extends BroadcomEducationActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
-        if ($course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION ||
+        if ($course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD ||
             $course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_CLASS ||
             !$course_info["confirm_flg"] || !$course_info["reset_flg"]) {
             $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);

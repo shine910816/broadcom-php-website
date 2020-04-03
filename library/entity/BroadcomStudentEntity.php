@@ -29,6 +29,7 @@ class BroadcomStudentEntity
     const MEDIA_CHANNEL_1_2 = "2";
     const MEDIA_CHANNEL_1_3 = "3";
     const MEDIA_CHANNEL_1_4 = "4";
+    const MEDIA_CHANNEL_1_5 = "5";
 
     const PURPOSE_LEVEL_HIGH = "3";
     const PURPOSE_LEVEL_MIDDLE = "2";
@@ -45,6 +46,11 @@ class BroadcomStudentEntity
     const FOLLOW_STATUS_1 = "1";
     const FOLLOW_STATUS_2 = "2";
     const FOLLOW_STATUS_3 = "3";
+
+    const INREAD_STATUS_0 = "0";
+    const INREAD_STATUS_1 = "1";
+    const INREAD_STATUS_2 = "2";
+    const INREAD_STATUS_3 = "3";
 
     public static function getAdjustedYear()
     {
@@ -101,7 +107,8 @@ class BroadcomStudentEntity
             self::MEDIA_CHANNEL_1_1 => "课程顾问介绍",
             self::MEDIA_CHANNEL_1_2 => "智能营销媒体",
             self::MEDIA_CHANNEL_1_3 => "市场",
-            self::MEDIA_CHANNEL_1_4 => "学习顾问推荐"
+            self::MEDIA_CHANNEL_1_4 => "学习顾问推荐",
+            self::MEDIA_CHANNEL_1_5 => "教师推荐"
         );
     }
 
@@ -141,6 +148,16 @@ class BroadcomStudentEntity
         return array(
             self::STUDENT_LEVEL_NONE => "非会员",
             self::STUDENT_LEVEL_1 => "会员"
+        );
+    }
+
+    public static function getInreadStatusList()
+    {
+        return array(
+            self::INREAD_STATUS_0 => "新人",
+            self::INREAD_STATUS_1 => "在读",
+            self::INREAD_STATUS_2 => "停课",
+            self::INREAD_STATUS_3 => "结课"
         );
     }
 }

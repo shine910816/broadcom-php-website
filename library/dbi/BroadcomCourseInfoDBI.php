@@ -124,9 +124,13 @@ class BroadcomCourseInfoDBI
     public static function selectAuditionCourseInfoByStudent($student_id)
     {
         $dbi = Database::getInstance();
+        $audition_type_list = array(
+            BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO,
+            BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD
+        );
         $sql = "SELECT * FROM course_info WHERE del_flg = 0 AND student_id = " . $student_id .
-               " AND course_type = " . BroadcomCourseEntity::COURSE_TYPE_AUDITION .
-               " ORDER BY course_start_date ASC";
+               " AND course_type IN (" . implode(", ", $audition_type_list) .
+               ") ORDER BY course_start_date ASC";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
@@ -168,7 +172,7 @@ class BroadcomCourseInfoDBI
         if (!is_null($item_id)) {
             $sql .= " AND item_id = " . $item_id;
         } else {
-            $sql .= " AND course_type = " . BroadcomCourseEntity::COURSE_TYPE_AUDITION;
+            $sql .= " AND course_type = " . BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD;
         }
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
