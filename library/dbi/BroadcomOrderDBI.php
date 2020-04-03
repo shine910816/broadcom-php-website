@@ -259,5 +259,27 @@ class BroadcomOrderDBI
         }
         return $result;
     }
+
+    public static function insertOrderItemAudition($insert_data)
+    {
+        $dbi = Database::getInstance();
+        $result = $dbi->insert("order_item_audition", $insert_data);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        return $result;
+    }
+
+    public static function insertOrderItemAchieve($insert_data)
+    {
+        $dbi = Database::getInstance();
+        $result = $dbi->insert("order_item_achieve", $insert_data);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        return $result;
+    }
 }
 ?>

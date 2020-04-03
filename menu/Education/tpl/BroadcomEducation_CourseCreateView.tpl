@@ -3,10 +3,13 @@
 <form action="./" method="post">
   <input type="hidden" name="menu" value="{^$current_menu^}" />
   <input type="hidden" name="act" value="{^$current_act^}" />
-{^if $course_type eq "1"^}
+{^if $course_type eq "5" or $course_type eq "6"^}
   <input type="hidden" name="student_id" value="{^$student_id^}" />
 {^else^}
   <input type="hidden" name="order_item_id" value="{^$order_item_id^}" />
+{^/if^}
+{^if $course_type eq "6"^}
+  <input type="hidden" name="multi" value="1" />
 {^/if^}
 {^if $hint_context|strlen gt 0^}
   <div class="table-line">
@@ -35,10 +38,7 @@
       </div>
       <div class="table-item-b">
         <div class="table-item-name">授课方式</div>
-        <div class="table-item-value">{^if !empty($order_item_info)^}{^$item_method_list[$order_item_info["item_method"]]^}{^else^}<select name="course_type" class="text-field">
-          <option value="5">一对一试听课</option>
-          <option value="6">一对多试听课</option>
-        </select>{^/if^}</div>
+        <div class="table-item-value">{^if !empty($order_item_info)^}{^$item_method_list[$order_item_info["item_method"]]^}{^else^}{^if $course_type eq "5"^}一对一{^else^}一对多{^/if^}试听课{^/if^}{^if $course_type eq "5" or $course_type eq "6"^} <a href="./?menu={^$current_menu^}&act={^$current_act^}&student_id={^$student_id^}{^if $course_type eq "5"^}&multi=1{^/if^}" class="text-link">切换</a>{^/if^}</div>
       </div>
     </div>
   </div>
@@ -97,7 +97,7 @@
     <table class="disp_table">
       <thead>
         <tr>
-{^if $course_type neq "2"^}
+{^if $course_type|in_array:$multi_course_type_list^}
           <th style="width:230px;">参考</th>
 {^/if^}
           <th style="width:315px;">时间</th>
@@ -109,7 +109,7 @@
       <tbody>
 {^for $course_idx=1 to 10^}
         <tr>
-{^if $course_type neq "2"^}
+{^if $course_type|in_array:$multi_course_type_list^}
           <td>
             <select name="course_info[{^$course_idx^}][refer]" class="table-text-field" style="width:220px;">
               <option value="0">自定义课程安排</option>

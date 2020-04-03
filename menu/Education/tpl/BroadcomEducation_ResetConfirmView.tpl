@@ -12,11 +12,11 @@
       </div>
       <div class="table-item-b">
         <div class="table-item-name">形式</div>
-        <div class="table-item-value">{^$course_type_list[$course_info["course_type"]]^}</div>
+        <div class="table-item-value">{^if $course_info["course_type"] eq "5" or $course_info["course_type"] eq "6"^}试听课{^else^}{^$course_type_list[$course_info["course_type"]]^}{^/if^}</div>
       </div>
       <div class="table-item-b">
         <div class="table-item-name">课程名</div>
-        <div class="table-item-value">{^$item_list[$course_info["item_id"]]["item_name"]^}</div>
+        <div class="table-item-value">{^if $course_info["course_type"] eq "5" or $course_info["course_type"] eq "6"^}{^$course_type_list[$course_info["course_type"]]^}{^else^}{^$item_list[$course_info["item_id"]]["item_name"]^}{^/if^}</div>
       </div>
     </div>
     <div class="table-line">

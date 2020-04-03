@@ -54,9 +54,9 @@ class BroadcomOrderEntity
     {
         return array(
             self::ACHIEVE_TYPE_1 => "新签",
-            self::ACHIEVE_TYPE_2 => "学管推荐",
-            self::ACHIEVE_TYPE_4 => "教师推荐",
-            self::ACHIEVE_TYPE_3 => "续费"
+            self::ACHIEVE_TYPE_2 => "学生推荐",
+            self::ACHIEVE_TYPE_3 => "教师推荐",
+            self::ACHIEVE_TYPE_4 => "续费"
         );
     }
 

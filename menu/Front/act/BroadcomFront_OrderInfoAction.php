@@ -68,6 +68,15 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
             $order_item_info->setPos(__FILE__, __LINE__);
             return $order_item_info;
         }
+        $present_hours_list = array();
+        foreach ($order_item_info as $order_tmp) {
+            if ($order_tmp["main_order_item_id"]) {
+                if (!isset($present_hours_list[$order_tmp["main_order_item_id"]])) {
+                    $present_hours_list[$order_tmp["main_order_item_id"]] = 0;
+                }
+                $present_hours_list[$order_tmp["main_order_item_id"]] += $order_tmp["order_item_amount"];
+            }
+        }
         $student_id = $order_info["student_id"];
         $student_info = BroadcomStudentInfoDBI::selectStudentInfo($student_id);
         if ($controller->isError($student_info)) {
@@ -111,6 +120,7 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         $request->setAttribute("order_id", $order_id);
         $request->setAttribute("order_info", $order_info);
         $request->setAttribute("order_item_info", $order_item_info);
+        $request->setAttribute("present_hours_list", $present_hours_list);
         $request->setAttribute("student_id", $student_id);
         $request->setAttribute("student_info", $student_info);
         $request->setAttribute("item_list", $item_list);
@@ -146,6 +156,7 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         }
         $order_id = $request->getAttribute("order_id");
         $order_item_info = $request->getAttribute("order_item_info");
+        $present_hours_list = $request->getAttribute("present_hours_list");
         $student_id = $request->getAttribute("student_id");
         $student_info = $request->getAttribute("student_info");
         $item_list = $request->getAttribute("item_list");
@@ -168,13 +179,17 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         }
         foreach ($order_item_info as $order_item_id => $order_item_tmp) {
             $item_info = $item_list[$order_item_tmp["item_id"]];
+            $present_hours = 0;
+            if (isset($present_hours_list[$order_item_id])) {
+                $present_hours = $present_hours_list[$order_item_id];
+            }
             $order_item_update_data = array();
             $order_item_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_2;
             if ($item_info["item_method"] == BroadcomItemEntity::ITEM_METHOD_CLASS) {
-                $order_item_update_data["order_item_trans_price"] = round($order_item_tmp["order_item_payable_amount"] / $order_item_tmp["order_item_amount"] / $item_info["item_unit_amount"], 2);
+                $order_item_update_data["order_item_trans_price"] = round($order_item_tmp["order_item_payable_amount"] / ($order_item_tmp["order_item_amount"] + $present_hours) / $item_info["item_unit_amount"], 2);
                 $order_item_update_data["order_item_remain"] = $order_item_tmp["order_item_amount"] * $item_info["item_unit_amount"] * $item_info["item_unit_hour"];
             } else {
-                $order_item_update_data["order_item_trans_price"] = round($order_item_tmp["order_item_payable_amount"] / $order_item_tmp["order_item_amount"], 2);
+                $order_item_update_data["order_item_trans_price"] = round($order_item_tmp["order_item_payable_amount"] / ($order_item_tmp["order_item_amount"] + $present_hours), 2);
                 $order_item_update_data["order_item_remain"] = $order_item_tmp["order_item_amount"];
             }
             $order_item_update_data["order_item_confirm"] = "0";

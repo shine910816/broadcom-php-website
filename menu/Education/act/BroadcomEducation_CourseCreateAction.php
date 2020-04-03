@@ -110,12 +110,20 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                         return $schedule_list;
                     }
                 }
-            } elseif ($order_item_info["item_method"] == BroadcomItemEntity::ITEM_METHOD_1_TO_1) {
-                $course_type = BroadcomCourseEntity::COURSE_TYPE_SINGLE;
-                $create_able_flg = true;
             } else {
-                $course_type = BroadcomCourseEntity::COURSE_TYPE_MULTI;
                 $create_able_flg = true;
+                switch ($order_item_info["item_method"]) {
+                    case BroadcomItemEntity::ITEM_METHOD_1_TO_2:
+                        $course_type = BroadcomCourseEntity::COURSE_TYPE_DOUBLE;
+                        break;
+                    case BroadcomItemEntity::ITEM_METHOD_1_TO_3:
+                        $course_type = BroadcomCourseEntity::COURSE_TYPE_TRIBLE;
+                        break;
+                    case BroadcomItemEntity::ITEM_METHOD_1_TO_1:
+                    default:
+                        $course_type = BroadcomCourseEntity::COURSE_TYPE_SINGLE;
+                        break;
+                }
             }
             if ($order_item_info["assign_member_id"] != $member_id) {
                 $hint_context = "该学员不是本人受理的学员";
@@ -137,6 +145,9 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 $err->setPos(__FILE__, __LINE__);
                 return $err;
             }
+            if ($request->hasParameter("multi")) {
+                $course_type = BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD;
+            }
             $school_id = $student_info_data["school_id"];
             $student_info["student_id"] = $student_info_data["student_id"];
             $student_info["student_name"] = $student_info_data["student_name"];
@@ -151,7 +162,12 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 $hint_context = "该学员已经试听超过2小时";
             }
         }
-        if ($course_type == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD || $course_type == BroadcomCourseEntity::COURSE_TYPE_DOUBLE || $course_type == BroadcomCourseEntity::COURSE_TYPE_TRIBLE) {
+        $multi_course_type_list = array(
+            BroadcomCourseEntity::COURSE_TYPE_DOUBLE,
+            BroadcomCourseEntity::COURSE_TYPE_TRIBLE,
+            BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD
+        );
+        if (in_array($course_type, $multi_course_type_list)) {
             $others_course_info = BroadcomCourseInfoDBI::selectMultiCourseInfoByItem($student_id, date("Y-m-d H:i:s"), $item_id);
             if ($controller->isError($others_course_info)) {
                 $others_course_info->setPos(__FILE__, __LINE__);
@@ -198,6 +214,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
         $request->setAttribute("room_list", $room_list);
         $request->setAttribute("subject_teacher_info", $subject_teacher_info);
         $request->setAttribute("teacher_info", $teacher_info);
+        $request->setAttribute("multi_course_type_list", $multi_course_type_list);
         $request->setAttribute("student_list", $student_list);
         if ($request->hasParameter("do_create")) {
             $request->setAttribute("getting_course_info", $request->getParameter("course_info"));
@@ -293,7 +310,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                     $insert_data["student_id"] = $student_id;
                     $insert_data["assign_member_id"] = $member_id;
                     $insert_data["assign_date"] = date("Y-m-d H:i:s");
-                    if ($course_type != BroadcomCourseEntity::COURSE_TYPE_AUDITION) {
+                    if ($course_type != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO && $course_type != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
                         $order_item_id = $request->getAttribute("order_item_id");
                         $item_id = $request->getAttribute("item_id");
                         $order_item_info = $request->getAttribute("order_item_info");

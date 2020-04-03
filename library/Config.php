@@ -222,14 +222,16 @@ class Config
         );
         // 消课
         $result["education"]["course_confirm"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
             BroadcomMemberEntity::POSITION_ASSISTANT,         // 学管
             BroadcomMemberEntity::POSITION_TEACH_MANAGER,     // 教学主管
             BroadcomMemberEntity::POSITION_TEACHER,           // 教师
-            BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER // 兼职教师
+            BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER,// 兼职教师
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
         // 返课确认
-        $result["education"]["course_confirm"] = array(
+        $result["education"]["reset_confirm"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
