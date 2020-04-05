@@ -39,13 +39,12 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
         }
         $current_year = substr($current_date, 0, 4);
         $current_month = substr($current_date, 4, 2);
-        $current_day = substr($current_date, 6, 2);
-        $current_date_ts = mktime(0, 0, 0, $current_month, $current_day, $current_year);
+        $current_date_ts = mktime(0, 0, 0, $current_month, 1, $current_year);
         $course_date_from = date("Y-m-d H:i:s", $current_date_ts);
-        $course_date_to = date("Y-m-d H:i:s", $current_date_ts + 24 * 60 * 60 - 1);
-        $prev_date = date("Ymd", $current_date_ts - 24 * 60 * 60);
-        $next_date = date("Ymd", $current_date_ts + 24 * 60 * 60);
-        $current_date_text = date("Y", $current_date_ts) . "年" . date("n", $current_date_ts) . "月" . date("j", $current_date_ts) . "日";
+        $course_date_to = date("Y-m-d H:i:s", mktime(0, 0, -1, $current_month + 1, 1, $current_year));
+        $prev_date = date("Ym", mktime(0, 0, 0, $current_month - 1, 1, $current_year));
+        $next_date = date("Ym", mktime(0, 0, 0, $current_month + 1, 1, $current_year));
+        $current_date_text = date("Y", $current_date_ts) . "年" . date("n", $current_date_ts) . "月";
         $member_id = $user->getMemberId();
         $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
         if ($controller->isError($position_info)) {

@@ -1,8 +1,8 @@
 {^include file=$comheader_file^}
   <div class="table-line">
-    <a href="./?menu=education&act=course_list&date={^$prev_date^}" class="button-field ui-btn-orange"><i class="fa fa-chevron-left"></i> 前一天</a>
+    <a href="./?menu=education&act=course_list&date={^$prev_date^}" class="button-field ui-btn-orange"><i class="fa fa-chevron-left"></i> 前一月</a>
     <a class="button-field">{^$current_date_text^}</a>
-    <a href="./?menu=education&act=course_list&date={^$next_date^}" class="button-field ui-btn-orange">后一天 <i class="fa fa-chevron-right"></i></a>
+    <a href="./?menu=education&act=course_list&date={^$next_date^}" class="button-field ui-btn-orange">后一月 <i class="fa fa-chevron-right"></i></a>
   </div>
   <div class="main-table{^if empty($course_list)^} pb_15{^/if^}">
     <h2>排课列表</h2>
