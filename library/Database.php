@@ -25,10 +25,18 @@ class Database
     /**
      * 初始化
      */
-    public function __construct($dsn_link)
+    public function __construct()
     {
         // 连接数据库
-        $this->con = mysqli_connect($dsn_link['host'], $dsn_link['user'], $dsn_link['pswd'], $dsn_link['name'], $dsn_link['port']);
+        require_once SRC_PATH . "/config/ConnectInfo.php";
+        $connect_info = new ConnectInfo();
+        $this->con = mysqli_connect(
+            $connect_info->host(),
+            $connect_info->user(),
+            $connect_info->password(),
+            $connect_info->databaseName(),
+            $connect_info->port()
+        );
         if (!$this->con) {
             exit("Not connect to database !");
         }
@@ -275,7 +283,7 @@ class Database
      */
     public static function getInstance()
     {
-        return new Database(Config::getDataSourceName());
+        return new Database();
     }
 }
 ?>

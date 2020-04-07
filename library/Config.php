@@ -262,17 +262,6 @@ class Config
         return $result;
     }
 
-    public static function getDataSourceName()
-    {
-        return array(
-            "host" => "127.0.0.1",
-            "user" => "root",
-            "pswd" => "",
-            "name" => "broadcom",
-            "port" => "3306"
-        );
-    }
-
     public static function getUsableGlobalKeys()
     {
         $result = array();
