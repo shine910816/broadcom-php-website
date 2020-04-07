@@ -66,6 +66,11 @@ class Request
         } elseif (isset($_GET['menu']) && isset($_GET['act'])) {
             $this->current_menu = $_GET['menu'];
             $this->current_act = $_GET['act'];
+        } elseif (isset($_GET['t']) && isset($_GET['m'])) {
+            // TODO
+            //$this->current_menu = $_GET['menu'];
+            //$this->current_act = $_GET['act'];
+            $this->setApiParameter();
         }
         if (isset($parameter['page'])) {
             $this->current_page = $parameter['page'];
@@ -79,20 +84,21 @@ class Request
     public function setApiParameter()
     {
         $this->api_flg = true;
-        if (isset($this->_parameter['menu'])) {
-            $this->current_menu = $this->_parameter['menu'];
-        } elseif (isset($_GET['menu'])) {
-            $this->current_menu = $_GET['menu'];
-        } else {
-            $this->current_menu = SYSTEM_DEFAULT_API_MENU;
-        }
-        if (isset($this->_parameter['act'])) {
-            $this->current_act = $this->_parameter['act'];
-        } elseif (isset($_GET['act'])) {
-            $this->current_act = $_GET['act'];
-        } else {
-            $this->current_act = "";
-        }
+        //if (isset($this->_parameter['menu'])) {
+        //    $this->current_menu = $this->_parameter['menu'];
+        //} elseif (isset($_GET['menu'])) {
+        //    $this->current_menu = $_GET['menu'];
+        //} else {
+        //    $this->current_menu = SYSTEM_DEFAULT_API_MENU;
+        //}
+        //if (isset($this->_parameter['act'])) {
+        //    $this->current_act = $this->_parameter['act'];
+        //} elseif (isset($_GET['act'])) {
+        //    $this->current_act = $_GET['act'];
+        //} else {
+        //    $this->current_act = "";
+        //}
+        
     }
 
     /**
