@@ -54,6 +54,14 @@ class Request
      */
     public $api_flg = false;
 
+    private $_api_target;
+
+    private $_api_member;
+
+    private $_auth_info;
+
+    private $_member_info;
+
     /**
      * 初始化
      */
@@ -67,10 +75,9 @@ class Request
             $this->current_menu = $_GET['menu'];
             $this->current_act = $_GET['act'];
         } elseif (isset($_GET['t']) && isset($_GET['m'])) {
-            // TODO
-            //$this->current_menu = $_GET['menu'];
-            //$this->current_act = $_GET['act'];
-            $this->setApiParameter();
+            $this->api_flg = true;
+            $this->_api_target = $_GET['t'];
+            $this->_api_member = $_GET['m'];
         }
         if (isset($parameter['page'])) {
             $this->current_page = $parameter['page'];
@@ -83,22 +90,39 @@ class Request
      */
     public function setApiParameter()
     {
-        $this->api_flg = true;
-        //if (isset($this->_parameter['menu'])) {
-        //    $this->current_menu = $this->_parameter['menu'];
-        //} elseif (isset($_GET['menu'])) {
-        //    $this->current_menu = $_GET['menu'];
-        //} else {
-        //    $this->current_menu = SYSTEM_DEFAULT_API_MENU;
-        //}
-        //if (isset($this->_parameter['act'])) {
-        //    $this->current_act = $this->_parameter['act'];
-        //} elseif (isset($_GET['act'])) {
-        //    $this->current_act = $_GET['act'];
-        //} else {
-        //    $this->current_act = "";
-        //}
-        
+        require_once SRC_PATH . "/library/Authority.php";
+        require_once SRC_PATH . "/library/member/MemberDao.php";
+        if (is_null($this->_auth_info)) {
+            $this->_auth_info = Authority::getInstance();
+        }
+        $menu_act_info = $this->_auth_info->getTokenMenuAct($this->_api_target);
+        $this->current_menu = $menu_act_info["menu"];
+        $this->current_act = $menu_act_info["act"];
+        if (is_null($this->_member_info)) {
+            $this->_member_info = new MemberDao($this->_api_member);
+            if ($this->_member_info->id() === false) {
+                $err = Error::getInstance();
+                $err->raiseError(ERROR_CODE_API_ERROR_FALSIFY, "用户不存在: " . $this->_api_member);
+                $err->setPos(__FILE__, __LINE__);
+                return $err;
+            }
+        }
+        return true;
+    }
+
+    public function readable()
+    {
+        $res = $this->_auth_info->getAuthority($this->current_menu, $this->current_act, $this->_member_info->position());
+        return $res["read"];
+    }
+
+    public function editable()
+    {
+        if ($this->_member_info->position() == "100" && $this->_member_info->level() == "2") {
+            return true;
+        }
+        $res = $this->_auth_info->getAuthority($this->current_menu, $this->current_act, $this->_member_info->position());
+        return $res["edit"];
     }
 
     /**

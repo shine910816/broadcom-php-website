@@ -151,50 +151,17 @@ class Launcher
 
     private function _apiLauncher(Controller $controller, User $user, Request $request)
     {
-        // 获取ACTION对象
-        $current_menu = SYSTEM_DEFAULT_MENU;
-        $current_act = SYSTEM_DEFAULT_ACT;
-        $current_auth = $this->_checkMenuAction($request->current_menu, $request->current_act, true);
-        if ($current_auth !== false) {
-            $current_menu = $request->current_menu;
-            $current_act = $request->current_act;
+        // API参数整合
+        $param_res = $request->setApiParameter();
+        if ($controller->isError($param_res)) {
+            return $param_res;
         }
-        // 权限判断
-        //$auth_lvl_fact = $user->getAuthLevel();
-        //if ($current_auth > SYSTEM_AUTH_COMMON && $auth_lvl_fact < $current_auth) {
-        //    $redirect_url = sprintf("?menu=%s&act=%s", $request->current_menu, $request->current_act);
-        //    $user->setVariable(REDIRECT_URL, $redirect_url);
-        //    $err_disp_text = "该页面需要登录才能进行访问。";
-        //    if ($current_auth == SYSTEM_AUTH_ADMIN) {
-        //        $err_disp_text = "该页面需要管理员权限才能进行访问。";
-        //    }
-        //    $request->setError("no_login", $err_disp_text);
-        //    $controller->forward("member", "login");
-        //    return VIEW_DONE;
-        //}
-        // 职级判断
-        //if ($user->isLogin() && !$user->checkPositionAble($current_menu, $current_act)) {
-        //    $err = $controller->raiseError(ERROR_CODE_NO_AUTH);
-        //    $err->setPos(__FILE__, __LINE__);
-        //    return $err;
-        //}
-        // 清除全局变量
-        //$usable_global_keys = Config::getUsableGlobalKeys();
-        //foreach ($usable_global_keys as $session_key => $usable_menu_act_context) {
-        //    $current_menu_act = $request->current_menu . ":" . $request->current_act;
-        //    if ($user->hasVariable($session_key) && !in_array($current_menu_act, $usable_menu_act_context)) {
-        //        $user->freeVariable($session_key);
-        //    }
-        //}
+        $current_menu = $request->current_menu;
+        $current_act = $request->current_act;
         // 获取页面Action
         $action = $this->_getActionObject($current_menu, $current_act, true);
         if ($controller->isError($action)) {
             return $action;
-        }
-        // 执行权限检测
-        $res_authority = $action->doAuthValidate($controller, $user, $request);
-        if ($controller->isError($res_authority)) {
-            return $res_authority;
         }
         // 执行参数检测
         $res_validate = $action->doMainValidate($controller, $user, $request);
@@ -206,11 +173,6 @@ class Launcher
         if ($controller->isError($res_execute)) {
             return $res_execute;
         }
-        // 执行左边栏
-        //$res_content = $action->doLeftContent($controller, $user, $request);
-        //if ($controller->isError($res_content)) {
-        //    return $res_content;
-        //}
         // 主程序返回VIEW_NONE则终止
         return $res_execute;
     }

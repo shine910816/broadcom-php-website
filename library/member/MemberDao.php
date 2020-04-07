@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * 员工数据包
+ * @author Kinsama
+ * @version 2020-04-08
+ */
 class MemberDao
 {
     private $member_id = false;
