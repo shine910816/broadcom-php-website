@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * 数据库登录信息
+ * @author Kinsama
+ * @version 2020-04-08
+ */
 class ConnectInfo
 {
 

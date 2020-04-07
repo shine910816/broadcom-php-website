@@ -1,4 +1,5 @@
 <?php
+require_once SRC_PATH . "/config/ConnectInfo.php";
 
 /**
  * 数据库控制器
@@ -28,7 +29,6 @@ class Database
     public function __construct()
     {
         // 连接数据库
-        require_once SRC_PATH . "/config/ConnectInfo.php";
         $connect_info = new ConnectInfo();
         $this->con = mysqli_connect(
             $connect_info->host(),
