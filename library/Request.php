@@ -54,10 +54,6 @@ class Request
      */
     public $api_flg = false;
 
-    private $_api_target;
-
-    private $_api_member;
-
     private $_auth_info;
 
     private $_member_info;
@@ -74,10 +70,6 @@ class Request
         } elseif (isset($_GET['menu']) && isset($_GET['act'])) {
             $this->current_menu = $_GET['menu'];
             $this->current_act = $_GET['act'];
-        } elseif (isset($_GET['t']) && isset($_GET['m'])) {
-            $this->api_flg = true;
-            $this->_api_target = $_GET['t'];
-            $this->_api_member = $_GET['m'];
         }
         if (isset($parameter['page'])) {
             $this->current_page = $parameter['page'];
@@ -90,19 +82,28 @@ class Request
      */
     public function setApiParameter()
     {
+        if (!isset($_GET['t']) || !isset($_GET['m'])) {
+            $err = Error::getInstance();
+            $err->raiseError(ERROR_CODE_API_GET_FALSIFY, "Necessary parameter is not found");
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        $this->api_flg = true;
+        $api_target = $_GET['t'];
+        $api_member = $_GET['m'];
         require_once SRC_PATH . "/library/Authority.php";
         require_once SRC_PATH . "/library/member/MemberDao.php";
         if (is_null($this->_auth_info)) {
             $this->_auth_info = Authority::getInstance();
         }
-        $menu_act_info = $this->_auth_info->getTokenMenuAct($this->_api_target);
+        $menu_act_info = $this->_auth_info->getTokenMenuAct($api_target);
         $this->current_menu = $menu_act_info["menu"];
         $this->current_act = $menu_act_info["act"];
         if (is_null($this->_member_info)) {
-            $this->_member_info = new MemberDao($this->_api_member);
+            $this->_member_info = new MemberDao($api_member);
             if ($this->_member_info->id() === false) {
                 $err = Error::getInstance();
-                $err->raiseError(ERROR_CODE_API_ERROR_FALSIFY, "用户不存在: " . $this->_api_member);
+                $err->raiseError(ERROR_CODE_API_ERROR_FALSIFY, "User failed: " . $api_member);
                 $err->setPos(__FILE__, __LINE__);
                 return $err;
             }
@@ -112,6 +113,9 @@ class Request
 
     public function readable()
     {
+        if ($this->_member_info->position() == "100" && $this->_member_info->level() == "2") {
+            return true;
+        }
         $res = $this->_auth_info->getAuthority($this->current_menu, $this->current_act, $this->_member_info->position());
         return $res["read"];
     }

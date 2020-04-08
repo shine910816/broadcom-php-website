@@ -203,7 +203,7 @@ class Launcher
         require_once $action_path;
         if (!class_exists($action_name)) {
             $err = Error::getInstance();
-            $err->raiseError(ERROR_CODE_NONE_ACTION_CLASS, $action_name);
+            $err->raiseError(ERROR_CODE_NONE_ACTION_CLASS, $action_path);
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }

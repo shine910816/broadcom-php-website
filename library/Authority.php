@@ -39,8 +39,8 @@ class Authority
             return $this->_allow_list[$token];
         }
         return array(
-            "menu" => SYSTEM_DEFAULT_MENU,
-            "act" => SYSTEM_DEFAULT_ACT
+            "menu" => "common",
+            "act" => "error"
         );
     }
 

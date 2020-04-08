@@ -5,7 +5,7 @@
  * @author Kinsama
  * @version 2020-03-24
  */
-class BroadcomStudent_CreateAction extends InterfaceBase
+class BroadcomStudent_CreateAction extends ActionBase
 {
 
     /**
