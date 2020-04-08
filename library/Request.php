@@ -111,6 +111,11 @@ class Request
         return true;
     }
 
+    public function member()
+    {
+        return $this->_member_info;
+    }
+
     public function readable()
     {
         if ($this->_member_info->position() == "100" && $this->_member_info->level() == "2") {
