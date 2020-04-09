@@ -92,7 +92,7 @@ class Request
         $api_target = $_GET['t'];
         $api_member = $_GET['m'];
         require_once SRC_PATH . "/library/Authority.php";
-        require_once SRC_PATH . "/library/member/MemberDao.php";
+        require_once SRC_PATH . "/library/member/MemberRequest.php";
         if (is_null($this->_auth_info)) {
             $this->_auth_info = Authority::getInstance();
         }
@@ -100,7 +100,7 @@ class Request
         $this->current_menu = $menu_act_info["menu"];
         $this->current_act = $menu_act_info["act"];
         if (is_null($this->_member_info)) {
-            $this->_member_info = new MemberDao($api_member);
+            $this->_member_info = MemberRequest::getInstance($api_member);
             if ($this->_member_info->id() === false) {
                 $err = Error::getInstance();
                 $err->raiseError(ERROR_CODE_API_ERROR_FALSIFY, "User failed: " . $api_member);
