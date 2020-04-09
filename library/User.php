@@ -1,4 +1,5 @@
 <?php
+require_once SRC_PATH . "/library/member/MemberUser.php";
 
 /**
  * 用户控制器
@@ -8,18 +9,22 @@
 class User
 {
 
+    private $_member_info;
+
     /**
      * 初始化
      */
     public function __construct()
     {
         session_start();
-        if (!$this->hasVariable("member_id")) {
-            $this->setVariable("member_id", "0");
+        if (empty($this->_member_info)) {
+            $this->_member_info = MemberUser::getInstance();
         }
-        if (!$this->hasVariable("admin_lvl")) {
-            $this->setVariable("admin_lvl", "0");
-        }
+    }
+
+    public function member()
+    {
+        return $this->_member_info;
     }
 
     /**
@@ -29,7 +34,10 @@ class User
      */
     public function isLogin()
     {
-        return $this->getVariable("member_id") != "0";
+        if ($this->member()->id() === false) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -39,43 +47,10 @@ class User
      */
     public function isAdmin()
     {
-        return $this->getVariable("admin_lvl") != "0";
-    }
-
-    public function getMemberId()
-    {
-        if ($this->isLogin()) {
-            return $this->getVariable("member_id");
-        } else {
-            return "0";
+        if ($this->isLogin() && $this->member()->level() == "2") {
+            return true;
         }
-    }
-
-    public function getMemberName()
-    {
-        if ($this->isLogin()) {
-            return $this->getVariable("member_name");
-        } else {
-            return "";
-        }
-    }
-
-    public function getMemberPosition()
-    {
-        if ($this->isLogin()) {
-            return $this->getVariable("member_position");
-        } else {
-            return "";
-        }
-    }
-
-    public function getMemberPositionName()
-    {
-        if ($this->isLogin()) {
-            return $this->getVariable("member_position_name");
-        } else {
-            return "";
-        }
+        return false;
     }
 
     public function getAuthLevel()
@@ -98,7 +73,7 @@ class User
             if (!isset($position_list[$menu][$act])) {
                 return true;
             } else {
-                if (in_array($this->getMemberPosition(), $position_list[$menu][$act])) {
+                if (in_array($this->member()->position(), $position_list[$menu][$act])) {
                     return true;
                 } else {
                     return false;

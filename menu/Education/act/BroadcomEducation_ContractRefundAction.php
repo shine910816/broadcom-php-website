@@ -47,7 +47,7 @@ class BroadcomEducation_ContractRefundAction extends BroadcomEducationActionBase
             return $err;
         }
         $order_item_id = $request->getParameter("order_item_id");
-        $member_id = $user->getMemberId();
+        $member_id = $user->member()->id();
         $order_item_info = BroadcomOrderDBI::selectOrderItem($order_item_id);
         if ($controller->isError($order_item_info)) {
             $order_item_info->setPos(__FILE__, __LINE__);

@@ -54,6 +54,10 @@ class Request
      */
     public $api_flg = false;
 
+    private $_auth_info;
+
+    private $_member_info;
+
     /**
      * 初始化
      */
@@ -78,21 +82,56 @@ class Request
      */
     public function setApiParameter()
     {
+        if (!isset($_GET['t']) || !isset($_GET['m'])) {
+            $err = Error::getInstance();
+            $err->raiseError(ERROR_CODE_API_GET_FALSIFY, "Necessary parameter is not found");
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
         $this->api_flg = true;
-        if (isset($this->_parameter['menu'])) {
-            $this->current_menu = $this->_parameter['menu'];
-        } elseif (isset($_GET['menu'])) {
-            $this->current_menu = $_GET['menu'];
-        } else {
-            $this->current_menu = SYSTEM_DEFAULT_API_MENU;
+        $api_target = $_GET['t'];
+        $api_member = $_GET['m'];
+        require_once SRC_PATH . "/library/Authority.php";
+        require_once SRC_PATH . "/library/member/MemberRequest.php";
+        if (is_null($this->_auth_info)) {
+            $this->_auth_info = Authority::getInstance();
         }
-        if (isset($this->_parameter['act'])) {
-            $this->current_act = $this->_parameter['act'];
-        } elseif (isset($_GET['act'])) {
-            $this->current_act = $_GET['act'];
-        } else {
-            $this->current_act = "";
+        $menu_act_info = $this->_auth_info->getTokenMenuAct($api_target);
+        $this->current_menu = $menu_act_info["menu"];
+        $this->current_act = $menu_act_info["act"];
+        if (is_null($this->_member_info)) {
+            $this->_member_info = MemberRequest::getInstance($api_member);
+            if ($this->_member_info->id() === false) {
+                $err = Error::getInstance();
+                $err->raiseError(ERROR_CODE_API_ERROR_FALSIFY, "User failed: " . $api_member);
+                $err->setPos(__FILE__, __LINE__);
+                return $err;
+            }
         }
+        return true;
+    }
+
+    public function member()
+    {
+        return $this->_member_info;
+    }
+
+    public function readable()
+    {
+        if ($this->_member_info->position() == "100" && $this->_member_info->level() == "2") {
+            return true;
+        }
+        $res = $this->_auth_info->getAuthority($this->current_menu, $this->current_act, $this->_member_info->position());
+        return $res["read"];
+    }
+
+    public function editable()
+    {
+        if ($this->_member_info->position() == "100" && $this->_member_info->level() == "2") {
+            return true;
+        }
+        $res = $this->_auth_info->getAuthority($this->current_menu, $this->current_act, $this->_member_info->position());
+        return $res["edit"];
     }
 
     /**

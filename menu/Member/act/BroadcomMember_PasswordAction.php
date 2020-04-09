@@ -48,7 +48,7 @@ class BroadcomMember_PasswordAction extends BroadcomMemberActionBase
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
         if ($request->hasParameter("do_change")) {
-            $member_id = $user->getMemberId();
+            $member_id = $user->member()->id();
             $getting_password_info = $request->getParameter("password");
             $login_info = BroadcomMemberLoginDBI::selectMemberLogin($member_id);
             if ($controller->isError($login_info)) {

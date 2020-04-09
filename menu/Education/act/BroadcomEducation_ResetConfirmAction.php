@@ -53,18 +53,8 @@ class BroadcomEducation_ResetConfirmAction extends BroadcomEducationActionBase
             return $err;
         }
         $course_id = $request->getParameter("course_id");
-        $member_id = $user->getMemberId();
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $school_id = $position_info["school_id"];
+        $member_id = $user->member()->id();
+        $school_id = $user->member()->schoolId();
         $course_info = BroadcomCourseInfoDBI::selectCourseInfo($course_id);;
         if ($controller->isError($course_info)) {
             $course_info->setPos(__FILE__, __LINE__);

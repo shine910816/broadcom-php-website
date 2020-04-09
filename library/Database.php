@@ -1,4 +1,5 @@
 <?php
+require_once SRC_PATH . "/config/ConnectInfo.php";
 
 /**
  * 数据库控制器
@@ -25,10 +26,17 @@ class Database
     /**
      * 初始化
      */
-    public function __construct($dsn_link)
+    public function __construct()
     {
         // 连接数据库
-        $this->con = mysqli_connect($dsn_link['host'], $dsn_link['user'], $dsn_link['pswd'], $dsn_link['name'], $dsn_link['port']);
+        $connect_info = new ConnectInfo();
+        $this->con = mysqli_connect(
+            $connect_info->host(),
+            $connect_info->user(),
+            $connect_info->password(),
+            $connect_info->databaseName(),
+            $connect_info->port()
+        );
         if (!$this->con) {
             exit("Not connect to database !");
         }
@@ -53,11 +61,11 @@ class Database
             return $error;
         }
         $now_date = date("Y-m-d H:i:s");
-        //$operated_by = "0";
-        //if (isset($_SESSION["member_id"])) {
-        //    $operated_by = $_SESSION["member_id"];
-        //}
-        //$insertData['operated_by'] = $operated_by;
+        $operated_by = "0";
+        if (!isset($insertData["operated_by"]) && isset($_SESSION["member_id"])) {
+            $operated_by = $_SESSION["member_id"];
+        }
+        $insertData['operated_by'] = $operated_by;
         $insertData['insert_date'] = $now_date;
         $insertData['update_date'] = $now_date;
         $insertData['del_flg'] = 0;
@@ -275,7 +283,7 @@ class Database
      */
     public static function getInstance()
     {
-        return new Database(Config::getDataSourceName());
+        return new Database();
     }
 }
 ?>

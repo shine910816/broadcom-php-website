@@ -49,18 +49,8 @@ class BroadcomFront_MyLeadsAction extends BroadcomFrontActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-        $member_id = $user->getMemberId();
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError();
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $school_id = $position_info["school_id"];
+        $member_id = $user->member()->id();
+        $school_id = $user->member()->schoolId();
         $follow_status_array = array(
             BroadcomStudentEntity::FOLLOW_STATUS_1,
             BroadcomStudentEntity::FOLLOW_STATUS_2

@@ -141,8 +141,8 @@ class View
         $this->_smarty->assign('sys_app_host', SYSTEM_APP_HOST);
         $this->_smarty->assign('user_login_flg', $user->isLogin());
         $this->_smarty->assign('user_admin_flg', $user->isAdmin());
-        $this->_smarty->assign('user_member_name', $user->getMemberName());
-        $this->_smarty->assign('user_member_position', $user->getMemberPositionName());
+        $this->_smarty->assign('user_member_name', $user->member()->name());
+        $this->_smarty->assign('user_member_position', $user->member()->positionName());
         $this->_smarty->assign('user_err_flg', $user_err_flg);
         $this->_smarty->assign('user_err_list', $user_err_list);
         $this->_smarty->assign($request->getAttributes());

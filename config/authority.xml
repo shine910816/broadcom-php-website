@@ -1,224 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="AuthorityView.xsl"?>
 <root>
   <functions>
-    <function token="CDA2522E-FBC0-EB46-CABC-25AB7F8700AE" menu="front" act="my_leads" name="我的意向客户">
-      <position value="3100" readable="1" editable="0" />
-      <position value="3110" readable="1" editable="0" />
-      <position value="3111" readable="1" editable="0" />
-      <position value="3112" readable="1" editable="0" />
-      <position value="3120" readable="1" editable="0" />
-      <position value="3121" readable="1" editable="0" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="03956DD6-D903-DD87-1EE0-0AD033EA9B19" menu="front" act="school_leads" name="校区意向客户">
-      <position value="3100" readable="1" editable="0" />
-      <position value="3110" readable="1" editable="0" />
-      <position value="3111" readable="1" editable="0" />
-      <position value="3112" readable="1" editable="0" />
-      <position value="3120" readable="1" editable="0" />
-      <position value="3121" readable="1" editable="0" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="056E36F9-EAFC-E161-C3B7-A847592293D8" menu="front" act="create_leads" name="新增意向客户">
+    <function token="7F359B86-98BC-9289-DE9F-98C757EE91F5" menu="member" act="create" name="添加新成员">
       <position value="3100" readable="1" editable="1" />
-      <position value="3110" readable="1" editable="1" />
-      <position value="3111" readable="1" editable="1" />
-      <position value="3112" readable="1" editable="1" />
-      <position value="3120" readable="1" editable="1" />
-      <position value="3121" readable="1" editable="1" />
+      <position value="3110" readable="0" editable="0" />
+      <position value="3111" readable="0" editable="0" />
+      <position value="3112" readable="0" editable="0" />
+      <position value="3120" readable="0" editable="0" />
+      <position value="3121" readable="0" editable="0" />
       <position value="3130" readable="0" editable="0" />
       <position value="3131" readable="0" editable="0" />
       <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="32BC664E-6EA4-2B99-995D-D5E78D1DA133" menu="front" act="cart_fill" name="添加课程">
-      <position value="3100" readable="1" editable="1" />
-      <position value="3110" readable="1" editable="1" />
-      <position value="3111" readable="1" editable="1" />
-      <position value="3112" readable="1" editable="1" />
-      <position value="3120" readable="1" editable="1" />
-      <position value="3121" readable="1" editable="1" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="95595D15-9260-6A86-9BA1-19EEF223952E" menu="front" act="cart_info" name="已选择课程">
-      <position value="3100" readable="1" editable="1" />
-      <position value="3110" readable="1" editable="1" />
-      <position value="3111" readable="1" editable="1" />
-      <position value="3112" readable="1" editable="1" />
-      <position value="3120" readable="1" editable="1" />
-      <position value="3121" readable="1" editable="1" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="1238D709-7960-371D-AF5F-A78419B3EF49" menu="front" act="order_create" name="创建订单">
-      <position value="3100" readable="1" editable="1" />
-      <position value="3110" readable="1" editable="1" />
-      <position value="3111" readable="1" editable="1" />
-      <position value="3112" readable="1" editable="1" />
-      <position value="3120" readable="1" editable="1" />
-      <position value="3121" readable="1" editable="1" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="B2DAEDE1-DC16-7D46-8687-7D9603788BDD" menu="front" act="order_payment" name="支付订单">
-      <position value="3100" readable="1" editable="1" />
-      <position value="3110" readable="1" editable="1" />
-      <position value="3111" readable="1" editable="1" />
-      <position value="3112" readable="1" editable="1" />
-      <position value="3120" readable="1" editable="1" />
-      <position value="3121" readable="1" editable="1" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="995CE081-42B1-28A9-D49F-5986176A3C29" menu="front" act="order_list" name="订单审核退款">
-      <position value="3100" readable="1" editable="0" />
-      <position value="3110" readable="1" editable="0" />
-      <position value="3111" readable="1" editable="0" />
-      <position value="3112" readable="1" editable="0" />
-      <position value="3120" readable="1" editable="0" />
-      <position value="3121" readable="1" editable="0" />
-      <position value="3130" readable="1" editable="0" />
-      <position value="3131" readable="1" editable="0" />
-      <position value="3132" readable="1" editable="0" />
-      <position value="3200" readable="1" editable="0" />
-    </function>
-    <function token="BB44743B-4FFD-1FBB-B55A-EC192BE7670C" menu="front" act="order_info" name="订单详情">
-      <position value="3100" readable="1" editable="0" />
-      <position value="3110" readable="1" editable="0" />
-      <position value="3111" readable="1" editable="0" />
-      <position value="3112" readable="1" editable="0" />
-      <position value="3120" readable="1" editable="0" />
-      <position value="3121" readable="1" editable="0" />
-      <position value="3130" readable="1" editable="0" />
-      <position value="3131" readable="1" editable="0" />
-      <position value="3132" readable="1" editable="0" />
       <position value="3200" readable="1" editable="1" />
     </function>
-    <function token="7403C18B-2182-0054-C1F4-D4E3CBE47528" menu="front" act="refund_list" name="合同退转审核">
-      <position value="3100" readable="1" editable="0" />
-      <position value="3110" readable="1" editable="0" />
-      <position value="3111" readable="1" editable="0" />
-      <position value="3112" readable="1" editable="0" />
-      <position value="3120" readable="1" editable="0" />
-      <position value="3121" readable="1" editable="0" />
-      <position value="3130" readable="1" editable="0" />
-      <position value="3131" readable="1" editable="0" />
-      <position value="3132" readable="1" editable="0" />
-      <position value="3200" readable="1" editable="0" />
-    </function>
-    <function token="D9323A08-CD87-B36B-E88F-C85DCEEC32F4" menu="front" act="refund_info" name="退款转让详情">
-      <position value="3100" readable="1" editable="0" />
-      <position value="3110" readable="1" editable="0" />
-      <position value="3111" readable="1" editable="0" />
-      <position value="3112" readable="1" editable="0" />
-      <position value="3120" readable="1" editable="0" />
-      <position value="3121" readable="1" editable="0" />
-      <position value="3130" readable="1" editable="0" />
-      <position value="3131" readable="1" editable="0" />
-      <position value="3132" readable="1" editable="0" />
+    <function token="41F8C1A8-4001-42C5-1E6B-EB3C9AD6D0D0" menu="member" act="update" name="修改成员信息">
+      <position value="3100" readable="1" editable="1" />
+      <position value="3110" readable="0" editable="0" />
+      <position value="3111" readable="0" editable="0" />
+      <position value="3112" readable="0" editable="0" />
+      <position value="3120" readable="0" editable="0" />
+      <position value="3121" readable="0" editable="0" />
+      <position value="3130" readable="0" editable="0" />
+      <position value="3131" readable="0" editable="0" />
+      <position value="3132" readable="0" editable="0" />
       <position value="3200" readable="1" editable="1" />
     </function>
-    <function token="71873A80-111B-4F7E-1073-5C00B0A2FF3A" menu="education" act="my_student_list" name="我的学员列表">
-      <position value="3100" readable="1" editable="0" />
-      <position value="3110" readable="1" editable="0" />
-      <position value="3111" readable="1" editable="0" />
-      <position value="3112" readable="1" editable="0" />
-      <position value="3120" readable="1" editable="0" />
-      <position value="3121" readable="1" editable="0" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="423A579C-1CCB-C5A6-228B-3EBB47D65D72" menu="education" act="student_list" name="校区学员列表">
-      <position value="3100" readable="1" editable="0" />
-      <position value="3110" readable="1" editable="0" />
-      <position value="3111" readable="1" editable="0" />
-      <position value="3112" readable="1" editable="0" />
-      <position value="3120" readable="1" editable="0" />
-      <position value="3121" readable="1" editable="0" />
-      <position value="3130" readable="1" editable="0" />
-      <position value="3131" readable="1" editable="0" />
-      <position value="3132" readable="1" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="6FD93A28-9D68-2AE9-8383-2DC66A0C1C61" menu="education" act="student_edit" name="学员信息编辑">
-      <position value="3100" readable="1" editable="1" />
-      <position value="3110" readable="1" editable="1" />
-      <position value="3111" readable="1" editable="1" />
-      <position value="3112" readable="1" editable="1" />
-      <position value="3120" readable="1" editable="1" />
-      <position value="3121" readable="1" editable="1" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="D8468AD9-00A3-B74C-2F1F-8A5B5A4F68B6" menu="education" act="student_assign" name="学员分配">
-      <position value="3100" readable="1" editable="1" />
-      <position value="3110" readable="1" editable="1" />
-      <position value="3111" readable="1" editable="1" />
-      <position value="3112" readable="1" editable="1" />
-      <position value="3120" readable="1" editable="1" />
-      <position value="3121" readable="1" editable="1" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="E5E88312-73E8-7CE8-C5FA-EB71F644997F" menu="education" act="schedule_list" name="校区课表管理">
-      <position value="3100" readable="1" editable="0" />
-      <position value="3110" readable="0" editable="0" />
-      <position value="3111" readable="0" editable="0" />
-      <position value="3112" readable="0" editable="0" />
-      <position value="3120" readable="1" editable="0" />
-      <position value="3121" readable="1" editable="0" />
-      <position value="3130" readable="1" editable="0" />
-      <position value="3131" readable="1" editable="0" />
-      <position value="3132" readable="1" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="D61B8FCC-8377-5858-5783-01801FE397BD" menu="education" act="schedule_create" name="添加课表">
-      <position value="3100" readable="0" editable="0" />
-      <position value="3110" readable="0" editable="0" />
-      <position value="3111" readable="0" editable="0" />
-      <position value="3112" readable="0" editable="0" />
-      <position value="3120" readable="1" editable="1" />
-      <position value="3121" readable="1" editable="1" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="1CBCB902-56FB-1B30-131B-10ED0B6888B9" menu="education" act="schedule_info" name="编辑课表">
-      <position value="3100" readable="0" editable="0" />
-      <position value="3110" readable="0" editable="0" />
-      <position value="3111" readable="0" editable="0" />
-      <position value="3112" readable="0" editable="0" />
-      <position value="3120" readable="1" editable="1" />
-      <position value="3121" readable="1" editable="1" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="9CD64B2D-06DA-E4D8-1329-EE540A6FE5DD" menu="education" act="course_create" name="课程安排">
+    <function token="A5B2CC33-4959-B83F-24A5-E6A78E41C150" menu="member" act="update_self" name="修改成员信息">
       <position value="3100" readable="1" editable="1" />
       <position value="3110" readable="1" editable="1" />
       <position value="3111" readable="1" editable="1" />
@@ -228,9 +35,9 @@
       <position value="3130" readable="1" editable="1" />
       <position value="3131" readable="1" editable="1" />
       <position value="3132" readable="1" editable="1" />
-      <position value="3200" readable="0" editable="0" />
+      <position value="3200" readable="1" editable="1" />
     </function>
-    <function token="666CFA1F-814C-11FF-2FCA-02DBB39D8930" menu="education" act="my_course_list" name="我的排课列表">
+    <function token="1CC1D050-CAA5-592F-797C-12003C580962" menu="member" act="info" name="成员信息">
       <position value="3100" readable="1" editable="0" />
       <position value="3110" readable="1" editable="0" />
       <position value="3111" readable="1" editable="0" />
@@ -240,9 +47,9 @@
       <position value="3130" readable="1" editable="0" />
       <position value="3131" readable="1" editable="0" />
       <position value="3132" readable="1" editable="0" />
-      <position value="3200" readable="0" editable="0" />
+      <position value="3200" readable="1" editable="0" />
     </function>
-    <function token="6E893986-00F7-F1CA-34A7-A8F0AED93B63" menu="education" act="course_list" name="校区排课列表">
+    <function token="D4F1FA27-76D2-3029-4FB9-2FD91B0057B8" menu="course" act="list" name="排课信息列表">
       <position value="3100" readable="1" editable="0" />
       <position value="3110" readable="1" editable="0" />
       <position value="3111" readable="1" editable="0" />
@@ -252,90 +59,18 @@
       <position value="3130" readable="1" editable="0" />
       <position value="3131" readable="1" editable="0" />
       <position value="3132" readable="1" editable="0" />
-      <position value="3200" readable="0" editable="0" />
+      <position value="3200" readable="1" editable="0" />
     </function>
-    <function token="C8E356DB-CD4C-869D-635E-D3DA27B0B2DF" menu="education" act="course_confirm" name="排课确认">
+    <function token="32FDBB8B-A808-4DB5-C2A6-F87D8DD2F5A2" menu="course" act="create" name="排课">
       <position value="3100" readable="1" editable="1" />
-      <position value="3110" readable="0" editable="0" />
-      <position value="3111" readable="0" editable="0" />
-      <position value="3112" readable="0" editable="0" />
+      <position value="3110" readable="1" editable="1" />
+      <position value="3111" readable="1" editable="1" />
+      <position value="3112" readable="1" editable="1" />
       <position value="3120" readable="1" editable="1" />
       <position value="3121" readable="1" editable="1" />
       <position value="3130" readable="1" editable="1" />
       <position value="3131" readable="1" editable="1" />
       <position value="3132" readable="1" editable="1" />
-      <position value="3200" readable="0" editable="0" />
-    </function>
-    <function token="D1E044AE-466E-020B-5981-6FA24C3C0AA6" menu="education" act="reset_list" name="校区返课列表">
-      <position value="3100" readable="1" editable="1" />
-      <position value="3110" readable="0" editable="0" />
-      <position value="3111" readable="0" editable="0" />
-      <position value="3112" readable="0" editable="0" />
-      <position value="3120" readable="0" editable="0" />
-      <position value="3121" readable="0" editable="0" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="1" editable="1" />
-    </function>
-    <function token="3231E39D-F261-0D40-0FB2-42F31E6EC753" menu="education" act="reset_confirm" name="返课确认">
-      <position value="3100" readable="1" editable="1" />
-      <position value="3110" readable="0" editable="0" />
-      <position value="3111" readable="0" editable="0" />
-      <position value="3112" readable="0" editable="0" />
-      <position value="3120" readable="0" editable="0" />
-      <position value="3121" readable="0" editable="0" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="1" editable="1" />
-    </function>
-    <function token="FFDEDED7-B0FD-AAD3-FF28-5CEF8684300B" menu="human_resource" act="member_list" name="成员列表">
-      <position value="3100" readable="1" editable="0" />
-      <position value="3110" readable="1" editable="0" />
-      <position value="3111" readable="1" editable="0" />
-      <position value="3112" readable="1" editable="0" />
-      <position value="3120" readable="1" editable="0" />
-      <position value="3121" readable="1" editable="0" />
-      <position value="3130" readable="1" editable="0" />
-      <position value="3131" readable="1" editable="0" />
-      <position value="3132" readable="1" editable="0" />
-      <position value="3200" readable="1" editable="0" />
-    </function>
-    <function token="A944396F-01D1-1542-A1E9-969C1F2E8175" menu="human_resource" act="member_info" name="添加新成员">
-      <position value="3100" readable="1" editable="1" />
-      <position value="3110" readable="0" editable="0" />
-      <position value="3111" readable="0" editable="0" />
-      <position value="3112" readable="0" editable="0" />
-      <position value="3120" readable="0" editable="0" />
-      <position value="3121" readable="0" editable="0" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
-      <position value="3200" readable="1" editable="1" />
-    </function>
-    <function token="34848EBE-C3DE-5C15-0B49-BB6C6124DB4B" menu="human_resource" act="teacher_list" name="教师列表">
-      <position value="3100" readable="1" editable="0" />
-      <position value="3110" readable="1" editable="0" />
-      <position value="3111" readable="1" editable="0" />
-      <position value="3112" readable="1" editable="0" />
-      <position value="3120" readable="1" editable="0" />
-      <position value="3121" readable="1" editable="0" />
-      <position value="3130" readable="1" editable="0" />
-      <position value="3131" readable="1" editable="0" />
-      <position value="3132" readable="1" editable="0" />
-      <position value="3200" readable="1" editable="0" />
-    </function>
-    <function token="3779EEE2-1B52-7246-B057-F7F0A37873A1" menu="human_resource" act="teacher_info" name="教师信息">
-      <position value="3100" readable="1" editable="1" />
-      <position value="3110" readable="0" editable="0" />
-      <position value="3111" readable="0" editable="0" />
-      <position value="3112" readable="0" editable="0" />
-      <position value="3120" readable="0" editable="0" />
-      <position value="3121" readable="0" editable="0" />
-      <position value="3130" readable="0" editable="0" />
-      <position value="3131" readable="0" editable="0" />
-      <position value="3132" readable="0" editable="0" />
       <position value="3200" readable="1" editable="1" />
     </function>
   </functions>

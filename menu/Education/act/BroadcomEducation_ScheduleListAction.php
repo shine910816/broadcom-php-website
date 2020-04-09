@@ -45,18 +45,8 @@ class BroadcomEducation_ScheduleListAction extends BroadcomEducationActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-        $member_id = $user->getMemberId();
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError();
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $school_id = $position_info["school_id"];
+        $member_id = $user->member()->id();
+        $school_id = $user->member()->schoolId();
         $schedule_info_list = BroadcomScheduleInfoDBI::selectPeriodSchedule($school_id, date("Y-m-d H:i:s"));
         if ($controller->isError($schedule_info_list)) {
             $schedule_info_list->setPos(__FILE__, __LINE__);

@@ -41,7 +41,7 @@ class BroadcomMember_TopAction extends BroadcomMemberActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
-        $member_id = $user->getMemberId();
+        $member_id = $user->member()->id();
         $member_info = BroadcomMemberInfoDBI::selectMemberInfo($member_id);
         if ($controller->isError($member_info)) {
             $member_info->setPos(__FILE__, __LINE__);

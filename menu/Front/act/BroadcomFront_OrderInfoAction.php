@@ -100,7 +100,7 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         $cancel_able_flg = false;
         // TODO 权限设定Admin?
         $auth_able_flg = false;
-        if ($user->isAdmin() || $user->getMemberPosition() == BroadcomMemberEntity::POSITION_HR_FINANCE) {
+        if ($user->isAdmin() || $user->member()->position() == BroadcomMemberEntity::POSITION_HR_FINANCE) {
             $auth_able_flg = true;
         }
         $passable_order_status_array = array(
@@ -169,7 +169,7 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         $order_update_data = array();
         $order_update_data["order_status"] = BroadcomOrderEntity::ORDER_STATUS_3;
         $order_update_data["order_examine_flg"] = "1";
-        $order_update_data["order_examiner_id"] = $user->getMemberId();
+        $order_update_data["order_examiner_id"] = $user->member()->id();
         $order_update_data["order_examine_date"] = date("Y-m-d H:i:s");
         $order_update_res = BroadcomOrderDBI::updateOrder($order_update_data, $order_id);
         if ($controller->isError($order_update_res)) {
@@ -242,7 +242,7 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         $order_update_data["order_debt"] = $order_info["order_payable"];
         $order_update_data["order_status"] = BroadcomOrderEntity::ORDER_STATUS_4;
         $order_update_data["order_examine_flg"] = "1";
-        $order_update_data["order_examiner_id"] = $user->getMemberId();
+        $order_update_data["order_examiner_id"] = $user->member()->id();
         $order_update_data["order_examine_date"] = date("Y-m-d H:i:s");
         $order_update_res = BroadcomOrderDBI::updateOrder($order_update_data, $order_id);
         if ($controller->isError($order_update_res)) {

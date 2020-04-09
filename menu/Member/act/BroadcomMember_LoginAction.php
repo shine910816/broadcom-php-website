@@ -104,7 +104,6 @@ class BroadcomMember_LoginAction extends ActionBase
     private function _doLoginExecute(Controller $controller, User $user, Request $request)
     {
         $member_id = $request->getAttribute("member_id");
-        $admin_lvl = "0";
         $login_info = BroadcomMemberLoginDBI::selectMemberLogin($member_id);
         if ($controller->isError($login_info)) {
             $login_info->setPos(__FILE__, __LINE__);
@@ -114,9 +113,6 @@ class BroadcomMember_LoginAction extends ActionBase
             $err = $controller->raiseError();
             $err->setPos(__FILE__, __LINE__);
             return $err;
-        }
-        if ($login_info["member_level"] == "2") {
-            $admin_lvl = "1";
         }
         $member_info = BroadcomMemberInfoDBI::selectMemberInfo($member_id);
         if ($controller->isError($member_info)) {
@@ -128,7 +124,7 @@ class BroadcomMember_LoginAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
-        $member_position_name = "";
+        $member_position_name = "Undefined";
         $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
         if ($controller->isError($position_info)) {
             $position_info->setPos(__FILE__, __LINE__);
@@ -147,12 +143,20 @@ class BroadcomMember_LoginAction extends ActionBase
                 $member_position_name = $position_list[$position_info["member_position"]];
             }
         }
-        $user->setVariable("member_id", $member_id);
-        $user->setVariable("admin_lvl", $admin_lvl);
-        $user->setVariable("member_name", $member_info["m_name"]);
-        $user->setVariable("member_position_name", $member_position_name);
-        $user->setVariable("member_position", $position_info["member_position"]);
-        $redirect_url = "../";
+        $member_login_info = array(
+            "i" => $member_id,
+            "n" => $member_info["m_name"],
+            "m" => $member_info["m_mobile_number"],
+            "a" => $login_info["member_login_name"],
+            "l" => $login_info["member_level"],
+            "t" => $login_info["target_object_id"],
+            "s" => $position_info["school_id"],
+            "p" => $position_info["member_position"],
+            "k" => $member_position_name,
+            "e" => $position_info["member_employed_status"]
+        );
+        $user->setVariable(LOGIN_MEMBER_INFO, Utility::encodeCookieInfo($member_login_info));
+        $redirect_url = "./";
         if ($user->hasVariable(REDIRECT_URL)) {
             $redirect_url .= $user->getVariable(REDIRECT_URL);
         }
@@ -174,11 +178,7 @@ class BroadcomMember_LoginAction extends ActionBase
             $controller->redirect($redirect_url);
             return VIEW_NONE;
         }
-        $user->setVariable("member_id", "0");
-        $user->setVariable("admin_lvl", "0");
-        $user->freeVariable("member_name");
-        $user->freeVariable("member_position");
-        $user->freeVariable("member_position_name");
+        $user->freeVariable(LOGIN_MEMBER_INFO);
         $controller->redirect($redirect_url);
         return VIEW_NONE;
     }
