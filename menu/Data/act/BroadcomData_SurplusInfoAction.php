@@ -33,7 +33,7 @@ class BroadcomData_SurplusInfoAction extends BroadcomDataActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($user->getMemberId());
+        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($user->member()->id());
         if ($controller->isError($position_info)) {
             $position_info->setPos(__FILE__, __LINE__);
             return $position_info;

@@ -53,25 +53,15 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
             return $err;
         }
         $course_id = $request->getParameter("course_id");
-        $member_id = $user->getMemberId();
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $school_id = $position_info["school_id"];
+        $member_id = $user->member()->id();
+        $school_id = $user->member()->schoolId();
         $teacher_flg = false;
         $teacher_position_list = array(
             BroadcomMemberEntity::POSITION_TEACH_MANAGER,
             BroadcomMemberEntity::POSITION_TEACHER,
             BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER
         );
-        if (in_array($position_info["member_position"], $teacher_position_list)) {
+        if (in_array($user->member()->position(), $teacher_position_list)) {
             $teacher_flg = true;
         }
         $course_info = BroadcomCourseInfoDBI::selectCourseInfo($course_id);
@@ -91,7 +81,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
                 return $err;
             }
         } else {
-            if ($member_id != $course_info["assign_member_id"] && $position_info["member_position"] != BroadcomMemberEntity::POSITION_HEADMASTER) {
+            if ($member_id != $course_info["assign_member_id"] && $user->member()->position() != BroadcomMemberEntity::POSITION_HEADMASTER) {
                 $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
                 $err->setPos(__FILE__, __LINE__);
                 return $err;
@@ -168,7 +158,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
         if ($ready_cnf_flg) {
             if ($user->isAdmin()) {
                 $confirm_able_flg = true;
-            } elseif ($position_info["member_position"] == BroadcomMemberEntity::POSITION_HEADMASTER) {
+            } elseif ($user->member()->position() == BroadcomMemberEntity::POSITION_HEADMASTER) {
                 $confirm_from_date_ts = strtotime($course_info["course_expire_date"]);
                 $confirm_to_date_ts = mktime(0, 0, -1, date("n", $confirm_from_date_ts), date("j", $confirm_from_date_ts) + 1, date("Y", $confirm_from_date_ts));
                 $current_ts = time();

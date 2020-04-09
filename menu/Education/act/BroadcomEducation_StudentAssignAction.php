@@ -60,18 +60,8 @@ class BroadcomEducation_StudentAssignAction extends BroadcomEducationActionBase
         $student_level_list = BroadcomStudentEntity::getStudentLevelList();
         $student_info["student_grade"] = BroadcomStudentEntity::getGradeName($student_info["student_entrance_year"]);
         $student_info["student_level_name"] = $student_level_list[$student_info["student_level"]];
-        $member_id = $user->getMemberId();
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $school_id = $position_info["school_id"];
+        $member_id = $user->member()->id();
+        $school_id = $user->member()->schoolId();
         $position_list = array(
             BroadcomMemberEntity::POSITION_ASSIST_MANAGER,
             BroadcomMemberEntity::POSITION_ASSISTANT

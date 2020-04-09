@@ -63,17 +63,7 @@ class BroadcomFront_OrderListAction extends BroadcomFrontActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($user->getMemberId());
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError();
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $school_id = $position_info["school_id"];
+        $school_id = $user->member()->schoolId();
         $student_info_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id);
         if ($controller->isError($student_info_list)) {
             $student_info_list->setPos(__FILE__, __LINE__);

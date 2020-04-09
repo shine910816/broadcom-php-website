@@ -45,24 +45,14 @@ class BroadcomEducation_MyCourseListAction extends BroadcomEducationActionBase
         $prev_date = date("Ym", mktime(0, 0, 0, $current_month - 1, 1, $current_year));
         $next_date = date("Ym", mktime(0, 0, 0, $current_month + 1, 1, $current_year));
         $current_date_text = date("Y", $current_date_ts) . "年" . date("n", $current_date_ts) . "月";
-        $member_id = $user->getMemberId();
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError();
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $school_id = $position_info["school_id"];
+        $member_id = $user->member()->id();
+        $school_id = $user->member()->schoolId();
         $teacher_flg = false;
         $teacher_position_list = array(
             BroadcomMemberEntity::POSITION_TEACHER,
             BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER
         );
-        if (in_array($position_info["member_position"], $teacher_position_list)) {
+        if (in_array($user->member()->position(), $teacher_position_list)) {
             $teacher_flg = true;
         }
         $course_list = BroadcomCourseInfoDBI::selectCourseInfoByMember($member_id, $course_date_from, $course_date_to, $teacher_flg);

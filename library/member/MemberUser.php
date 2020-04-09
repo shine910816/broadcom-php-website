@@ -15,24 +15,23 @@ class MemberUser
     private $target_object_id;
     private $school_id;
     private $member_position;
+    private $member_position_name;
     private $member_employed_status;
 
     public function __construct()
     {
-        if (Error::isError($member_info)) {
-            $member_info->setPos(__FILE__, __LINE__);
-        } else {
-            if (!empty($member_info)) {
-                $this->member_id = $member_info["member_id"];
-                $this->m_name = $member_info["m_name"];
-                $this->m_mobile_number = $member_info["m_mobile_number"];
-                $this->member_login_name = $member_info["member_login_name"];
-                $this->member_level = $member_info["member_level"];
-                $this->target_object_id = $member_info["target_object_id"];
-                $this->school_id = $member_info["school_id"];
-                $this->member_position = $member_info["member_position"];
-                $this->member_employed_status = $member_info["member_employed_status"];
-            }
+        if (isset($_SESSION[LOGIN_MEMBER_INFO])) {
+            $member_info = Utility::decodeCookieInfo($_SESSION[LOGIN_MEMBER_INFO]);
+            $this->member_id = $member_info["i"];
+            $this->m_name = $member_info["n"];
+            $this->m_mobile_number = $member_info["m"];
+            $this->member_login_name = $member_info["a"];
+            $this->member_level = $member_info["l"];
+            $this->target_object_id = $member_info["t"];
+            $this->school_id = $member_info["s"];
+            $this->member_position = $member_info["p"];
+            $this->member_position_name = $member_info["k"];
+            $this->member_employed_status = $member_info["e"];
         }
     }
 
@@ -74,6 +73,11 @@ class MemberUser
     public function position()
     {
         return $this->member_position;
+    }
+
+    public function positionName()
+    {
+        return $this->member_position_name;
     }
 
     public function employedStatus()

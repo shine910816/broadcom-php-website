@@ -107,18 +107,8 @@ class BroadcomFront_CreateLeadsAction extends BroadcomFrontActionBase
     private function _doCreateExecute(Controller $controller, User $user, Request $request)
     {
         $student_info = $request->getAttribute("student_info");
-        $member_id = $user->getMemberId();
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError();
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $school_id = $position_info["school_id"];
+        $member_id = $user->member()->id();
+        $school_id = $user->member()->schoolId();
         $student_info["assign_member_id"] = $member_id;
         $student_info["school_id"] = $school_id;
         $student_info["follow_status"] = BroadcomStudentEntity::FOLLOW_STATUS_1;

@@ -189,7 +189,7 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
                 }
             }
         }
-        $request->setAttribute("member_id", $user->getMemberId());
+        $request->setAttribute("member_id", $user->member()->id());
         $request->setAttribute("student_id", $student_id);
         $request->setAttribute("student_info", $student_info);
         $request->setAttribute("scope_out_flg", $scope_out_flg);
@@ -231,7 +231,7 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
 
     private function _doCreateExecute(Controller $controller, User $user, Request $request)
     {
-        $member_id = $user->getMemberId();
+        $member_id = $user->member()->id();
         $student_id = $request->getAttribute("student_id");
         $cart_list = $request->getAttribute("cart_list");
         $cart_item_info = $request->getAttribute("cart_item_info");
@@ -242,17 +242,7 @@ class BroadcomFront_OrderCreateAction extends BroadcomFrontActionBase
         $sub_achieve_type = $request->getParameter("sub_achieve_type");
         $audition_teacher = $request->getAttribute("audition_teacher");
         $achieve_member = $request->getAttribute("achieve_member");
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($user->getMemberId());
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError();
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $school_id = $position_info["school_id"];
+        $school_id = $user->member()->schoolId();
         $dbi = Database::getInstance();
         $begin_res = $dbi->begin();
         if ($controller->isError($begin_res)) {

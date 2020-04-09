@@ -41,20 +41,10 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
-        $member_id = $user->getMemberId();
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($member_id);
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
+        $member_id = $user->member()->id();
         $student_id = "";
         $student_info = array();
-        $school_id = "";
+        $school_id = $user->member()->schoolId();
         $order_item_id = null;
         $order_item_info = array();
         $item_id = null;
@@ -72,7 +62,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 BroadcomMemberEntity::POSITION_ASSIST_MANAGER,
                 BroadcomMemberEntity::POSITION_ASSISTANT
             );
-            if (!in_array($position_info["member_position"], $allow_create_postion) && !$user->isAdmin()) {
+            if (!in_array($user->member()->position(), $allow_create_postion) && !$user->isAdmin()) {
                 $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
                 $err->setPos(__FILE__, __LINE__);
                 return $err;
