@@ -444,6 +444,11 @@ class Utility
         }
     }
 
+    public static function coverMobileNumber($number)
+    {
+        return substr($number, 0, 3) . "****" . substr($number, -4, 4);
+    }
+
     public static function getContentTypeList()
     {
         return array(

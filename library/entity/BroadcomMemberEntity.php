@@ -7,23 +7,28 @@
  */
 class BroadcomMemberEntity
 {
-    const POSITION_DIRECTOR_CITY = "1100";
-    const POSITION_DIRECTOR_OPERATION = "1110";
-    const POSITION_DIRECTOR_HUMANRESOURCE = "1120";
-    const POSITION_DIRECTOR_FINANCE = "1130";
-    const POSITION_DIRECTOR_MARKETING = "1140";
-    const POSITION_DIRECTOR_EDUCATION = "1150";
-    const POSITION_REGIONAL_MANAGER = "2100";
+    //const POSITION_DIRECTOR_CITY = "1100";
+    //const POSITION_DIRECTOR_OPERATION = "1110";
+    //const POSITION_DIRECTOR_HUMANRESOURCE = "1120";
+    //const POSITION_DIRECTOR_FINANCE = "1130";
+    //const POSITION_DIRECTOR_MARKETING = "1140";
+    //const POSITION_DIRECTOR_EDUCATION = "1150";
+    //const POSITION_REGIONAL_MANAGER = "2100";
     const POSITION_HEADMASTER = "3100";
-    const POSITION_ADVISER_MANAGER = "3110";
+    //const POSITION_ADVISER_MANAGER = "3110";
     const POSITION_ADVISER = "3111";
     const POSITION_MARKETING = "3112";
-    const POSITION_ASSIST_MANAGER = "3120";
+    //const POSITION_ASSIST_MANAGER = "3120";
     const POSITION_ASSISTANT = "3121";
     const POSITION_TEACH_MANAGER = "3130";
     const POSITION_TEACHER = "3131";
     const POSITION_CONCURRENT_TEACHER = "3132";
     const POSITION_HR_FINANCE = "3200";
+
+    const SECTION_1 = "1";
+    const SECTION_2 = "2";
+    const SECTION_3 = "3";
+    const SECTION_4 = "4";
 
     const POSITION_LEVEL_0 = "0";
     const POSITION_LEVEL_1 = "1";
@@ -91,7 +96,7 @@ class BroadcomMemberEntity
             self::POSITION_ADVISER => "课程顾问",
             self::POSITION_MARKETING => "市场专员",
             //self::POSITION_ASSIST_MANAGER => "学管主管",
-            self::POSITION_ASSISTANT => "学管",
+            self::POSITION_ASSISTANT => "教务专员",
             self::POSITION_TEACH_MANAGER => "教学校长",
             self::POSITION_TEACHER => "教师",
             self::POSITION_CONCURRENT_TEACHER => "兼职教师",
@@ -102,9 +107,32 @@ class BroadcomMemberEntity
     public static function getSectionList()
     {
         return array(
-            "1" => "营销部门",
-            "2" => "学管部门",
-            "3" => "教学部门"
+            self::SECTION_1 => "校长",
+            self::SECTION_2 => "教务部",
+            self::SECTION_3 => "教学部",
+            self::SECTION_4 => "财务部"
+        );
+    }
+
+    public static function getSectionPositionList()
+    {
+        return array(
+            self::SECTION_1 => array(
+                self::POSITION_HEADMASTER          //校长
+            ),
+            self::SECTION_2 => array(
+                self::POSITION_ADVISER,            //课程顾问
+                self::POSITION_MARKETING,          //市场专员
+                self::POSITION_ASSISTANT           //教务专员
+            ),
+            self::SECTION_3 => array(
+                self::POSITION_TEACH_MANAGER,      //教学校长
+                self::POSITION_TEACHER,            //教师
+                self::POSITION_CONCURRENT_TEACHER  //兼职教师
+            ),
+            self::SECTION_4 => array(
+                self::POSITION_HR_FINANCE          //财务人事
+            )
         );
     }
 

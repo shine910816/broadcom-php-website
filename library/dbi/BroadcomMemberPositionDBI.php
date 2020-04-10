@@ -80,10 +80,14 @@ class BroadcomMemberPositionDBI
             return $result;
         }
         $data = array();
+        $section_position_list = BroadcomMemberEntity::getSectionPositionList();
         while ($row = $result->fetch_assoc()) {
-            if (in_array(substr($row["member_position"], 0, 3), explode(",", "311,312,313"))) {
-                $section_id = substr($row["member_position"], 2, 1);
-                $data[$section_id][$row["member_id"]] = $row["m_name"];
+            foreach ($section_position_list as $section_id => $allow_position) {
+                if (in_array($row["member_position"], $allow_position)) {
+                    $data[$section_id][$row["member_id"]] = $row["m_name"];
+                } else {
+                    continue;
+                }
             }
         }
         $result->free();

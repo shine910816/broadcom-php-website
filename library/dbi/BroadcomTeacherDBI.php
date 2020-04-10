@@ -47,6 +47,7 @@ class BroadcomTeacherDBI
     {
         $dbi = Database::getInstance();
         $position_arr = array(
+            BroadcomMemberEntity::POSITION_TEACH_MANAGER,
             BroadcomMemberEntity::POSITION_TEACHER,
             BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER
         );
