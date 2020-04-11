@@ -424,7 +424,7 @@ class Utility
         return $result;
     }
 
-    public static function getJsonRespond($url, $post_data)
+    public static function getJsonResponse($url, $post_data)
     {
         $content = http_build_query($post_data);
         $options = array("http" => array(

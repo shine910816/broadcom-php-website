@@ -29,6 +29,15 @@ class BroadcomCourseEntity
         );
     }
 
+    public static function getAuditionTypeList()
+    {
+        return array(
+            "1" => "意向试听",
+            "2" => "扩科试听",
+            "3" => "换老师试听"
+        );
+    }
+
     public static function getCourseResetReasonCodeList()
     {
         return array(

@@ -56,11 +56,36 @@ class BroadcomCourseInfoDBI
     public static function selectCourseInfoBySchool($school_id, $course_date_from, $course_date_to)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT * FROM course_info WHERE del_flg = 0" .
-               " AND school_id = " . $school_id .
-               " AND course_start_date <= " . $dbi->quote($course_date_to) .
-               " AND course_expire_date >= " . $dbi->quote($course_date_from) .
-               " ORDER BY confirm_flg ASC, course_start_date ASC";
+        $sql = "SELECT c.course_id," .
+               " c.course_type," .
+               " c.audition_type," .
+               " c.student_id," .
+               " c.school_id," .
+               " c.assign_member_id," .
+               " c.item_id," .
+               " i.item_name," .
+               " c.order_item_id," .
+               " o.contract_number," .
+               " o.assign_member_id AS `order_assign_member_id`," .
+               " c.confirm_flg," .
+               " c.course_start_date," .
+               " c.course_expire_date," .
+               " c.course_hours," .
+               " c.actual_start_date," .
+               " c.actual_expire_date," .
+               " c.actual_course_hours," .
+               " c.teacher_member_id," .
+               " c.confirm_member_id," .
+               " c.confirm_date," .
+               " c.course_trans_price" .
+               " FROM course_info c" .
+               " LEFT OUTER JOIN item_info i ON i.item_id = c.item_id" .
+               " LEFT OUTER JOIN order_item_info o ON o.order_item_id = c.order_item_id" .
+               " WHERE c.del_flg = 0" .
+               " AND c.school_id = " . $school_id .
+               " AND c.course_start_date <= " . $dbi->quote($course_date_to) .
+               " AND c.course_expire_date >= " . $dbi->quote($course_date_from) .
+               " ORDER BY c.course_start_date DESC, c.course_id DESC";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
