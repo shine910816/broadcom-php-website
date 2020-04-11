@@ -75,6 +75,7 @@ class BroadcomCourseInfoDBI
                " c.actual_expire_date," .
                " c.actual_course_hours," .
                " c.teacher_member_id," .
+               " c.subject_id," .
                " c.confirm_member_id," .
                " c.confirm_date," .
                " c.course_trans_price" .

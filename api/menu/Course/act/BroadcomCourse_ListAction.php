@@ -116,6 +116,7 @@ class BroadcomCourse_ListAction extends ActionBase
                 return $repond_member_list;
             }
             $member_list = $repond_member_list["member_list"];
+            $subject_list = BroadcomSubjectEntity::getSubjectList();
             foreach ($course_list as $course_id => $course_info) {
                 if (isset($student_list[$course_info["student_id"]])) {
                     $course_list[$course_id]["student_name"] = $student_list[$course_info["student_id"]]["student_name"];
@@ -131,9 +132,12 @@ class BroadcomCourse_ListAction extends ActionBase
                 }
                 if (isset($member_list[$course_info["order_assign_member_id"]])) {
                     $course_list[$course_id]["order_assign_member_name"] = $member_list[$course_info["order_assign_member_id"]]["m_name"];
+                } else {
+                    $course_list[$course_id]["order_assign_member_name"] = "";
                 }
                 if (isset($member_list[$course_info["teacher_member_id"]])) {
                     $course_list[$course_id]["teacher_member_name"] = $member_list[$course_info["teacher_member_id"]]["m_name"];
+                    $course_list[$course_id]["teacher_position"] = $member_list[$course_info["teacher_member_id"]]["member_position"];
                 }
                 if ($course_info["confirm_flg"] && isset($member_list[$course_info["confirm_member_id"]])) {
                     $course_list[$course_id]["confirm_member_name"] = $member_list[$course_info["confirm_member_id"]]["m_name"];
@@ -148,6 +152,7 @@ class BroadcomCourse_ListAction extends ActionBase
                     $course_list[$course_id]["course_type_name"] = "正课";
                     $course_list[$course_id]["course_detail_type_name"] = "学员排课";
                 }
+                $course_list[$course_id]["subject_name"] = $subject_list[$course_info["subject_id"]];
             }
         }
         return array(
