@@ -81,7 +81,6 @@ class BroadcomMember_ListAction extends ActionBase
         );
     }
 
-    // TODO Add screen object
     private function _screenMember($member_info, $simple_flg)
     {
         // TODO screen logic

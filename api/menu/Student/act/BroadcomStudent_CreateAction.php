@@ -45,7 +45,8 @@ class BroadcomStudent_CreateAction extends ActionBase
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
 //Utility::testVariable($request->getParameters());
-        $insert_data = json_decode($request->getParameter("i"), true);
+        return false;
+        //$insert_data = json_decode($request->getParameter("i"), true);
         $insert_res = BroadcomStudentInfoDBI::insertStudentInfo($insert_data);
         if ($controller->isError($insert_res)) {
             $insert_res->setPos(__FILE__, __LINE__);
