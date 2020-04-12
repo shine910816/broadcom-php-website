@@ -97,6 +97,15 @@ class BroadcomCourse_ListAction extends ActionBase
         $course_list = $request->getAttribute("course_list");
         if (!empty($course_list)) {
             $post_data = array(
+                "simple" => "1"
+            );
+            $repond_school_list = Utility::getJsonResponse("?t=B7AA9B79-622B-A31B-FD5C-28B79AFCDF34&m=" . $request->member()->targetObjectId(), $post_data);
+            if ($controller->isError($repond_school_list)) {
+                $repond_school_list->setPos(__FILE__, __LINE__);
+                return $repond_school_list;
+            }
+            $school_list = $repond_school_list["school_list"];
+            $post_data = array(
                 "school_id" => $school_id
             );
             $repond_student_list = Utility::getJsonResponse("?t=9B5BB2E7-F483-24CA-A725-55A304F628DE&m=" . $request->member()->targetObjectId(), $post_data);
@@ -138,6 +147,7 @@ class BroadcomCourse_ListAction extends ActionBase
                 if (isset($member_list[$course_info["teacher_member_id"]])) {
                     $course_list[$course_id]["teacher_member_name"] = $member_list[$course_info["teacher_member_id"]]["m_name"];
                     $course_list[$course_id]["teacher_position"] = $member_list[$course_info["teacher_member_id"]]["member_position"];
+                    $course_list[$course_id]["teacher_school_name"] = $school_list[$member_list[$course_info["teacher_member_id"]]["school_id"]] . "校区";
                 }
                 if ($course_info["confirm_flg"] && isset($member_list[$course_info["confirm_member_id"]])) {
                     $course_list[$course_id]["confirm_member_name"] = $member_list[$course_info["confirm_member_id"]]["m_name"];

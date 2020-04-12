@@ -204,8 +204,7 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
             } else {
                 $file_cols[] = "全职";
             }
-            // TODO 校区名
-            $file_cols[] = "";
+            $file_cols[] = $course_info["teacher_school_name"];
             $file_cols[] = $course_info["confirm_member_name"];
             if ($course_info["confirm_flg"]) {
                 $file_cols[] = substr($course_info["confirm_date"], 0, 16);

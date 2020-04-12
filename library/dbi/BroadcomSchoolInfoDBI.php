@@ -8,7 +8,7 @@
 class BroadcomSchoolInfoDBI
 {
 
-    public static function selectSchoolInfoList()
+    public static function selectSchoolInfoList($detail_flg = false)
     {
         $dbi = Database::getInstance();
         $sql = "SELECT * FROM school_info WHERE del_flg = 0";
@@ -19,7 +19,11 @@ class BroadcomSchoolInfoDBI
         }
         $data = array();
         while ($row = $result->fetch_assoc()) {
-            $data[$row["school_id"]] = $row["school_name"];
+            if ($detail_flg) {
+                $data[$row["school_id"]] = $row;
+            } else {
+                $data[$row["school_id"]] = $row["school_name"];
+            }
         }
         $result->free();
         return $data;
