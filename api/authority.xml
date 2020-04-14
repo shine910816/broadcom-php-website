@@ -91,6 +91,16 @@
       <position value="3132" readable="1" editable="0" />
       <position value="3200" readable="1" editable="0" />
     </function>
+    <function token="1A48D380-3B3F-A5AD-F4A6-23F86DC2BFC1" menu="course" act="combine_list" name="排课信息列表">
+      <position value="3100" readable="1" editable="0" />
+      <position value="3111" readable="1" editable="0" />
+      <position value="3112" readable="1" editable="0" />
+      <position value="3121" readable="1" editable="0" />
+      <position value="3130" readable="1" editable="0" />
+      <position value="3131" readable="1" editable="0" />
+      <position value="3132" readable="1" editable="0" />
+      <position value="3200" readable="1" editable="0" />
+    </function>
     <function token="32FDBB8B-A808-4DB5-C2A6-F87D8DD2F5A2" menu="course" act="create" name="新增排课">
       <position value="3100" readable="1" editable="1" />
       <position value="3111" readable="1" editable="1" />
