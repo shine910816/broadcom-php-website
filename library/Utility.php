@@ -382,16 +382,16 @@ class Utility
         return $result;
     }
 
-    public static function getWeeklyList($param, $period_month = 3)
+    public static function getWeeklyList($start_date, $end_date)
     {
-        $current_ts = strtotime($param);
-        $max_month = $period_month;
-        if (date("j", $current_ts) > 20) {
-            $max_month++;
-        }
+        $start_ts = strtotime($start_date . " 00:00:00");
+        $end_ts = strtotime($end_date . " 23:59:59");
+        $start_key = date("Ymd", $start_ts);
+        $end_key = date("Ymd", $end_ts);
+        $max_month = (date("Y", $end_ts) - date("Y", $start_ts)) * 12 + date("n", $end_ts) - date("n", $start_ts) + 1;
         $result = array();
         for ($i = 0; $i < $max_month; $i++) {
-            $first_day_ts = mktime(0, 0, 0, date("n", $current_ts) + $i, 1, date("Y", $current_ts));
+            $first_day_ts = mktime(0, 0, 0, date("n", $start_ts) + $i, 1, date("Y", $start_ts));
             $key_year = date("Y", $first_day_ts);
             $key_month = date("n", $first_day_ts);
             $key_last_day = date("t", $first_day_ts);
@@ -405,6 +405,11 @@ class Utility
                     "day" => date("j", $day_ts) . "日",
                     "monthday" => date("n", $day_ts) . "月" . date("j", $day_ts) . "日"
                 );
+                if ($weekly_day_list[$week_idx]["key"] < $start_key || $weekly_day_list[$week_idx]["key"] > $end_key) {
+                    $weekly_day_list[$week_idx]["out"] = "1";
+                } else {
+                    $weekly_day_list[$week_idx]["out"] = "0";
+                }
                 if ($day == 1 && $week_idx != "1") {
                     for ($j = 1; $j < $week_idx; $j++) {
                         $weekly_day_list[$j] = array();
