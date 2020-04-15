@@ -221,7 +221,7 @@ class BroadcomCourse_CombineListAction extends ActionBase
                     if (!isset($course_result[$result_key])) {
                         $course_result[$result_key] = array();
                     }
-                    $course_result[$result_key][] = $course_info["student_name"];
+                    $course_result[$result_key][] = $course_info["student_name"] . "-";// TODO 加年级
                 }
             }
         }
