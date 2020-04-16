@@ -23,6 +23,12 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 $ret->setPos(__FILE__, __LINE__);
                 return $ret;
             }
+        } elseif ($request->hasParameter("time_type")) {
+            $ret = $this->_doSelectExecute($controller, $user, $request);
+            if ($controller->isError($ret)) {
+                $ret->setPos(__FILE__, __LINE__);
+                return $ret;
+            }
         } else {
             $ret = $this->_doDefaultExecute($controller, $user, $request);
             if ($controller->isError($ret)) {
@@ -41,6 +47,46 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
+        $base_course_info = array(
+            ["course_type"] => BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO,
+            ["audition_type"] => "0",
+            ["student_id"] => "0",
+            ["school_id"] => "0",
+            ["subject_id"] => "0",
+            ["teacher_member_id"] => "0",
+            ["order_item_id"] => "",
+            ["item_id"] => "",
+            ["course_trans_price"] => "0"
+        );
+        $student_info = array();
+        $order_item_info = array();
+        $audition_flg = false;
+        if ($request->hasParameter("do_create")) {
+            // TODO
+        } elseif ($request->hasParameter("time_type")) {
+            // TODO
+        } else {
+            if ($request->hasParameter("order_item_id") && $request->getParameter("order_item_id")) {
+                // TODO
+            } else {
+                if (!$request->hasParameter("student_id")) {
+                    $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
+                    $err->setPos(__FILE__, __LINE__);
+                    return $err;
+                }
+                $base_course_info["student_id"] = $request->getParameter("student_id");
+                $repond_student_info = Utility::getJsonResponse("?t=D2EC2D87-7195-6707-EF12-E55DB18ABF7C&m=" . $request->member()->targetObjectId(), array("student_id" => $base_course_info["student_id"]));
+                if ($controller->isError($repond_student_info)) {
+                    $repond_student_info->setPos(__FILE__, __LINE__);
+                    return $repond_student_info;
+                }
+                $student_info = $repond_student_info["student_info"];
+                $audition_flg = true;
+                $base_course_info["school_id"] = $student_info["school_id"];
+                $base_course_info["audition_type"] = BroadcomCourseEntity::AUDITION_TYPE_1;
+            }
+        }
+        // TODO DELECT OLD LOGIC
         $member_id = $user->member()->id();
         $student_id = "";
         $student_info = array();
@@ -220,6 +266,11 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
      * @access private
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
+    {
+        return VIEW_DONE;
+    }
+
+    private function _doSelectExecute(Controller $controller, User $user, Request $request)
     {
         return VIEW_DONE;
     }

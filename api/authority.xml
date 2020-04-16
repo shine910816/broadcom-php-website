@@ -81,6 +81,16 @@
       <position value="3132" readable="1" editable="0" />
       <position value="3200" readable="1" editable="0" />
     </function>
+    <function token="D2EC2D87-7195-6707-EF12-E55DB18ABF7C" menu="student" act="info" name="学员详细信息">
+      <position value="3100" readable="1" editable="0" />
+      <position value="3111" readable="1" editable="0" />
+      <position value="3112" readable="1" editable="0" />
+      <position value="3121" readable="1" editable="0" />
+      <position value="3130" readable="1" editable="0" />
+      <position value="3131" readable="1" editable="0" />
+      <position value="3132" readable="1" editable="0" />
+      <position value="3200" readable="1" editable="0" />
+    </function>
     <function token="D4F1FA27-76D2-3029-4FB9-2FD91B0057B8" menu="course" act="list" name="排课信息列表">
       <position value="3100" readable="1" editable="0" />
       <position value="3111" readable="1" editable="0" />
@@ -109,7 +119,7 @@
       <position value="3130" readable="1" editable="1" />
       <position value="3131" readable="1" editable="1" />
       <position value="3132" readable="1" editable="1" />
-      <position value="3200" readable="1" editable="1" />
+      <position value="3200" readable="1" editable="0" />
     </function>
   </functions>
 </root>
