@@ -74,7 +74,7 @@ class BroadcomCourse_CombineListAction extends ActionBase
             $course_type = $request->getParameter("course_type");
             $audition_type = null;
             $item_id = null;
-            if ($course_type == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
+            if ($course_type == BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO || $course_type == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
                 if (!$request->hasParameter("audition_type")) {
                     $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter missed: audition_type");
                     $err->setPos(__FILE__, __LINE__);
@@ -198,7 +198,7 @@ class BroadcomCourse_CombineListAction extends ActionBase
             foreach ($course_list as $course_id => $course_info) {
                 $target_flg = false;
                 if ($course_info["student_id"] != $student_id && $course_info["course_type"] == $course_type) {
-                    if ($course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
+                    if ($course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO || $course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
                         if ($course_info["audition_type"] == $audition_type) {
                             $target_flg = true;
                         }
@@ -215,29 +215,40 @@ class BroadcomCourse_CombineListAction extends ActionBase
                         $course_info["course_start_date"],
                         sprintf("%.1f", $course_info["course_hours"]),
                         $course_info["subject_id"],
-                        $course_info["teacher_member_id"]
+                        $course_info["teacher_member_id"],
+                        $course_info["course_type"]
                     );
                     $result_key = implode("_", $result_key_array);
                     if (!isset($course_result[$result_key])) {
                         $course_result[$result_key] = array();
                     }
-                    $course_result[$result_key][] = $course_info["student_name"] . "-";// TODO 加年级
+                    $course_result[$result_key][] = $course_info["student_name"] . "-" . $course_info["student_grade_name"];
                 }
             }
         }
         $json_result = array();
         foreach ($course_result as $result_key => $student_info) {
             $key_array = explode("_", $result_key);
-            $item_result = array();
-            $item_result["course_start_date"] = $key_array[0];
-            $item_result["course_expire_date"] = date("Y-m-d H:i:s", strtotime($key_array[0]) + $key_array[1] * 60 * 60);
-            $item_result["course_hours"] = $key_array[1];
-            $item_result["teacher_member_id"] = $key_array[3];
-            $item_result["subject_id"] = $key_array[2];
-            $item_result["param"] = Utility::encodeCookieInfo($item_result);
-            $item_result["student_count"] = count($student_info);
-            $item_result["student_names"] = implode(", ", $student_info);
-            $json_result[] = $item_result;
+            $course_type = $key_array[4];
+            $student_count = count($student_info);
+            $max_count = 15;
+            if ($course_type == BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO || $course_type == BroadcomCourseEntity::COURSE_TYPE_DOUBLE) {
+                $max_count = 2;
+            } elseif ($course_type == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD || $course_type == BroadcomCourseEntity::COURSE_TYPE_TRIBLE) {
+                $max_count = 3;
+            }
+            if ($student_count < $max_count) {
+                $item_result = array();
+                $item_result["course_start_date"] = $key_array[0];
+                $item_result["course_expire_date"] = date("Y-m-d H:i:s", strtotime($key_array[0]) + $key_array[1] * 60 * 60);
+                $item_result["course_hours"] = $key_array[1];
+                $item_result["teacher_member_id"] = $key_array[3];
+                $item_result["subject_id"] = $key_array[2];
+                $item_result["param"] = Utility::encodeCookieInfo($item_result);
+                $item_result["student_count"] = $student_count;
+                $item_result["student_names"] = implode(", ", $student_info);
+                $json_result[] = $item_result;
+            }
         }
         return array(
             "course_list" => $json_result
