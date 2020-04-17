@@ -15,6 +15,10 @@ class BroadcomCourseEntity
     const COURSE_TYPE_AUDITION_DUO = "6";
     const COURSE_TYPE_AUDITION_SQUAD = "7";
 
+    const AUDITION_TYPE_1 = "1";
+    const AUDITION_TYPE_2 = "2";
+    const AUDITION_TYPE_3 = "3";
+
     const COURSE_RESET_REASON_CODE_1 = "1";
     const COURSE_RESET_REASON_CODE_2 = "2";
 
@@ -34,9 +38,9 @@ class BroadcomCourseEntity
     public static function getAuditionTypeList()
     {
         return array(
-            "1" => "意向试听",
-            "2" => "扩科试听",
-            "3" => "换老师试听"
+            self::AUDITION_TYPE_1 => "意向试听",
+            self::AUDITION_TYPE_2 => "扩科试听",
+            self::AUDITION_TYPE_3 => "换老师试听"
         );
     }
 

@@ -119,7 +119,7 @@
       <position value="3130" readable="1" editable="1" />
       <position value="3131" readable="1" editable="1" />
       <position value="3132" readable="1" editable="1" />
-      <position value="3200" readable="1" editable="1" />
+      <position value="3200" readable="1" editable="0" />
     </function>
   </functions>
 </root>
