@@ -71,6 +71,18 @@ class BroadcomOrderItem_InfoAction extends ActionBase
         $order_item_info = $request->getAttribute("order_item_info");
         $achieve_order_item_info = $request->getAttribute("achieve_order_item_info");
         $audition_order_item_info = $request->getAttribute("audition_order_item_info");
+        $item_method_list = BroadcomItemEntity::getItemMethodList();
+        $order_item_info["item_method_name"] = $item_method_list[$order_item_info["item_method"]];
+        $order_item_info["item_unit_hour"] = round($order_item_info["item_unit_hour"], 1);
+        $order_item_info["order_item_price"] = round($order_item_info["order_item_price"], 2);
+        $order_item_info["order_item_discount_amount"] = round($order_item_info["order_item_discount_amount"], 2);
+        $order_item_info["order_item_payable_amount"] = round($order_item_info["order_item_payable_amount"], 2);
+        $order_item_info["order_item_trans_price"] = round($order_item_info["order_item_trans_price"], 2);
+        $order_item_info["order_item_confirm"] = round($order_item_info["order_item_confirm"], 1);
+        $order_item_info["order_item_remain"] = round($order_item_info["order_item_remain"], 1);
+        foreach ($achieve_order_item_info as $member_id => $achieve_info) {
+            $achieve_order_item_info[$member_id]["achieve_amount"] = round($order_item_info["order_item_amount"] * $order_item_info["order_item_trans_price"] * $achieve_info["achieve_ratio"] / 100, 2);
+        }
         $order_item_info["achieve_member"] = $achieve_order_item_info;
         $order_item_info["audition_teacher"] = $audition_order_item_info;
         return $order_item_info;

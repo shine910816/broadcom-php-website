@@ -237,6 +237,7 @@ class BroadcomOrderDBI
                " i.item_name," .
                " i.item_type," .
                " i.item_method," .
+               " i.item_labels," .
                " i.item_unit," .
                " i.item_unit_amount," .
                " i.item_unit_hour," .
@@ -278,7 +279,7 @@ class BroadcomOrderDBI
     {
         $dbi = Database::getInstance();
         $sql = "SELECT a.member_id," .
-               " m.m_name," .
+               " m.m_name AS `member_name`," .
                " a.achieve_ratio" .
                " FROM order_item_achieve a" .
                " LEFT OUTER JOIN member_info m ON m.member_id = a.member_id" .
@@ -292,7 +293,7 @@ class BroadcomOrderDBI
         }
         $data = array();
         while ($row = $result->fetch_assoc()) {
-            $data[$row["member_id"]] = $row["m_name"] . "(" . $row["achieve_ratio"] . "%)";
+            $data[$row["member_id"]] = $row;
         }
         $result->free();
         return $data;

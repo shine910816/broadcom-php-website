@@ -71,6 +71,7 @@ class BroadcomStudent_InfoAction extends ActionBase
         $student_result["student_entrance_year"] = $student_info["student_entrance_year"];
         $student_result["student_grade_name"] = BroadcomStudentEntity::getGradeName($student_info["student_entrance_year"]);
         $student_result["student_gender"] = $student_info["student_gender"];
+        $student_result["school_id"] = $student_info["school_id"];
         $student_result["student_school_name"] = $student_info["student_school_name"];
         $student_result["student_address"] = $student_info["student_address"];
         $student_result["student_level"] = $student_info["student_level"];
@@ -78,7 +79,7 @@ class BroadcomStudent_InfoAction extends ActionBase
         $student_result["media_channel_code_2"] = $student_info["media_channel_code_2"];
         $student_result["purpose_level"] = $student_info["purpose_level"];
         $student_result["follow_status"] = $student_info["follow_status"];
-        $student_result["audition_hours"] = $student_info["audition_hours"];
+        $student_result["audition_hours"] = round($student_info["audition_hours"], 1);
         $student_result["inread_status"] = $student_info["inread_status"];
         $student_result["assign_member_id"] = $student_info["assign_member_id"];
         $student_result["assign_date"] = $student_info["assign_date"];
