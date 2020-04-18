@@ -123,6 +123,12 @@ div.table-item-value label.ui-btn-check {
 .ui-btn-orange {
   background-color:#E86940!important;
 }
+.ui-btn-red {
+  background-color:#F60000!important;
+}
+.ui-btn-black {
+  background-color:#000000!important;
+}
 table.disp_table {
   width:100%;
   border-collapse:collapse;
