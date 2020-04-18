@@ -297,7 +297,6 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
 
     private function _doCreateExecute(Controller $controller, User $user, Request $request)
     {
-//Utility::testVariable($request->getAttributes());
         $base_data = $request->getAttribute("base_data");
         $time_data = $request->getAttribute("time_data");
         $selected_date = $request->getAttribute("selected_date");
@@ -329,7 +328,6 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 }
             }
         }
-//Utility::testVariable($insert_list);
         if (!empty($insert_list)) {
             foreach ($insert_list as $insert_data) {
                 $respond_course_id = Utility::getJsonResponse("?t=32FDBB8B-A808-4DB5-C2A6-F87D8DD2F5A2&m=" . $user->member()->targetObjectId(), $insert_data);
