@@ -23,6 +23,12 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                 $ret->setPos(__FILE__, __LINE__);
                 return $ret;
             }
+        } elseif ($request->hasParameter("time_type")) {
+            $ret = $this->_doSelectExecute($controller, $user, $request);
+            if ($controller->isError($ret)) {
+                $ret->setPos(__FILE__, __LINE__);
+                return $ret;
+            }
         } else {
             $ret = $this->_doDefaultExecute($controller, $user, $request);
             if ($controller->isError($ret)) {
@@ -41,175 +47,195 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
-        $member_id = $user->member()->id();
-        $student_id = "";
+        $base_course_info = array(
+            "course_type" => BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD,
+            "audition_type" => "0",
+            "student_id" => "0",
+            "school_id" => "0",
+            "subject_id" => "0",
+            "teacher_member_id" => "0",
+            "order_item_id" => "",
+            "item_id" => "",
+            "course_trans_price" => "0"
+        );
         $student_info = array();
-        $school_id = $user->member()->schoolId();
-        $order_item_id = null;
         $order_item_info = array();
-        $item_id = null;
-        $course_type = BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO;
-        $schedule_list = array();
-        $create_able_flg = false;
-        $set_course_info = array();
-        $others_course_info = array();
-        $subject_list = BroadcomSubjectEntity::getSubjectList();
-        $allow_subject_list = array_keys($subject_list);
-        $hint_context = "";
-        if ($request->hasParameter("order_item_id")) {
-            $allow_create_postion = array(
-                BroadcomMemberEntity::POSITION_HEADMASTER,
-                BroadcomMemberEntity::POSITION_ASSIST_MANAGER,
-                BroadcomMemberEntity::POSITION_ASSISTANT
-            );
-            if (!in_array($user->member()->position(), $allow_create_postion) && !$user->isAdmin()) {
+        $audition_flg = false;
+        $time_info = array(
+            "time_type" => "1",
+            "start_time" => "08:00",
+            "course_hours" => "2"
+        );
+        $time_type_list = array(
+            "1" => "自定义时间",
+            "2" => "其他学员时间",
+        );
+        $hours_list = explode(",", "1,1.5,2");
+        $teacher_list_content = "";
+        if ($request->hasParameter("do_create")) {
+            if (!$request->hasParameter("base_data") && !$request->hasParameter("time_data")) {
                 $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
                 $err->setPos(__FILE__, __LINE__);
                 return $err;
             }
-            $order_item_id = $request->getParameter("order_item_id");
-            $order_item_info = BroadcomOrderDBI::selectOrderItem($order_item_id);
-            if ($controller->isError($order_item_info)) {
-                $order_item_info->setPos(__FILE__, __LINE__);
-                return $order_item_info;
+            $base_data = Utility::decodeCookieInfo($request->getParameter("base_data"));
+            $time_data = Utility::decodeCookieInfo($request->getParameter("time_data"));
+            $selected_date = array();
+            $selected_info = array();
+            if ($request->hasParameter("selected_date")) {
+                $selected_date = $request->getParameter("selected_date");
             }
-            if (empty($order_item_info)) {
-                $err = $controller->raiseError();
-                $err->setPos(__FILE__, __LINE__);
-                return $err;
+            if ($request->hasParameter("selected_info")) {
+                $selected_info = $request->getParameter("selected_info");
             }
-            $student_id = $order_item_info["student_id"];
-            $student_info["student_id"] = $student_id;
-            $student_info["student_name"] = $order_item_info["student_name"];
-            $student_info["grade_name"] = BroadcomStudentEntity::getGradeName($order_item_info["student_entrance_year"]);
-            $school_id = $order_item_info["school_id"];
-            $item_id = $order_item_info["item_id"];
-            $allow_subject_list = explode(",", $order_item_info["item_labels"]);
-            $set_course_info = BroadcomCourseInfoDBI::selectCourseInfoByOrderItem($order_item_id);
-            if ($controller->isError($set_course_info)) {
-                $set_course_info->setPos(__FILE__, __LINE__);
-                return $set_course_info;
-            }
-            if ($order_item_info["item_method"] == BroadcomItemEntity::ITEM_METHOD_CLASS) {
-                $course_type = BroadcomCourseEntity::COURSE_TYPE_CLASS;
-                if (empty($set_course_info)) {
-                    $create_able_flg = true;
-                    $schedule_list = BroadcomScheduleInfoDBI::selectPeriodScheduleByItem($school_id, $item_id, date("Y-m-d H:i:s"));
-                    if ($controller->isError($schedule_list)) {
-                        $schedule_list->setPos(__FILE__, __LINE__);
-                        return $schedule_list;
-                    }
-                }
+            $request->setAttribute("base_data", $base_data);
+            $request->setAttribute("time_data", $time_data);
+            $request->setAttribute("selected_date", $selected_date);
+            $request->setAttribute("selected_info", $selected_info);
+            return VIEW_DONE;
+        } elseif ($request->hasParameter("time_type")) {
+            $time_info["time_type"] = $request->getParameter("time_type");
+            $time_info["start_time"] = $request->getParameter("start_time");
+            $time_info["course_hours"] = $request->getParameter("course_hours");
+            $base_course_info["course_type"] = $request->getParameter("course_type");
+            $base_course_info["audition_type"] = $request->getParameter("audition_type");
+            $base_course_info["student_id"] = $request->getParameter("student_id");
+            $base_course_info["school_id"] = $request->getParameter("school_id");
+            $base_course_info["order_item_id"] = $request->getParameter("order_item_id");
+            $base_course_info["item_id"] = $request->getParameter("item_id");
+            if (!$base_course_info["order_item_id"]) {
+                $audition_flg = true;
             } else {
-                $create_able_flg = true;
-                switch ($order_item_info["item_method"]) {
-                    case BroadcomItemEntity::ITEM_METHOD_1_TO_2:
-                        $course_type = BroadcomCourseEntity::COURSE_TYPE_DOUBLE;
-                        break;
-                    case BroadcomItemEntity::ITEM_METHOD_1_TO_3:
-                        $course_type = BroadcomCourseEntity::COURSE_TYPE_TRIBLE;
-                        break;
-                    case BroadcomItemEntity::ITEM_METHOD_1_TO_1:
-                    default:
-                        $course_type = BroadcomCourseEntity::COURSE_TYPE_SINGLE;
-                        break;
+                $order_item_info = Utility::getJsonResponse("?t=35FF8317-9F11-00B5-FEEF-467C7DA37D71&m=" . $user->member()->targetObjectId(), array("order_item_id" => $base_course_info["order_item_id"]));
+                if ($controller->isError($order_item_info)) {
+                    $order_item_info->setPos(__FILE__, __LINE__);
+                    return $order_item_info;
                 }
+                $base_course_info["course_trans_price"] = $order_item_info["order_item_trans_price"];
             }
-            if ($order_item_info["assign_member_id"] != $member_id) {
-                $hint_context = "该学员不是本人受理的学员";
+            $subject_teacher = explode("_", $request->getParameter("subject_teacher"));
+            $base_course_info["subject_id"] = $subject_teacher[0];
+            $base_course_info["teacher_member_id"] = $subject_teacher[1];
+            $teacher_list_content = $this->_getTeacherList($controller, $user, $order_item_info, $base_course_info);
+            if ($controller->isError($teacher_list_content)) {
+                $teacher_list_content->setPos(__FILE__, __LINE__);
+                return $teacher_list_content;
             }
         } else {
-            if (!$request->hasParameter("student_id")) {
-                $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
-                $err->setPos(__FILE__, __LINE__);
-                return $err;
+            if ($request->hasParameter("order_item_id") && $request->getParameter("order_item_id")) {
+                $order_item_id = $request->getParameter("order_item_id");
+                $order_item_info = Utility::getJsonResponse("?t=35FF8317-9F11-00B5-FEEF-467C7DA37D71&m=" . $user->member()->targetObjectId(), array("order_item_id" => $order_item_id));
+                if ($controller->isError($order_item_info)) {
+                    $order_item_info->setPos(__FILE__, __LINE__);
+                    return $order_item_info;
+                }
+                $base_course_info["student_id"] = $order_item_info["student_id"];
+                $base_course_info["school_id"] = $order_item_info["school_id"];
+                $base_course_info["order_item_id"] = $order_item_info["order_item_id"];
+                $base_course_info["item_id"] = $order_item_info["item_id"];
+                $base_course_info["course_trans_price"] = $order_item_info["order_item_trans_price"];
+                switch ($order_item_info["item_method"]) {
+                    case BroadcomItemEntity::ITEM_METHOD_1_TO_1:
+                        $base_course_info["course_type"] = BroadcomCourseEntity::COURSE_TYPE_SINGLE;
+                        break;
+                    case BroadcomItemEntity::ITEM_METHOD_1_TO_2:
+                        $base_course_info["course_type"] = BroadcomCourseEntity::COURSE_TYPE_DOUBLE;
+                        break;
+                    case BroadcomItemEntity::ITEM_METHOD_1_TO_3:
+                        $base_course_info["course_type"] = BroadcomCourseEntity::COURSE_TYPE_TRIBLE;
+                        break;
+                    case BroadcomItemEntity::ITEM_METHOD_CLASS:
+                        $base_course_info["course_type"] = BroadcomCourseEntity::COURSE_TYPE_CLASS;
+                        break;
+                }
+            } else {
+                if (!$request->hasParameter("student_id")) {
+                    $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
+                    $err->setPos(__FILE__, __LINE__);
+                    return $err;
+                }
+                $base_course_info["student_id"] = $request->getParameter("student_id");
+                $audition_flg = true;
+                $base_course_info["audition_type"] = BroadcomCourseEntity::AUDITION_TYPE_1;
             }
-            $student_id = $request->getParameter("student_id");
-            $student_info_data = BroadcomStudentInfoDBI::selectStudentInfo($student_id);
-            if ($controller->isError($student_info_data)) {
-                $student_info_data->setPos(__FILE__, __LINE__);
-                return $student_info_data;
-            }
-            if (empty($student_info_data)) {
-                $err = $controller->raiseError();
-                $err->setPos(__FILE__, __LINE__);
-                return $err;
-            }
-            if ($request->hasParameter("multi")) {
-                $course_type = BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD;
-            }
-            $school_id = $student_info_data["school_id"];
-            $student_info["student_id"] = $student_info_data["student_id"];
-            $student_info["student_name"] = $student_info_data["student_name"];
-            $student_info["grade_name"] = BroadcomStudentEntity::getGradeName($student_info_data["student_entrance_year"]);
-            $set_course_info = BroadcomCourseInfoDBI::selectAuditionCourseInfoByStudent($student_id);
-            if ($controller->isError($set_course_info)) {
-                $set_course_info->setPos(__FILE__, __LINE__);
-                return $set_course_info;
-            }
-            $create_able_flg = true;
-            if ($student_info_data["audition_hours"] <= 0) {
-                $hint_context = "该学员已经试听超过2小时";
+            $teacher_list_content = $this->_getTeacherList($controller, $user, $order_item_info, $base_course_info);
+            if ($controller->isError($teacher_list_content)) {
+                $teacher_list_content->setPos(__FILE__, __LINE__);
+                return $teacher_list_content;
             }
         }
-        $multi_course_type_list = array(
+        $repond_student_info = Utility::getJsonResponse("?t=D2EC2D87-7195-6707-EF12-E55DB18ABF7C&m=" . $user->member()->targetObjectId(), array("student_id" => $base_course_info["student_id"]));
+        if ($controller->isError($repond_student_info)) {
+            $repond_student_info->setPos(__FILE__, __LINE__);
+            return $repond_student_info;
+        }
+        $student_info = $repond_student_info["student_info"];
+        $base_course_info["school_id"] = $student_info["school_id"];
+        $multi_flg = false;
+        $multi_student_course_type_list = array(
             BroadcomCourseEntity::COURSE_TYPE_DOUBLE,
             BroadcomCourseEntity::COURSE_TYPE_TRIBLE,
+            BroadcomCourseEntity::COURSE_TYPE_CLASS,
+            BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO,
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD
         );
-        if (in_array($course_type, $multi_course_type_list)) {
-            $others_course_info = BroadcomCourseInfoDBI::selectMultiCourseInfoByItem($student_id, date("Y-m-d H:i:s"), $item_id);
-            if ($controller->isError($others_course_info)) {
-                $others_course_info->setPos(__FILE__, __LINE__);
-                return $others_course_info;
+        if (in_array($base_course_info["course_type"], $multi_student_course_type_list)) {
+            $multi_flg = true;
+        }
+        if ($audition_flg) {
+            $course_type_list = array(
+                BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO => "一对一",
+                BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO => "一对二",
+                BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD => "一对三"
+            );
+            $audition_type_list = BroadcomCourseEntity::getAuditionTypeList();
+            $request->setAttribute("course_type_list", $course_type_list);
+            $request->setAttribute("audition_type_list", $audition_type_list);
+        }
+        $request->setAttribute("base_course_info", $base_course_info);
+        $request->setAttribute("student_info", $student_info);
+        $request->setAttribute("order_item_info", $order_item_info);
+        $request->setAttribute("audition_flg", $audition_flg);
+        $request->setAttribute("multi_flg", $multi_flg);
+        $request->setAttribute("time_info", $time_info);
+        $request->setAttribute("time_type_list", $time_type_list);
+        $request->setAttribute("hours_list", $hours_list);
+        $request->setAttribute("teacher_list_content", $teacher_list_content);
+        return VIEW_DONE;
+    }
+
+    private function _getTeacherList(Controller $controller, User $user, $order_item_info, $base_course_info)
+    {
+        $post_data = array(
+            "school_id" => $user->member()->schoolId(),
+            "subject" => "1"
+        );
+        $respond_teacher_list = Utility::getJsonResponse("?t=C381A56F-A88A-9D03-B33B-52030E5154DD&m=" . $user->member()->targetObjectId(), $post_data);
+        if ($controller->isError($respond_teacher_list)) {
+            $respond_teacher_list->setPos(__FILE__, __LINE__);
+            return $respond_teacher_list;
+        }
+        $teacher_list = $respond_teacher_list["teacher_list"];
+        $subject_list = $respond_teacher_list["subject_list"];
+        $allow_subject_list = array_keys($subject_list);
+        if (!empty($order_item_info)) {
+            $allow_subject_list = explode(",", $order_item_info["item_labels"]);
+        }
+        $result = "";
+        foreach ($teacher_list as $subject_id => $teacher_list_tmp) {
+            if (!empty($allow_subject_list) && in_array($subject_id, $allow_subject_list)) {
+                $result .= '<optgroup label="' . $subject_list[$subject_id] . '">';
+                foreach ($teacher_list_tmp as $teacher_member_id => $teacher_name) {
+                    $result .= '<option value="' . $subject_id . "_" . $teacher_member_id . '"';
+                    if ($subject_id == $base_course_info["subject_id"] && $teacher_member_id == $base_course_info["teacher_member_id"]) {
+                        $result .= "selected";
+                    }
+                    $result .= ">" . $teacher_name . "</option>";
+                }
+                $result .= "</optgroup>";
             }
         }
-        $room_list = BroadcomRoomInfoDBI::selectUsableRoomList($school_id);
-        if ($controller->isError($room_list)) {
-            $room_list->setPos(__FILE__, __LINE__);
-            return $room_list;
-        }
-        $subject_teacher_info = BroadcomTeacherDBI::selectSchoolTeacherList($school_id);
-        if ($controller->isError($subject_teacher_info)) {
-            $subject_teacher_info->setPos(__FILE__, __LINE__);
-            return $subject_teacher_info;
-        }
-        $teacher_info = BroadcomTeacherDBI::selectTeacherInfoList($school_id);
-        if ($controller->isError($teacher_info)) {
-            $teacher_info->setPos(__FILE__, __LINE__);
-            return $teacher_info;
-        }
-        $student_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id);
-        if ($controller->isError($student_list)) {
-            $student_list->setPos(__FILE__, __LINE__);
-            return $student_list;
-        }
-        $request->setAttribute("member_id", $member_id);
-        $request->setAttribute("school_id", $school_id);
-        $request->setAttribute("student_id", $student_id);
-        $request->setAttribute("student_info", $student_info);
-        $request->setAttribute("item_id", $item_id);
-        $request->setAttribute("order_item_id", $order_item_id);
-        $request->setAttribute("order_item_info", $order_item_info);
-        $request->setAttribute("course_type", $course_type);
-        $request->setAttribute("create_able_flg", $create_able_flg);
-        $request->setAttribute("set_course_info", $set_course_info);
-        $request->setAttribute("schedule_list", $schedule_list);
-        $request->setAttribute("others_course_info", $others_course_info);
-        $request->setAttribute("course_type_list", BroadcomCourseEntity::getCourseTypeList());
-        $request->setAttribute("item_method_list", BroadcomItemEntity::getItemMethodList());
-        $request->setAttribute("subject_list", $subject_list);
-        $request->setAttribute("allow_subject_list", $allow_subject_list);
-        $request->setAttribute("hint_context", $hint_context);
-        $request->setAttribute("room_list", $room_list);
-        $request->setAttribute("subject_teacher_info", $subject_teacher_info);
-        $request->setAttribute("teacher_info", $teacher_info);
-        $request->setAttribute("multi_course_type_list", $multi_course_type_list);
-        $request->setAttribute("student_list", $student_list);
-        if ($request->hasParameter("do_create")) {
-            $request->setAttribute("getting_course_info", $request->getParameter("course_info"));
-        }
-        return VIEW_DONE;
+        return $result;
     }
 
     /**
@@ -224,104 +250,94 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
         return VIEW_DONE;
     }
 
+    private function _doSelectExecute(Controller $controller, User $user, Request $request)
+    {
+        $base_course_info = $request->getAttribute("base_course_info");
+        $student_info = $request->getAttribute("student_info");
+        $order_item_info = $request->getAttribute("order_item_info");
+        $time_info = $request->getAttribute("time_info");
+        $audition_flg = $request->getAttribute("audition_flg");
+        $start_date = date("Y-m-d");
+        $end_date = date("Y-m-d", time() + 24 * 60 * 60 * 90);
+        $post_data = array(
+            "school_id" => $base_course_info["school_id"],
+            "start_date" => $start_date,
+            "end_date" => $end_date,
+            "student_id" => $base_course_info["student_id"]
+        );
+        if ($time_info["time_type"] == "1") {
+            $post_data["teacher_member_id"] = $base_course_info["teacher_member_id"];
+            $post_data["time"] = $time_info["start_time"];
+            $post_data["hour"] = $time_info["course_hours"];
+            $respond_calendar_list = Utility::getJsonResponse("?t=1A48D380-3B3F-A5AD-F4A6-23F86DC2BFC1&m=" . $user->member()->targetObjectId(), $post_data);
+            if ($controller->isError($respond_calendar_list)) {
+                $respond_calendar_list->setPos(__FILE__, __LINE__);
+                return $respond_calendar_list;
+            }
+            $request->setAttribute("course_list", $respond_calendar_list["date_list"]);
+        } else {
+            $post_data["multi"] = "1";
+            $post_data["course_type"] = $base_course_info["course_type"];
+            if ($audition_flg) {
+                $post_data["audition_type"] = $base_course_info["audition_type"];
+            } else {
+                $post_data["item_id"] = $base_course_info["item_id"];
+            }
+            $respond_course_list = Utility::getJsonResponse("?t=1A48D380-3B3F-A5AD-F4A6-23F86DC2BFC1&m=" . $user->member()->targetObjectId(), $post_data);
+            if ($controller->isError($respond_course_list)) {
+                $respond_course_list->setPos(__FILE__, __LINE__);
+                return $respond_course_list;
+            }
+            $request->setAttribute("course_list", $respond_course_list["course_list"]);
+        }
+        $request->setAttribute("base_data", Utility::encodeCookieInfo($base_course_info));
+        $request->setAttribute("time_data", Utility::encodeCookieInfo($time_info));
+        return VIEW_DONE;
+    }
+
     private function _doCreateExecute(Controller $controller, User $user, Request $request)
     {
-        $member_id = $request->getAttribute("member_id");
-        $course_type = $request->getAttribute("course_type");
-        $school_id = $request->getAttribute("school_id");
-        $student_id = $request->getAttribute("student_id");
-        $getting_course_info = $request->getAttribute("getting_course_info");
-        $dbi = Database::getInstance();
-        $begin_res = $dbi->begin();
-        if ($controller->isError($begin_res)) {
-            $begin_res->setPos(__FILE__, __LINE__);
-            return $begin_res;
-        }
-        if ($course_type == BroadcomCourseEntity::COURSE_TYPE_CLASS) {
-            $schedule_id = $getting_course_info["schedule_id"];
-            $schedule_list = $request->getAttribute("schedule_list");
-            $order_item_id = $request->getAttribute("order_item_id");
-            $item_id = $request->getAttribute("item_id");
-            $order_item_info = $request->getAttribute("order_item_info");
-            $schedule_refer_array = json_decode(base64_decode($schedule_list[$schedule_id]["schedule_content"]), true);
-            foreach ($schedule_refer_array as $schedule_index => $schedule_refer) {
-                $insert_data = array();
-                $insert_data["course_type"] = $course_type;
-                $insert_data["school_id"] = $school_id;
-                $insert_data["room_id"] = $schedule_refer["room"];
-                $insert_data["teacher_member_id"] = $schedule_refer["teacher"];
-                $insert_data["subject_id"] = $schedule_refer["subject"];
-                $insert_data["student_id"] = $student_id;
-                $insert_data["order_item_id"] = $order_item_id;
-                $insert_data["item_id"] = $item_id;
-                $insert_data["schedule_id"] = $schedule_id;
-                $insert_data["schedule_index"] = $schedule_index;
-                $insert_data["course_start_date"] = $schedule_refer["start"];
-                $insert_data["course_expire_date"] = $schedule_refer["end"];
-                $insert_data["course_hours"] = $schedule_refer["period"];
-                $insert_data["assign_member_id"] = $member_id;
-                $insert_data["assign_date"] = date("Y-m-d H:i:s");
-                $insert_res = BroadcomCourseInfoDBI::insertCourseInfo($insert_data);
-                if ($controller->isError($insert_res)) {
-                    $insert_res->setPos(__FILE__, __LINE__);
-                    $dbi->rollback();
-                    return $insert_res;
+        $base_data = $request->getAttribute("base_data");
+        $time_data = $request->getAttribute("time_data");
+        $selected_date = $request->getAttribute("selected_date");
+        $selected_info = $request->getAttribute("selected_info");
+        $insert_list = array();
+        if ($time_data["time_type"] == "1") {
+            if (!empty($selected_date)) {
+                foreach ($selected_date as $start_date) {
+                    $insert_data = $base_data;
+                    $course_start_date = $start_date . " " . $time_data["start_time"] . ":00";
+                    $course_expire_date = date("Y-m-d H:i:s", strtotime($course_start_date) + $time_data["course_hours"] * 60 * 60);
+                    $insert_data["course_start_date"] = $course_start_date;
+                    $insert_data["course_expire_date"] = $course_expire_date;
+                    $insert_data["course_hours"] = $time_data["course_hours"];
+                    $insert_list[] = $insert_data;
                 }
             }
         } else {
-            $order_item_info = $request->getAttribute("order_item_info");
-            foreach ($getting_course_info as $course_info) {
-                $insert_data = array();
-                if ($course_info["refer"] != "0") {
-                    $others_course_info = $request->getAttribute("others_course_info");
-                    $refer_course_info = $others_course_info[$course_info["refer"]];
-                    $insert_data["room_id"] = $refer_course_info["room_id"];
-                    $insert_data["teacher_member_id"] = $refer_course_info["teacher_member_id"];
-                    $insert_data["subject_id"] = $refer_course_info["subject_id"];
-                    $insert_data["course_start_date"] = $refer_course_info["course_start_date"];
-                    $insert_data["course_expire_date"] = $refer_course_info["course_expire_date"];
-                    $insert_data["course_hours"] = $refer_course_info["course_hours"];
-                } else {
-                    if ($course_info["start_date"] != "" && $course_info["start_time"] != "") {
-                        $start_ts = strtotime($course_info["start_date"] . " " . $course_info["start_time"] . ":00");
-                        $end_ts = $start_ts + $course_info["course_hours"] * 60 * 60;
-                        $subject_teacher_arr = explode("-", $course_info["subject_teacher"]);
-                        $insert_data["room_id"] = $course_info["room_id"];
-                        $insert_data["teacher_member_id"] = $subject_teacher_arr[1];
-                        $insert_data["subject_id"] = $subject_teacher_arr[0];
-                        $insert_data["course_start_date"] = date("Y-m-d H:i:s", $start_ts);
-                        $insert_data["course_expire_date"] = date("Y-m-d H:i:s", $end_ts);
-                        $insert_data["course_hours"] = $course_info["course_hours"];
-                    }
-                }
-                if (!empty($insert_data)) {
-                    $insert_data["course_type"] = $course_type;
-                    $insert_data["school_id"] = $school_id;
-                    $insert_data["student_id"] = $student_id;
-                    $insert_data["assign_member_id"] = $member_id;
-                    $insert_data["assign_date"] = date("Y-m-d H:i:s");
-                    if ($course_type != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO && $course_type != BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
-                        $order_item_id = $request->getAttribute("order_item_id");
-                        $item_id = $request->getAttribute("item_id");
-                        $order_item_info = $request->getAttribute("order_item_info");
-                        $insert_data["order_item_id"] = $order_item_id;
-                        $insert_data["item_id"] = $item_id;
-                    }
-                    $insert_res = BroadcomCourseInfoDBI::insertCourseInfo($insert_data);
-                    if ($controller->isError($insert_res)) {
-                        $insert_res->setPos(__FILE__, __LINE__);
-                        $dbi->rollback();
-                        return $insert_res;
-                    }
+            if (!empty($selected_info)) {
+                foreach ($selected_info as $encode_course_info) {
+                    $course_info = Utility::decodeCookieInfo($encode_course_info);
+                    $insert_data = $base_data;
+                    $insert_data["course_start_date"] = $course_info["course_start_date"];
+                    $insert_data["course_expire_date"] = $course_info["course_expire_date"];
+                    $insert_data["course_hours"] = $course_info["course_hours"];
+                    $insert_data["teacher_member_id"] = $course_info["teacher_member_id"];
+                    $insert_data["subject_id"] = $course_info["subject_id"];
+                    $insert_list[] = $insert_data;
                 }
             }
         }
-        $commit_res = $dbi->commit();
-        if ($controller->isError($commit_res)) {
-            $commit_res->setPos(__FILE__, __LINE__);
-            return $commit_res;
+        if (!empty($insert_list)) {
+            foreach ($insert_list as $insert_data) {
+                $respond_course_id = Utility::getJsonResponse("?t=32FDBB8B-A808-4DB5-C2A6-F87D8DD2F5A2&m=" . $user->member()->targetObjectId(), $insert_data);
+                if ($controller->isError($respond_course_id)) {
+                    $respond_course_id->setPos(__FILE__, __LINE__);
+                    return $respond_course_id;
+                }
+            }
         }
-        $controller->redirect("./?menu=education&act=student_info&student_id=" . $student_id);
+        $controller->redirect("./?menu=education&act=student_info&student_id=" . $base_data["student_id"]);
         return VIEW_DONE;
     }
 }

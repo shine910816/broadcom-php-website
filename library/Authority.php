@@ -7,7 +7,7 @@ class Authority
 
     public function __construct()
     {
-        $xml = simplexml_load_file(SRC_PATH . "/config/authority.xml");
+        $xml = simplexml_load_file(SRC_PATH . "/api/authority.xml");
         $result = array();
         foreach ($xml->functions->function as $function_info) {
             $menu_act_info = (array) $function_info->attributes();

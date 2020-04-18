@@ -12,7 +12,12 @@ class BroadcomCourseEntity
     const COURSE_TYPE_TRIBLE = "3";
     const COURSE_TYPE_CLASS = "4";
     const COURSE_TYPE_AUDITION_SOLO = "5";
-    const COURSE_TYPE_AUDITION_SQUAD = "6";
+    const COURSE_TYPE_AUDITION_DUO = "6";
+    const COURSE_TYPE_AUDITION_SQUAD = "7";
+
+    const AUDITION_TYPE_1 = "1";
+    const AUDITION_TYPE_2 = "2";
+    const AUDITION_TYPE_3 = "3";
 
     const COURSE_RESET_REASON_CODE_1 = "1";
     const COURSE_RESET_REASON_CODE_2 = "2";
@@ -25,7 +30,17 @@ class BroadcomCourseEntity
             self::COURSE_TYPE_TRIBLE => "一对三课",
             self::COURSE_TYPE_CLASS => "班课",
             self::COURSE_TYPE_AUDITION_SOLO => "一对一试听课",
-            self::COURSE_TYPE_AUDITION_SQUAD => "一对多试听课"
+            self::COURSE_TYPE_AUDITION_DUO => "一对二试听课",
+            self::COURSE_TYPE_AUDITION_SQUAD => "一对三试听课"
+        );
+    }
+
+    public static function getAuditionTypeList()
+    {
+        return array(
+            self::AUDITION_TYPE_1 => "意向试听",
+            self::AUDITION_TYPE_2 => "扩科试听",
+            self::AUDITION_TYPE_3 => "换老师试听"
         );
     }
 

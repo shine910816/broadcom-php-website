@@ -216,6 +216,112 @@ class BroadcomOrderDBI
         return $data[0];
     }
 
+    public static function selectOrderItemDetail($order_item_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT oi.order_item_id," .
+               " oi.contract_number," .
+               " oi.achieve_type," .
+               " oi.sub_achieve_type," .
+               " oi.school_id," .
+               " oi.student_id," .
+               " oi.order_id," .
+               " o.order_number," .
+               " o.order_status," .
+               " o.order_examine_flg," .
+               " o.order_examiner_id," .
+               " o.order_examine_date," .
+               " o.assign_member_id AS `order_assign_member_id`," .
+               " o.assign_date AS `order_assign_date`," .
+               " oi.item_id," .
+               " i.item_name," .
+               " i.item_type," .
+               " i.item_method," .
+               " i.item_labels," .
+               " i.item_unit," .
+               " i.item_unit_amount," .
+               " i.item_unit_hour," .
+               " oi.order_item_price," .
+               " oi.order_item_amount," .
+               " oi.order_item_discount_type," .
+               " oi.order_item_discount_amount," .
+               " oi.order_item_payable_amount," .
+               " oi.order_item_trans_price," .
+               " oi.order_item_status," .
+               " oi.order_item_confirm," .
+               " oi.order_item_remain," .
+               " oi.assign_member_id," .
+               " oi.assign_date," .
+               " oi.operated_by," .
+               " oi.insert_date," .
+               " oi.main_order_item_id" .
+               " FROM order_item_info oi" .
+               " LEFT OUTER JOIN order_info o ON o.order_id = oi.order_id" .
+               " LEFT OUTER JOIN item_info i ON i.item_id = oi.item_id" .
+               " WHERE oi.del_flg = 0" .
+               " AND o.del_flg = 0" .
+               " AND i.del_flg = 0" .
+               " AND oi.order_item_id = " . $order_item_id . " LIMIT 1";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        $result->free();
+        return $data[0];
+    }
+
+    public static function selectOrderItemAchieve($order_item_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT a.member_id," .
+               " m.m_name AS `member_name`," .
+               " a.achieve_ratio" .
+               " FROM order_item_achieve a" .
+               " LEFT OUTER JOIN member_info m ON m.member_id = a.member_id" .
+               " WHERE a.del_flg = 0" .
+               " AND m.del_flg = 0" .
+               " AND a.order_item_id = " . $order_item_id;
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["member_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
+    public static function selectOrderItemAudition($order_item_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT m.member_id," .
+               " m.m_name" .
+               " FROM order_item_audition a" .
+               " LEFT OUTER JOIN member_info m ON m.member_id = a.teacher_member_id" .
+               " WHERE a.del_flg = 0" .
+               " AND m.del_flg = 0" .
+               " AND a.order_item_id = " . $order_item_id;
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["member_id"]] = $row["m_name"];
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function insertOrder($insert_data)
     {
         $dbi = Database::getInstance();
