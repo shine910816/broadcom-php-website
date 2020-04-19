@@ -95,6 +95,18 @@ class BroadcomCourse_CreateAction extends ActionBase
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
         $insert_data = $request->getAttribute("insert_data");
+        $audition_allow_list = array(
+            BroadcomCourseEntity::COURSE_TYPE_DOUBLE,
+            BroadcomCourseEntity::COURSE_TYPE_TRIBLE,
+            BroadcomCourseEntity::COURSE_TYPE_CLASS,
+            BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO,
+            BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD
+        );
+        if (in_array($insert_data["course_type"], $audition_allow_list)) {
+            $insert_data["multi_course_id"] = md5(sprintf("%s_%s_%s_%s", $insert_data["course_start_date"], $insert_data["course_hours"], $insert_data["subject_id"], $insert_data["teacher_member_id"]));
+        } else {
+            $insert_data["multi_course_id"] = "";
+        }
         $insert_res = BroadcomCourseInfoDBI::insertCourseInfo($insert_data);
         if ($controller->isError($insert_res)) {
             $insert_res->setPos(__FILE__, __LINE__);
