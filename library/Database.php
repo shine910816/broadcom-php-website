@@ -62,8 +62,11 @@ class Database
         }
         $now_date = date("Y-m-d H:i:s");
         $operated_by = "0";
-        if (!isset($insertData["operated_by"]) && isset($_SESSION["member_id"])) {
-            $operated_by = $_SESSION["member_id"];
+        if (isset($insertData["operated_by"])) {
+            $operated_by = $insertData["operated_by"];
+        } elseif (isset($_SESSION[LOGIN_MEMBER_INFO])) {
+            $member_info = Utility::decodeCookieInfo($_SESSION[LOGIN_MEMBER_INFO]);
+            $operated_by = $member_info["i"];
         }
         $insertData['operated_by'] = $operated_by;
         $insertData['insert_date'] = $now_date;
