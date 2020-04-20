@@ -59,6 +59,7 @@ class BroadcomCourseInfoDBI
         $sql = "SELECT c.course_id," .
                " c.course_type," .
                " c.audition_type," .
+               " c.multi_course_id," .
                " c.student_id," .
                " c.school_id," .
                " c.assign_member_id," .
