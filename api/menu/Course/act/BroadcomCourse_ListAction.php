@@ -167,7 +167,9 @@ class BroadcomCourse_ListAction extends ActionBase
                     $course_list[$course_id]["course_detail_type_name"] = "学员排课";
                 }
                 $course_list[$course_id]["course_hours"] = round($course_list[$course_id]["course_hours"], 1);
-                $course_list[$course_id]["actual_course_hours"] = round($course_list[$course_id]["actual_course_hours"], 1);
+                if (!is_null($course_list[$course_id]["actual_course_hours"])) {
+                    $course_list[$course_id]["actual_course_hours"] = round($course_list[$course_id]["actual_course_hours"], 1);
+                }
                 $course_list[$course_id]["subject_name"] = $subject_list[$course_info["subject_id"]];
             }
         }

@@ -48,8 +48,33 @@ class BroadcomCourse_MultiListAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
-
-        $request->setAttribute("insert_data", $insert_data);
+        $post_data = array(
+            "school_id" => $request->getParameter("school_id"),
+            "start_date" => $request->getParameter("start_date"),
+            "end_date" => $request->getParameter("end_date"),
+        );
+        if ($request->hasParameter("teacher_member_id")) {
+            $post_data["teacher_member_id"] = $request->getParameter("teacher_member_id");
+        }
+        if ($request->hasParameter("confirm_flg")) {
+            $post_data["confirm_flg"] = $request->getParameter("confirm_flg");
+        }
+        $repond_course_list = Utility::getJsonResponse("?t=D4F1FA27-76D2-3029-4FB9-2FD91B0057B8&m=" . $request->member()->targetObjectId(), $post_data);
+        if ($controller->isError($repond_course_list)) {
+            $repond_course_list->setPos(__FILE__, __LINE__);
+            return $repond_course_list;
+        }
+        $student_id = null;
+        $assign_member_id = null;
+        if ($request->hasParameter("student_id")) {
+            $student_id = $request->getParameter("student_id");
+        }
+        if ($request->hasParameter("assign_member_id")) {
+            $assign_member_id = $request->getParameter("assign_member_id");
+        }
+        $request->setAttribute("student_id", $student_id);
+        $request->setAttribute("assign_member_id", $assign_member_id);
+        $request->setAttribute("course_list", $repond_course_list["course_list"]);
         return VIEW_DONE;
     }
 
@@ -62,7 +87,21 @@ class BroadcomCourse_MultiListAction extends ActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-        $insert_data = $request->getAttribute("insert_data");
+        $course_list = $request->getAttribute("course_list");
+        $student_id = $request->getAttribute("student_id");
+        $assign_member_id = $request->getAttribute("assign_member_id");
+Utility::testVariable($course_list);
+        $multi_course_list = array();
+        if (!empty($course_list)) {
+            foreach ($course_list as $course_id => $course_info) {
+                if ($course_info["multi_course_id"]) {
+                    if (!isset($multi_course_list[$course_info["multi_course_id"]])) {
+                        $multi_course_list[$course_info["multi_course_id"]] = array(
+                        );
+                    }
+                }
+            }
+        }
         return $insert_data;
     }
 }
