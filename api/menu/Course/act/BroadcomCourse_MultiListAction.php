@@ -159,7 +159,12 @@ class BroadcomCourse_MultiListAction extends ActionBase
 
     private function _screenCourse($multi_course_id, $student_id, $assign_member_id)
     {
-        // TODO screen data
+        if (!is_null($student_id) && !in_array($student_id, $this->_screen_student_list[$multi_course_id])) {
+            return false;
+        }
+        if (!is_null($assign_member_id) && !in_array($assign_member_id, $this->_screen_assign_list[$multi_course_id])) {
+            return false;
+        }
         return true;
     }
 }

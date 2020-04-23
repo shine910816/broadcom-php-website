@@ -100,6 +100,14 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
             $repond_course_list->setPos(__FILE__, __LINE__);
             return $repond_course_list;
         }
+        $course_list = $repond_course_list["course_list"];
+        if (!empty($course_list)) {
+            foreach ($course_list as $course_id => $course_info) {
+                if ($course_info["multi_course_id"]) {
+                    unset($course_list[$course_id]);
+                }
+            }
+        }
         $output_param_array = array(
             "menu" => $request->current_menu,
             "act" => $request->current_act,
@@ -115,7 +123,7 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
         $request->setAttribute("period_start_date", $course_date_from);
         $request->setAttribute("period_end_date", $course_date_to);
         $request->setAttribute("period_type", $period_type);
-        $request->setAttribute("course_list", $repond_course_list["course_list"]);
+        $request->setAttribute("course_list", $course_list);
         $request->setAttribute("assign_member_list_flg", $assign_member_list_flg);
         $request->setAttribute("teacher_member_list_flg", $teacher_member_list_flg);
         $request->setAttribute("student_id", $student_id);

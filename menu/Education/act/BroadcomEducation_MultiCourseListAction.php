@@ -6,7 +6,7 @@ require_once SRC_PATH . "/menu/Education/lib/BroadcomEducationActionBase.php";
  * @author Kinsama
  * @version 2020-02-29
  */
-class BroadcomEducation_MyCourseListAction extends BroadcomEducationActionBase
+class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBase
 {
 
     /**

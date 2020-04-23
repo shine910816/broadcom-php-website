@@ -1,4 +1,14 @@
 {^include file=$comheader_file^}
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".date_input").focus(function(){
+        $(".time_type_label").removeClass("ui-btn-orange");
+        $("#customize_type").addClass("ui-btn-orange");
+        $("input[name='period_type']").attr("checked", false);
+        $("#customize_radio").prop("checked", "checked");
+    });
+});
+</script>
 <div class="main-table pb_15">
   <h2>排课信息筛选</h2>
   <form action="./" method="get">
@@ -8,12 +18,12 @@
       <div class="table-item-a" style="width:66.6%;">
         <div class="table-item-name" style="width:12.5%; padding:0 0.5%;">上课时间</div>
         <div class="table-item-value" style="padding:0 0.5%;">
-          <label class="button-field ui-btn-check{^if $period_type eq "1"^} ui-btn-orange{^/if^}"><input type="radio" name="period_type" value="1"{^if $period_type eq "1"^} checked{^/if^} />本周</label>
-          <label class="button-field ui-btn-check{^if $period_type eq "2"^} ui-btn-orange{^/if^}"><input type="radio" name="period_type" value="2"{^if $period_type eq "2"^} checked{^/if^} />本月</label>
-          <label class="button-field ui-btn-check{^if $period_type eq "3"^} ui-btn-orange{^/if^}"><input type="radio" name="period_type" value="3"{^if $period_type eq "3"^} checked{^/if^} />上月</label>
-          <label class="button-field ui-btn-check{^if $period_type eq "4"^} ui-btn-orange{^/if^}"><input type="radio" name="period_type" value="4"{^if $period_type eq "4"^} checked{^/if^} />自定义</label>
-          <input type="date" name="start_date" value="{^$period_start_date|date_format:"%Y-%m-%d"^}" class="text-field" style="width:150px; margin-right:10px;" />
-          <input type="date" name="end_date" value="{^$period_end_date|date_format:"%Y-%m-%d"^}" class="text-field" style="width:150px; margin-right:10px;" />
+          <label class="button-field ui-btn-check{^if $period_type eq "1"^} ui-btn-orange{^/if^} time_type_label"><input type="radio" name="period_type" value="1"{^if $period_type eq "1"^} checked{^/if^} />本周</label>
+          <label class="button-field ui-btn-check{^if $period_type eq "2"^} ui-btn-orange{^/if^} time_type_label"><input type="radio" name="period_type" value="2"{^if $period_type eq "2"^} checked{^/if^} />本月</label>
+          <label class="button-field ui-btn-check{^if $period_type eq "3"^} ui-btn-orange{^/if^} time_type_label"><input type="radio" name="period_type" value="3"{^if $period_type eq "3"^} checked{^/if^} />上月</label>
+          <label class="button-field ui-btn-check{^if $period_type eq "4"^} ui-btn-orange{^/if^} time_type_label" id="customize_type"><input type="radio" name="period_type" value="4" id="customize_radio"{^if $period_type eq "4"^} checked{^/if^} />自定义</label>
+          <input type="date" name="start_date" value="{^$period_start_date|date_format:"%Y-%m-%d"^}" class="text-field date_input" style="width:150px; margin-right:10px;" />
+          <input type="date" name="end_date" value="{^$period_end_date|date_format:"%Y-%m-%d"^}" class="text-field date_input" style="width:150px; margin-right:10px;" />
         </div>
       </div>
       <div class="table-item-b">
