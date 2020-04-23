@@ -7,6 +7,8 @@
  */
 class BroadcomCourse_MultiListAction extends ActionBase
 {
+    private $_screen_student_list = array();
+    private $_screen_assign_list = array();
 
     /**
      * 执行主程序
@@ -90,19 +92,75 @@ class BroadcomCourse_MultiListAction extends ActionBase
         $course_list = $request->getAttribute("course_list");
         $student_id = $request->getAttribute("student_id");
         $assign_member_id = $request->getAttribute("assign_member_id");
-Utility::testVariable($course_list);
         $multi_course_list = array();
         if (!empty($course_list)) {
             foreach ($course_list as $course_id => $course_info) {
                 if ($course_info["multi_course_id"]) {
                     if (!isset($multi_course_list[$course_info["multi_course_id"]])) {
                         $multi_course_list[$course_info["multi_course_id"]] = array(
+                            "course_type" => $course_info["course_type"],
+                            "audition_type" => $course_info["audition_type"],
+                            "course_type_name" => $course_info["course_type_name"],
+                            "course_detail_type_name" => $course_info["course_detail_type_name"],
+                            "multi_course_id" => $course_info["multi_course_id"],
+                            "school_id" => $course_info["school_id"],
+                            "assign_member_id" => $course_info["assign_member_id"],
+                            "assign_member_name" => $course_info["assign_member_name"],
+                            "item_id" => $course_info["item_id"],
+                            "item_name" => $course_info["item_name"],
+                            "confirm_flg" => $course_info["confirm_flg"],
+                            "confirm_member_id" => $course_info["confirm_member_id"],
+                            "confirm_member_name" => $course_info["confirm_member_name"],
+                            "confirm_date" => $course_info["confirm_date"],
+                            "course_start_date" => $course_info["course_start_date"],
+                            "course_expire_date" => $course_info["course_expire_date"],
+                            "course_hours" => $course_info["course_hours"],
+                            "actual_start_date" => $course_info["actual_start_date"],
+                            "actual_expire_date" => $course_info["actual_expire_date"],
+                            "actual_course_hours" => $course_info["actual_course_hours"],
+                            "teacher_member_id" => $course_info["teacher_member_id"],
+                            "teacher_member_name" => $course_info["teacher_member_name"],
+                            "teacher_position" => $course_info["teacher_position"],
+                            "teacher_school_name" => $course_info["teacher_school_name"],
+                            "subject_id" => $course_info["subject_id"],
+                            "subject_name" => $course_info["subject_name"],
+                            "course_info" => array()
                         );
                     }
+                    $course_item = array(
+                        "course_id" => $course_info["course_id"],
+                        "student_id" => $course_info["student_id"],
+                        "student_name" => $course_info["student_name"],
+                        "student_mobile_number" => $course_info["student_mobile_number"],
+                        "student_grade_name" => $course_info["student_grade_name"],
+                        "order_item_id" => $course_info["order_item_id"],
+                        "contract_number" => $course_info["contract_number"],
+                        "order_assign_member_id" => $course_info["order_assign_member_id"],
+                        "order_assign_member_name" => $course_info["order_assign_member_name"],
+                        "course_trans_price" => $course_info["course_trans_price"]
+                    );
+                    $multi_course_list[$course_info["multi_course_id"]]["course_info"][] = $course_item;
+                    $this->_screen_student_list[$course_info["multi_course_id"]][] = $course_info["student_id"];
+                    $this->_screen_assign_list[$course_info["multi_course_id"]][] = $course_info["order_assign_member_id"];
                 }
             }
         }
-        return $insert_data;
+        if (!empty($multi_course_list)) {
+            foreach ($multi_course_list as $multi_course_id => $course_info_tmp) {
+                if (!$this->_screenCourse($multi_course_id, $student_id, $assign_member_id)) {
+                    unset($multi_course_list[$multi_course_id]);
+                }
+            }
+        }
+        return array(
+            "course_list" => $multi_course_list
+        );
+    }
+
+    private function _screenCourse($multi_course_id, $student_id, $assign_member_id)
+    {
+        // TODO screen data
+        return true;
     }
 }
 ?>
