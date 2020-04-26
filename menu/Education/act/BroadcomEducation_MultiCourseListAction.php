@@ -17,10 +17,18 @@ class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBas
      */
     public function doMainExecute(Controller $controller, User $user, Request $request)
     {
-        $ret = $this->_doDefaultExecute($controller, $user, $request);
-        if ($controller->isError($ret)) {
-            $ret->setPos(__FILE__, __LINE__);
-            return $ret;
+        if ($request->hasParameter("output")) {
+            $ret = $this->_doOutputExecute($controller, $user, $request);
+            if ($controller->isError($ret)) {
+                $ret->setPos(__FILE__, __LINE__);
+                return $ret;
+            }
+        } else {
+            $ret = $this->_doDefaultExecute($controller, $user, $request);
+            if ($controller->isError($ret)) {
+                $ret->setPos(__FILE__, __LINE__);
+                return $ret;
+            }
         }
         return $ret;
     }
@@ -33,65 +41,88 @@ class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBas
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
-        $current_date = date("Ym");
-        if ($request->hasParameter("date")) {
-            $current_date = $request->getParameter("date");
+        $period_date_info = $this->_getPeriodDate($controller, $user, $request);
+        if ($controller->isError($period_date_info)) {
+            $period_date_info->setPos(__FILE__, __LINE__);
+            return $period_date_info;
         }
-        $current_year = substr($current_date, 0, 4);
-        $current_month = substr($current_date, 4, 2);
-        $current_date_ts = mktime(0, 0, 0, $current_month, 1, $current_year);
-        $course_date_from = date("Y-m-d H:i:s", $current_date_ts);
-        $course_date_to = date("Y-m-d H:i:s", mktime(0, 0, -1, $current_month + 1, 1, $current_year));
-        $prev_date = date("Ym", mktime(0, 0, 0, $current_month - 1, 1, $current_year));
-        $next_date = date("Ym", mktime(0, 0, 0, $current_month + 1, 1, $current_year));
-        $current_date_text = date("Y", $current_date_ts) . "年" . date("n", $current_date_ts) . "月";
-        $member_id = $user->member()->id();
-        $school_id = $user->member()->schoolId();
-        $teacher_flg = false;
-        $teacher_position_list = array(
-            BroadcomMemberEntity::POSITION_TEACHER,
-            BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER
+        $course_date_from = substr($period_date_info["period_start_date"], 0, 10);
+        $course_date_to = substr($period_date_info["period_end_date"], 0, 10);
+        $period_type = $period_date_info["period_type"];
+        $post_data = array(
+            "school_id" => $user->member()->schoolId(),
+            "start_date" => $course_date_from,
+            "end_date" => $course_date_to,
         );
-        if (in_array($user->member()->position(), $teacher_position_list)) {
-            $teacher_flg = true;
+        $member_position = $user->member()->position();
+        $assign_member_list_flg = true;
+        $teacher_member_list_flg = true;
+        $section_list = BroadcomMemberEntity::getSectionPositionList();
+        if (in_array($member_position, $section_list[BroadcomMemberEntity::SECTION_3])) {
+            $teacher_member_list_flg = false;
+        } elseif (in_array($member_position, $section_list[BroadcomMemberEntity::SECTION_2])) {
+            $assign_member_list_flg = false;
         }
-        $course_list = BroadcomCourseInfoDBI::selectCourseInfoByMember($member_id, $course_date_from, $course_date_to, $teacher_flg);
-        if ($controller->isError($course_list)) {
-            $course_list->setPos(__FILE__, __LINE__);
-            return $course_list;
+        $student_id = "0";
+        if ($request->hasParameter("student_id") && $request->getParameter("student_id")) {
+            $student_id = $request->getParameter("student_id");
+            $post_data["student_id"] = $student_id;
         }
-        $room_list = BroadcomRoomInfoDBI::selectUsableRoomList($school_id);
-        if ($controller->isError($room_list)) {
-            $room_list->setPos(__FILE__, __LINE__);
-            return $room_list;
+        $teacher_member_id = "0";
+        if (!$teacher_member_list_flg) {
+            $teacher_member_id = $user->member()->id();
+            $post_data["teacher_member_id"] = $teacher_member_id;
+        } else {
+            if ($request->hasParameter("teacher_member_id") && $request->getParameter("teacher_member_id")) {
+                $teacher_member_id = $request->getParameter("teacher_member_id");
+                $post_data["teacher_member_id"] = $teacher_member_id;
+            }
         }
-        $teacher_info = BroadcomTeacherDBI::selectTeacherInfoList($school_id);
-        if ($controller->isError($teacher_info)) {
-            $teacher_info->setPos(__FILE__, __LINE__);
-            return $teacher_info;
+        $assign_member_id = "0";
+        if (!$assign_member_list_flg) {
+            $assign_member_id = $user->member()->id();
+            $post_data["assign_member_id"] = $assign_member_id;
+        } else {
+            if ($request->hasParameter("assign_member_id") && $request->getParameter("assign_member_id")) {
+                $assign_member_id = $request->getParameter("assign_member_id");
+                $post_data["assign_member_id"] = $assign_member_id;
+            }
         }
-        $student_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id);
-        if ($controller->isError($student_list)) {
-            $student_list->setPos(__FILE__, __LINE__);
-            return $student_list;
+        $confirm_flg = "1";
+        if ($request->hasParameter("confirm_flg")) {
+            $confirm_flg = $request->getParameter("confirm_flg");
         }
-        $item_list = BroadcomItemInfoDBI::selectItemInfoList();
-        if ($controller->isError($item_list)) {
-            $item_list->setPos(__FILE__, __LINE__);
-            return $item_list;
+        if ($confirm_flg != "2") {
+            $post_data["confirm_flg"] = $confirm_flg;
         }
-        $request->setAttribute("member_id", $member_id);
-        $request->setAttribute("teacher_flg", $teacher_flg);
-        $request->setAttribute("course_list", $course_list);
-        $request->setAttribute("prev_date", $prev_date);
-        $request->setAttribute("next_date", $next_date);
-        $request->setAttribute("current_date_text", $current_date_text);
-        $request->setAttribute("course_type_list", BroadcomCourseEntity::getCourseTypeList());
-        $request->setAttribute("subject_list", BroadcomSubjectEntity::getSubjectList());
-        $request->setAttribute("room_list", $room_list);
-        $request->setAttribute("teacher_info", $teacher_info);
-        $request->setAttribute("student_list", $student_list);
-        $request->setAttribute("item_list", $item_list);
+        $repond_course_list = Utility::getJsonResponse("?t=F7F62619-C98C-58BB-FC98-871B2C7E31FB&m=" . $user->member()->targetObjectId(), $post_data);
+        if ($controller->isError($repond_course_list)) {
+            $repond_course_list->setPos(__FILE__, __LINE__);
+            return $repond_course_list;
+        }
+        $output_param_array = array(
+            "menu" => $request->current_menu,
+            "act" => $request->current_act,
+            "period_type" => $period_type,
+            "start_date" => $course_date_from,
+            "end_date" => $course_date_to,
+            "output" => "1",
+            "student_id" => $student_id,
+            "teacher_member_id" => $teacher_member_id,
+            "assign_member_id" => $assign_member_id,
+            "confirm_flg" => $confirm_flg
+        );
+        $request->setAttribute("period_start_date", $course_date_from);
+        $request->setAttribute("period_end_date", $course_date_to);
+        $request->setAttribute("period_type", $period_type);
+        $request->setAttribute("course_list", $repond_course_list["course_list"]);
+        $request->setAttribute("assign_member_list_flg", $assign_member_list_flg);
+        $request->setAttribute("teacher_member_list_flg", $teacher_member_list_flg);
+        $request->setAttribute("student_id", $student_id);
+        $request->setAttribute("teacher_member_id", $teacher_member_id);
+        $request->setAttribute("assign_member_id", $assign_member_id);
+        $request->setAttribute("confirm_flg", $confirm_flg);
+        $request->setAttribute("output_url", http_build_query($output_param_array));
         return VIEW_DONE;
     }
 
@@ -104,7 +135,94 @@ class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBas
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
+        $course_list = $request->getAttribute("course_list");
+        $assign_member_list_flg = $request->getAttribute("assign_member_list_flg");
+        $teacher_member_list_flg = $request->getAttribute("teacher_member_list_flg");
+        $post_data = array(
+            "school_id" => $user->member()->schoolId(),
+            "simple" => "1"
+        );
+        $repond_student_list = Utility::getJsonResponse("?t=9B5BB2E7-F483-24CA-A725-55A304F628DE&m=" . $user->member()->targetObjectId(), $post_data);
+        if ($controller->isError($repond_student_list)) {
+            $repond_student_list->setPos(__FILE__, __LINE__);
+            return $repond_student_list;
+        }
+        if ($teacher_member_list_flg) {
+            $repond_teacher_list = Utility::getJsonResponse("?t=C381A56F-A88A-9D03-B33B-52030E5154DD&m=" . $user->member()->targetObjectId(), $post_data);
+            if ($controller->isError($repond_teacher_list)) {
+                $repond_teacher_list->setPos(__FILE__, __LINE__);
+                return $repond_teacher_list;
+            }
+            $request->setAttribute("teacher_list", $repond_teacher_list["teacher_list"]);
+        }
+        if ($assign_member_list_flg) {
+            $post_data["section"] = array(
+                BroadcomMemberEntity::SECTION_1,
+                BroadcomMemberEntity::SECTION_2
+            );
+            $repond_member_list = Utility::getJsonResponse("?t=589049D8-F35C-2E6A-E792-D576E8002A2C&m=" . $user->member()->targetObjectId(), $post_data);
+            if ($controller->isError($repond_member_list)) {
+                $repond_member_list->setPos(__FILE__, __LINE__);
+                return $repond_member_list;
+            }
+            $request->setAttribute("member_list", $repond_member_list["member_list"]);
+        }
+        $request->setAttribute("student_list", $repond_student_list["student_list"]);
         return VIEW_DONE;
+    }
+
+    private function _doOutputExecute(Controller $controller, User $user, Request $request)
+    {
+        $course_list = $request->getAttribute("course_list");
+        $file_context = "学生姓名,电话,年级,教务,合同号,订单所属人,确认收入,课程名称,课程性质,消课状态,排课类型,科目,上课时间,下课时间,消课课时,任课教师,兼职/全职,教师所属校区,消课人,消课时间" . "\n";
+        foreach ($course_list as $course_info) {
+            foreach ($course_info["course_info"] as $student_idx => $course_item) {
+                $file_cols = array();
+                $file_cols[] = $course_item["student_name"];
+                $file_cols[] = $course_item["student_mobile_number"];
+                $file_cols[] = $course_item["student_grade_name"];
+                $file_cols[] = $course_item["assign_member_name"];
+                $file_cols[] = $course_item["contract_number"];
+                $file_cols[] = $course_item["order_assign_member_name"];
+                $file_cols[] = $course_item["course_trans_price"];
+                if ($student_idx == "0") {
+                    $file_cols[] = $course_info["item_name"];
+                    $file_cols[] = $course_info["course_type_name"];
+                    $file_cols[] = $course_info["confirm_flg"] ? "已消课" : "未消课";
+                    $file_cols[] = $course_info["course_detail_type_name"];
+                    $file_cols[] = $course_info["subject_name"];
+                    if ($course_info["confirm_flg"]) {
+                        $file_cols[] = substr($course_info["actual_start_date"], 0, 16);
+                        $file_cols[] = substr($course_info["actual_expire_date"], 0, 16);
+                        $file_cols[] = $course_info["actual_course_hours"];
+                    } else {
+                        $file_cols[] = substr($course_info["course_start_date"], 0, 16);
+                        $file_cols[] = substr($course_info["course_expire_date"], 0, 16);
+                        $file_cols[] = $course_info["course_hours"];
+                    }
+                    $file_cols[] = $course_info["teacher_member_name"];
+                    if ($course_info["teacher_member_name"] == BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER) {
+                        $file_cols[] = "兼职";
+                    } else {
+                        $file_cols[] = "全职";
+                    }
+                    $file_cols[] = $course_info["teacher_school_name"];
+                    $file_cols[] = $course_info["confirm_member_name"];
+                    if ($course_info["confirm_flg"]) {
+                        $file_cols[] = substr($course_info["confirm_date"], 0, 16);
+                    } else {
+                        $file_cols[] = "";
+                    }
+                }
+                $file_context .= implode(",", $file_cols) . "\n";
+            }
+        }
+        
+        header("Content-Type: application/vnd.ms-excel");
+        header("Content-Disposition: attachment;filename=" . date("排课列表_Y-m-d_H:i:s") . ".csv");
+        header("Cache-Control: max-age=0");
+        echo iconv("UTF-8", "GB2312", $file_context);
+        exit;
     }
 }
 ?>
