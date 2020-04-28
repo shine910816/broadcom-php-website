@@ -49,31 +49,16 @@ class BroadcomCourse_InfoAction extends ActionBase
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
         $multi_flg = false;
-        $course_id = "";
-        $multi_course_id = "";
-        $course_list = array();
-        if ($request->hasParameter("course_id")) {
-            $course_id = $request->getParameter("course_id");
-        } elseif ($request->hasParameter("multi_course_id")) {
-            $multi_course_id = $request->getParameter("multi_course_id");
-            $multi_flg = true;
-        } else {
+        if (!$request->hasParameter("course_id")) {
             $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter missed: course_id");
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
-        if ($multi_flg) {
-            $course_list = BroadcomCourseInfoDBI::selectCourseInfo($multi_course_id, $multi_flg);
-            if ($controller->isError($course_list)) {
-                $course_list->setPos(__FILE__, __LINE__);
-                return $course_list;
-            }
-        } else {
-            $course_list = BroadcomCourseInfoDBI::selectCourseInfo($course_id);
-            if ($controller->isError($course_list)) {
-                $course_list->setPos(__FILE__, __LINE__);
-                return $course_list;
-            }
+        $course_id = $request->getParameter("course_id");
+        $course_list = BroadcomCourseInfoDBI::selectCourseInfo($course_id);
+        if ($controller->isError($course_list)) {
+            $course_list->setPos(__FILE__, __LINE__);
+            return $course_list;
         }
         if (count($course_list) == 1 && !is_null($course_list[0]["multi_course_id"])) {
             $course_id = $course_list[0]["multi_course_id"];
