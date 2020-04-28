@@ -133,6 +133,8 @@ class BroadcomCourse_MultiListAction extends ActionBase
                         "student_name" => $course_info["student_name"],
                         "student_mobile_number" => $course_info["student_mobile_number"],
                         "student_grade_name" => $course_info["student_grade_name"],
+                        "assign_member_id" => $course_info["assign_member_id"],
+                        "assign_member_name" => $course_info["assign_member_name"],
                         "order_item_id" => $course_info["order_item_id"],
                         "contract_number" => $course_info["contract_number"],
                         "order_assign_member_id" => $course_info["order_assign_member_id"],
