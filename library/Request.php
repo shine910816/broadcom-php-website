@@ -116,9 +116,17 @@ class Request
         return $this->_member_info;
     }
 
-    public function readable()
+    public function isAdmin()
     {
         if ($this->_member_info->position() == "100" && $this->_member_info->level() == "2") {
+            return true;
+        }
+        return false;
+    }
+
+    public function readable()
+    {
+        if ($this->isAdmin()) {
             return true;
         }
         $res = $this->_auth_info->getAuthority($this->current_menu, $this->current_act, $this->_member_info->position());
@@ -127,7 +135,7 @@ class Request
 
     public function editable()
     {
-        if ($this->_member_info->position() == "100" && $this->_member_info->level() == "2") {
+        if ($this->isAdmin()) {
             return true;
         }
         $res = $this->_auth_info->getAuthority($this->current_menu, $this->current_act, $this->_member_info->position());
