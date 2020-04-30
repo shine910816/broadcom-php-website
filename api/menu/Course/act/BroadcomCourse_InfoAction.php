@@ -10,7 +10,7 @@ class BroadcomCourse_InfoAction extends ActionBase
     private $_multi_flg = false;
     private $_assign_member_list = array();
     private $_confirm_able = true;
-    private $_delete_able = true;
+    private $_delete_able = false;
 
     /**
      * 执行主程序
@@ -39,7 +39,6 @@ class BroadcomCourse_InfoAction extends ActionBase
                 return $ret;
             }
         }
-Utility::testVariable($ret);
         return $ret;
     }
 
@@ -70,13 +69,13 @@ Utility::testVariable($ret);
                 $course_list->setPos(__FILE__, __LINE__);
                 return $course_list;
             }
-            if (empty($course_list)) {
-                $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter invalid: multi_course_id");
-                $err->setPos(__FILE__, __LINE__);
-                return $err;
-            }
         } else {
             $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter missed: course_id");
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        if (empty($course_list)) {
+            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter invalid: no data");
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
@@ -113,6 +112,10 @@ Utility::testVariable($ret);
         $base_course_info["confirm_member_id"] = $course_list[0]["confirm_member_id"];
         $base_course_info["confirm_member_name"] = isset($member_list[$base_course_info["confirm_member_id"]]) ? $member_list[$base_course_info["confirm_member_id"]]["m_name"] : "";
         $base_course_info["confirm_date"] = $course_list[0]["confirm_date"];
+        $base_course_info["delete_able"] = $this->_delete_able;
+        $base_course_info["delete_msg"] = "";
+        $base_course_info["confirm_able"] = $this->_confirm_able;
+        $base_course_info["confirm_msg"] = "";
         $audition_list = array(
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO,
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO,
@@ -153,19 +156,38 @@ Utility::testVariable($ret);
         // 已消课判断
         if ($base_course_info["confirm_flg"]) {
             $this->_confirm_able = false;
+            $base_course_info["confirm_msg"] = "已消课无法再次消课";
         }
         // 权限判断
-        if ($this->_confirm_able && !$request->isAdmin() & !$request->member()->auth()->isMst()) {
-            if ($request->member()->auth()->isAst()) {
-                if (!in_array($request->member()->id(), $this->_assign_member_list)) {
+        if ($this->_confirm_able && !$request->isAdmin() && !$request->member()->auth()->isMst()) {
+            if ($this->_multi_flg) {
+                if ($request->member()->auth()->isAst()) {
                     $this->_confirm_able = false;
-                }
-            } elseif ($request->member()->auth()->isEdu()) {
-                if ($request->member()->id() != $base_course_info["teacher_member_id"]) {
+                    $base_course_info["confirm_msg"] = "多人课教务员工无法消课";
+                } elseif ($request->member()->auth()->isEdu()) {
+                    if ($request->member()->id() != $base_course_info["teacher_member_id"]) {
+                        $this->_confirm_able = false;
+                        $base_course_info["confirm_msg"] = "非教师本人无法消课";
+                    }
+                } elseif ($request->member()->auth()->isHrf()) {
                     $this->_confirm_able = false;
+                    $base_course_info["confirm_msg"] = "财务人事无法消课";
                 }
-            } elseif ($request->member()->auth()->isHrf()) {
-                $this->_confirm_able = false;
+            } else {
+                if ($request->member()->auth()->isAst()) {
+                    if (!in_array($request->member()->id(), $this->_assign_member_list)) {
+                        $this->_confirm_able = false;
+                        $base_course_info["confirm_msg"] = "非教务本人无法消课";
+                    }
+                } elseif ($request->member()->auth()->isEdu()) {
+                    if ($request->member()->id() != $base_course_info["teacher_member_id"]) {
+                        $this->_confirm_able = false;
+                        $base_course_info["confirm_msg"] = "非教师本人无法消课";
+                    }
+                } elseif ($request->member()->auth()->isHrf()) {
+                    $this->_confirm_able = false;
+                    $base_course_info["confirm_msg"] = "财务人事无法消课";
+                }
             }
         }
         // 时间判断
@@ -173,27 +195,41 @@ Utility::testVariable($ret);
         $finish_ts = mktime(0, 0, 0, date("n", $expire_ts), date("j", $expire_ts) + 1, date("Y"));
         $current_ts = time();
         // TODO for test
-        $current_ts = strtotime("2020-04-15 23:30:00");
+        $current_ts = strtotime("2020-04-21 23:30:00");
         if ($this->_confirm_able) {
             if ($request->isAdmin() || $request->member()->auth()->isMst()) {
                 if ($current_ts < $expire_ts) {
                     $this->_confirm_able = false;
+                    $base_course_info["confirm_msg"] = "未到下课时间无法消课";
                 }
             } else {
-                if ($current_ts < $expire_ts || $current_ts >= $finish_ts) {
+                if ($current_ts < $expire_ts) {
                     $this->_confirm_able = false;
+                    $base_course_info["confirm_msg"] = "未到下课时间无法消课";
+                } elseif ($current_ts >= $finish_ts) {
+                    $this->_confirm_able = false;
+                    $base_course_info["confirm_msg"] = "超过当天无法消课";
                 }
             }
         }
-        // 可删除时间判断
-        //if ($this->_confirm_able) {
-            if ($current_ts >= $finish_ts) {
-                $this->_delete_able = false;
+        // 可删除判断
+        if (!$base_course_info["confirm_flg"] && $current_ts < $finish_ts) {
+            if (!$request->isAdmin() && !$request->member()->auth()->isMst()) {
+                if ($request->member()->auth()->isAst()) {
+                    if (in_array($request->member()->id(), $this->_assign_member_list)) {
+                        $this->_delete_able = true;
+                    } else {
+                        $base_course_info["delete_msg"] = "非教务本人无法删除";
+                    }
+                } else {
+                    $base_course_info["delete_msg"] = "非教务员工无法删除";
+                }
+            } else {
+                $this->_delete_able = true;
             }
-        //} else {
-        //    $this->_delete_able = false;
-        //}
-
+        } else {
+            $base_course_info["delete_msg"] = "已消课或超过当天无法删除";
+        }
         $request->setAttribute("base_course_info", $base_course_info);
         $request->setAttribute("course_detail_list", $course_detail);
         return VIEW_DONE;
@@ -220,7 +256,7 @@ Utility::testVariable($ret);
 
     private function _doConfirmExecute(Controller $controller, User $user, Request $request)
     {
-        if (!$request->editable()) {
+        if (!$request->editable() || !$this->_confirm_able) {
             $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Create failed: user unauthorized");
             $err->setPos(__FILE__, __LINE__);
             return $err;
@@ -229,7 +265,7 @@ Utility::testVariable($ret);
 
     private function _doDeleteExecute(Controller $controller, User $user, Request $request)
     {
-        if (!$request->editable()) {
+        if (!$request->editable() || !$this->_delete_able) {
             $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Create failed: user unauthorized");
             $err->setPos(__FILE__, __LINE__);
             return $err;
