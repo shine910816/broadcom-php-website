@@ -103,8 +103,8 @@ div.table-item-value label.ui-btn-check {
   opacity:0.9;
 }
 .button-field:disabled {
-  background-color:#555;
-  color:#FFF;
+  background-color:#555!important;
+  color:#FFF!important;
 }
 .ui-btn-big {
   width:300px!important;
