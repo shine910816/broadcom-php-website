@@ -21,11 +21,14 @@ class BroadcomCourseInfoDBI
                " s.student_mobile_number," .
                " s.student_entrance_year," .
                " s.audition_hours," .
+               " s.follow_status," .
                " c.order_item_id," .
                " oi.contract_number," .
+               " oi.order_item_amount," .
                " oi.order_item_status," .
-               " oi.order_item_confirm," .
                " oi.order_item_remain," .
+               " oi.order_item_arrange," .
+               " oi.order_item_confirm," .
                " oi.assign_member_id AS `order_assign_member_id`," .
                " c.item_id," .
                " i.item_name," .
@@ -108,6 +111,11 @@ class BroadcomCourseInfoDBI
                " i.item_name," .
                " c.order_item_id," .
                " o.contract_number," .
+               " o.order_item_amount," .
+               " o.order_item_status," .
+               " o.order_item_remain," .
+               " o.order_item_arrange," .
+               " o.order_item_confirm," .
                " o.assign_member_id AS `order_assign_member_id`," .
                " c.confirm_flg," .
                " c.course_start_date," .

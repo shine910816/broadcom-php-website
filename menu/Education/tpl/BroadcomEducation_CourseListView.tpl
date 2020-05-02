@@ -124,7 +124,7 @@ $(document).ready(function(){
           <td>{^$course_info["teacher_member_name"]^}</td>
           <td>{^$course_info["confirm_member_name"]^}</td>
           <td>{^$course_info["confirm_date"]|date_format:"%Y-%m-%d %H:%M"^}</td>
-          <td><a href="./?menu=education&act=course_confirm&course_id={^$course_info["course_id"]^}" class="button-field ui-btn-orange">详细</a></td>
+          <td><a href="./?menu=education&act=course_confirm&course_id={^$course_info["course_id"]^}" class="button-field ui-btn-orange" target="_blank">详细</a></td>
         </tr>
 {^/foreach^}
       </tbody>

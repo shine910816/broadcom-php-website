@@ -45,21 +45,10 @@ class BroadcomCourse_CreateAction extends ActionBase
             "teacher_member_id",
             "subject_id",
             "student_id",
-            //"order_item_id",
-            //"item_id",
             "course_start_date",
             "course_expire_date",
             "course_hours",
             "course_trans_price",
-            //"actual_start_date",
-            //"actual_expire_date",
-            //"actual_course_hours",
-            //"confirm_flg",
-            //"confirm_member_id",
-            //"confirm_date",
-            //"assign_member_id",
-            //"assign_date",
-            //"operated_by"
         );
         $insert_data = array();
         foreach ($ness_column_list as $ness_column) {

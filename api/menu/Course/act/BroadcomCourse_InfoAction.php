@@ -140,6 +140,7 @@ class BroadcomCourse_InfoAction extends ActionBase
             $course_tmp["student_mobile_number"] = Utility::coverMobileNumber($course_item["student_mobile_number"]);
             $course_tmp["student_grade_name"] = BroadcomStudentEntity::getGradeName($course_item["student_entrance_year"]);
             $course_tmp["audition_hours"] = round($course_item["audition_hours"], 1);
+            $course_tmp["follow_status"] = $course_item["follow_status"];
             $course_tmp["assign_member_id"] = $course_item["assign_member_id"];
             $this->_assign_member_list[$course_tmp["assign_member_id"]] = $course_tmp["assign_member_id"];
             $course_tmp["assign_member_name"] = isset($member_list[$course_tmp["assign_member_id"]]) ? $member_list[$course_tmp["assign_member_id"]]["m_name"] : "";
@@ -147,8 +148,9 @@ class BroadcomCourse_InfoAction extends ActionBase
             $course_tmp["order_item_id"] = $course_item["order_item_id"];
             $course_tmp["contract_number"] = $course_item["contract_number"];
             $course_tmp["order_item_status"] = $course_item["order_item_status"];
-            $course_tmp["order_item_confirm"] = round($course_item["order_item_confirm"], 1);
             $course_tmp["order_item_remain"] = round($course_item["order_item_remain"], 1);
+            $course_tmp["order_item_arrange"] = round($course_item["order_item_arrange"], 1);
+            $course_tmp["order_item_confirm"] = round($course_item["order_item_confirm"], 1);
             $course_tmp["order_assign_member_id"] = $course_item["order_assign_member_id"];
             $course_tmp["order_assign_member_name"] = isset($member_list[$course_tmp["order_assign_member_id"]]) ? $member_list[$course_tmp["order_assign_member_id"]]["m_name"] : "";
             $course_detail[$course_item["course_id"]] = $course_tmp;
@@ -261,6 +263,62 @@ class BroadcomCourse_InfoAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
+        $base_course_info = $request->getAttribute("base_course_info");
+        $course_detail_list = $request->getAttribute("course_detail_list");
+        $course_update_data = array(
+            "actual_start_date" => $base_course_info["course_start_date"],
+            "actual_expire_date" => $base_course_info["course_expire_date"],
+            "actual_course_hours" => $base_course_info["course_hours"],
+            "confirm_flg" => "1",
+            "confirm_member_id" => $request->member()->id(),
+            "confirm_date" => date("Y-m-d H:i:s")
+        );
+        $dbi = Database::getInstance();
+        $begin_res = $dbi->begin();
+        if ($controller->isError($begin_res)) {
+            $begin_res->setPos(__FILE__, __LINE__);
+            return $begin_res;
+        }
+        foreach ($course_detail_list as $course_id => $course_info) {
+            $course_update_res = BroadcomCourseInfoDBI::updateCourseInfo($course_update_data, $course_id);
+            if ($controller->isError($course_update_res)) {
+                $course_update_res->setPos(__FILE__, __LINE__);
+                $dbi->rollback();
+                return $course_update_res;
+            }
+            if ($base_course_info["audition_type"]) {
+                if ($course_info["follow_status"] != BroadcomStudentEntity::FOLLOW_STATUS_3) {
+                    $student_update_data = array(
+                        "follow_status" => BroadcomStudentEntity::FOLLOW_STATUS_2
+                    );
+                    $student_update_res = BroadcomStudentInfoDBI::updateStudentInfo($student_update_data, $course_info["student_id"]);
+                    if ($controller->isError($student_update_res)) {
+                        $student_update_res->setPos(__FILE__, __LINE__);
+                        $dbi->rollback();
+                        return $student_update_res;
+                    }
+                }
+            } else {
+                $order_update_data = array(
+                    "order_item_confirm" => $course_info["order_item_confirm"] + $base_course_info["course_hours"]
+                );
+                if ($order_update_data["order_item_confirm"] == $course_info["order_item_amount"]) {
+                    $order_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_3;
+                }
+                $order_update_res = BroadcomOrderDBI::updateOrderItem($order_update_data, $course_info["order_item_id"]);
+                if ($controller->isError($order_update_res)) {
+                    $order_update_res->setPos(__FILE__, __LINE__);
+                    $dbi->rollback();
+                    return $order_update_res;
+                }
+            }
+        }
+        $commit_res = $dbi->commit();
+        if ($controller->isError($commit_res)) {
+            $commit_res->setPos(__FILE__, __LINE__);
+            return $commit_res;
+        }
+        return true;
     }
 
     private function _doDeleteExecute(Controller $controller, User $user, Request $request)
@@ -270,6 +328,57 @@ class BroadcomCourse_InfoAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
+        $base_course_info = $request->getAttribute("base_course_info");
+        $course_detail_list = $request->getAttribute("course_detail_list");
+        $course_update_data = array(
+            "del_flg" => "1"
+        );
+        $dbi = Database::getInstance();
+        $begin_res = $dbi->begin();
+        if ($controller->isError($begin_res)) {
+            $begin_res->setPos(__FILE__, __LINE__);
+            return $begin_res;
+        }
+        foreach ($course_detail_list as $course_id => $course_info) {
+            $course_update_res = BroadcomCourseInfoDBI::updateCourseInfo($course_update_data, $course_id);
+            if ($controller->isError($course_update_res)) {
+                $course_update_res->setPos(__FILE__, __LINE__);
+                $dbi->rollback();
+                return $course_update_res;
+            }
+            if ($base_course_info["audition_type"]) {
+                $restore_audition_hours = $course_info["audition_hours"] + $base_course_info["course_hours"];
+                if ($restore_audition_hours > 2) {
+                    $restore_audition_hours = 2;
+                }
+                $student_update_data = array(
+                    "audition_hours" => $restore_audition_hours
+                );
+                $student_update_res = BroadcomStudentInfoDBI::updateStudentInfo($student_update_data, $course_info["student_id"]);
+                if ($controller->isError($student_update_res)) {
+                    $student_update_res->setPos(__FILE__, __LINE__);
+                    $dbi->rollback();
+                    return $student_update_res;
+                }
+            } else {
+                $order_update_data = array(
+                    "order_item_remain" => $course_info["order_item_remain"] + $base_course_info["course_hours"],
+                    "order_item_arrange" => $course_info["order_item_arrange"] - $base_course_info["course_hours"],
+                );
+                $order_update_res = BroadcomOrderDBI::updateOrderItem($order_update_data, $course_info["order_item_id"]);
+                if ($controller->isError($order_update_res)) {
+                    $order_update_res->setPos(__FILE__, __LINE__);
+                    $dbi->rollback();
+                    return $order_update_res;
+                }
+            }
+        }
+        $commit_res = $dbi->commit();
+        if ($controller->isError($commit_res)) {
+            $commit_res->setPos(__FILE__, __LINE__);
+            return $commit_res;
+        }
+        return true;
     }
 }
 ?>
