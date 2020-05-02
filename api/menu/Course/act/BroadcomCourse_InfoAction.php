@@ -57,7 +57,7 @@ class BroadcomCourse_InfoAction extends ActionBase
                 $course_list->setPos(__FILE__, __LINE__);
                 return $course_list;
             }
-            if (!empty($course_list) && !is_null($course_list[0]["multi_course_id"])) {
+            if (!empty($course_list) && !empty($course_list[0]["multi_course_id"])) {
                 $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter invalid: this course is not single");
                 $err->setPos(__FILE__, __LINE__);
                 return $err;
