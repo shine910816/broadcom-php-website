@@ -160,6 +160,20 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         $student_id = $request->getAttribute("student_id");
         $student_info = $request->getAttribute("student_info");
         $item_list = $request->getAttribute("item_list");
+        $main_order_trans_price = array();
+        foreach ($order_item_info as $order_item_id => $order_item_tmp) {
+            if (is_null($order_item_tmp["main_order_item_id"])) {
+                $present_hours = 0;
+                if (isset($present_hours_list[$order_item_id])) {
+                    $present_hours = $present_hours_list[$order_item_id];
+                }
+                if ($item_list[$order_item_tmp["item_id"]]["item_method"] == BroadcomItemEntity::ITEM_METHOD_CLASS) {
+                    $main_order_trans_price[$order_item_id] = round($order_item_tmp["order_item_payable_amount"] / ($order_item_tmp["order_item_amount"] + $present_hours) / $item_info["item_unit_amount"], 2);
+                } else {
+                    $main_order_trans_price[$order_item_id] = round($order_item_tmp["order_item_payable_amount"] / ($order_item_tmp["order_item_amount"] + $present_hours), 2);
+                }
+            }
+        }
         $dbi = Database::getInstance();
         $begin_res = $dbi->begin();
         if ($controller->isError($begin_res)) {
@@ -179,17 +193,16 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         }
         foreach ($order_item_info as $order_item_id => $order_item_tmp) {
             $item_info = $item_list[$order_item_tmp["item_id"]];
-            $present_hours = 0;
-            if (isset($present_hours_list[$order_item_id])) {
-                $present_hours = $present_hours_list[$order_item_id];
-            }
             $order_item_update_data = array();
             $order_item_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_2;
+            if (is_null($order_item_tmp["main_order_item_id"])) {
+                $order_item_update_data["order_item_trans_price"] = $main_order_trans_price[$order_item_id];
+            } else {
+                $order_item_update_data["order_item_trans_price"] = $main_order_trans_price[$order_item_tmp["main_order_item_id"]];
+            }
             if ($item_info["item_method"] == BroadcomItemEntity::ITEM_METHOD_CLASS) {
-                $order_item_update_data["order_item_trans_price"] = round($order_item_tmp["order_item_payable_amount"] / ($order_item_tmp["order_item_amount"] + $present_hours) / $item_info["item_unit_amount"], 2);
                 $order_item_update_data["order_item_remain"] = $order_item_tmp["order_item_amount"] * $item_info["item_unit_amount"] * $item_info["item_unit_hour"];
             } else {
-                $order_item_update_data["order_item_trans_price"] = round($order_item_tmp["order_item_payable_amount"] / ($order_item_tmp["order_item_amount"] + $present_hours), 2);
                 $order_item_update_data["order_item_remain"] = $order_item_tmp["order_item_amount"];
             }
             $order_item_update_data["order_item_confirm"] = "0";
