@@ -134,14 +134,9 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
             $repond_course_info->setPos(__FILE__, __LINE__);
             return $repond_course_info;
         }
-        $redirect_url = "./?menu=education&act=course_confirm";
-        if ($multi_flg) {
-            $redirect_url .= "&multi_course_id=" . $multi_course_id;
-        } else {
-            $redirect_url .= "&course_id=" . $course_id;
-        }
-        $controller->redirect($redirect_url);
-        return VIEW_DONE;
+        header("Content-type:text/html; charset=utf-8");
+        echo '<script type="text/javascript">alert("排课删除成功");window.location.href="about:blank";window.close();</script>';
+        return VIEW_NONE;
     }
 }
 ?>

@@ -133,7 +133,7 @@ class BroadcomCourse_CreateAction extends ActionBase
         }
         if (!empty($order_item_info)) {
             $order_update_data["order_item_remain"] = $order_item_info["order_item_remain"] - $insert_data["course_hours"];
-            $order_update_data["order_item_arrange"] = $order_item_info["order_item_arrange"] - $insert_data["course_hours"];
+            $order_update_data["order_item_arrange"] = $order_item_info["order_item_arrange"] + $insert_data["course_hours"];
             if ($order_update_data["order_item_remain"] < 0) {
                 $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Create failed: not enough");
                 $err->setPos(__FILE__, __LINE__);
