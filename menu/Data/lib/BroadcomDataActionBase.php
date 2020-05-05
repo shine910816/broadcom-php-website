@@ -158,11 +158,12 @@ class BroadcomDataActionBase extends ActionBase
             $average_amount = round($result_data["5"]["order_amount"] / $result_data["5"]["order_count"], 2);
         }
         // 消课统计
-        $course_stats = BroadcomStatisticsDBI::selectCourseStats($start_date, $end_date, $school_id, $member_id_list, $teacher_flg);
+        $course_stats = BroadcomStatisticsDBI::selectCourseStatsDetail($start_date, $end_date, $school_id, $member_id_list, $teacher_flg);
         if ($controller->isError($course_stats)) {
             $course_stats->setPos(__FILE__, __LINE__);
             return $course_stats;
         }
+Utility::testVariable($course_stats);
         $course_type_list = BroadcomItemEntity::getItemMethodList();
         $course_type_list["5"] = "试听课";
         $course_type_list["6"] = "赠课";
@@ -170,15 +171,28 @@ class BroadcomDataActionBase extends ActionBase
         foreach ($course_type_list as $course_type => $tmp) {
             $course_data[$course_type] = 0;
         }
-        if (!empty($course_stats)) {
-            foreach ($course_stats as $course_tmp) {
-                if ($course_tmp["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
-                    $course_data["5"] += $course_tmp["course_hours"];
+        $multi_course_id_list = array();
+        if (iseet($course_stats[$school_id])) {
+            $audition_list = array(
+                BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO,
+                BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO,
+                BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD
+            );
+            foreach ($course_stats[$school_id] as $course_tmp) {
+                $course_type = $course_tmp["item_method"];
+                if (in_array($course_tmp["course_type"], $audition_list)) {
+                    $course_type = "5";
                 } elseif ($course_tmp["item_type"] == BroadcomItemEntity::ITEM_TYPE_PRESENT) {
-                    $course_data["6"] += $course_tmp["course_hours"];
-                } else {
-                    $course_data[$course_tmp["item_method"]] += $course_tmp["course_hours"];
+                    $course_type = "6";
                 }
+            }
+            if ($course_tmp["multi_course_id"]) {
+                if (!isset($multi_course_id_list[$course_tmp["multi_course_id"]])) {
+                    $multi_course_id_list[$course_tmp["multi_course_id"]] = "1";
+                    $course_data[$course_type]["count"] += $course_tmp["actual_course_hours"];
+                }
+            } else {
+                $course_data[$course_type]["count"] += $course_tmp["actual_course_hours"];
             }
         }
         return array(
