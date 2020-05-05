@@ -32,6 +32,8 @@ class BroadcomDataActionBase extends ActionBase
         $period_type = "1";
         if ($request->hasParameter("period_type")) {
             $period_type = $request->getParameter("period_type");
+        } elseif ($request->hasAttribute("period_type_input")) {
+            $period_type = $request->getAttribute("period_type_input");
         }
         $period_type_allow_list = array(
             "1" => "本周",
@@ -163,7 +165,6 @@ class BroadcomDataActionBase extends ActionBase
             $course_stats->setPos(__FILE__, __LINE__);
             return $course_stats;
         }
-Utility::testVariable($course_stats);
         $course_type_list = BroadcomItemEntity::getItemMethodList();
         $course_type_list["5"] = "试听课";
         $course_type_list["6"] = "赠课";
@@ -172,7 +173,7 @@ Utility::testVariable($course_stats);
             $course_data[$course_type] = 0;
         }
         $multi_course_id_list = array();
-        if (iseet($course_stats[$school_id])) {
+        if (isset($course_stats[$school_id])) {
             $audition_list = array(
                 BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO,
                 BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO,
@@ -185,14 +186,14 @@ Utility::testVariable($course_stats);
                 } elseif ($course_tmp["item_type"] == BroadcomItemEntity::ITEM_TYPE_PRESENT) {
                     $course_type = "6";
                 }
-            }
-            if ($course_tmp["multi_course_id"]) {
-                if (!isset($multi_course_id_list[$course_tmp["multi_course_id"]])) {
-                    $multi_course_id_list[$course_tmp["multi_course_id"]] = "1";
-                    $course_data[$course_type]["count"] += $course_tmp["actual_course_hours"];
+                if ($course_tmp["multi_course_id"]) {
+                    if (!isset($multi_course_id_list[$course_tmp["multi_course_id"]])) {
+                        $multi_course_id_list[$course_tmp["multi_course_id"]] = "1";
+                        $course_data[$course_type] += $course_tmp["actual_course_hours"];
+                    }
+                } else {
+                    $course_data[$course_type] += $course_tmp["actual_course_hours"];
                 }
-            } else {
-                $course_data[$course_type]["count"] += $course_tmp["actual_course_hours"];
             }
         }
         return array(

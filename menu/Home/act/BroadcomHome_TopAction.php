@@ -1,11 +1,12 @@
 <?php
+require_once SRC_PATH . "/menu/Home/lib/BroadcomHomeActionBase.php";
 
 /**
  * 主画面
  * @author Kinsama
  * @version 2020-02-01
  */
-class BroadcomHome_TopAction extends ActionBase
+class BroadcomHome_TopAction extends BroadcomHomeActionBase
 {
 
     /**
@@ -44,6 +45,12 @@ class BroadcomHome_TopAction extends ActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
+        $stats_data = $this->_getStatistics($controller, $user, $request);
+        if ($controller->isError($stats_data)) {
+            $stats_data->setPos(__FILE__, __LINE__);
+            return $stats_data;
+        }
+        $request->setAttributes($stats_data);
         return VIEW_DONE;
     }
 }
