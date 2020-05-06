@@ -78,8 +78,9 @@ class BroadcomOrderItem_InfoAction extends ActionBase
         $order_item_info["order_item_discount_amount"] = round($order_item_info["order_item_discount_amount"], 2);
         $order_item_info["order_item_payable_amount"] = round($order_item_info["order_item_payable_amount"], 2);
         $order_item_info["order_item_trans_price"] = round($order_item_info["order_item_trans_price"], 2);
-        $order_item_info["order_item_confirm"] = round($order_item_info["order_item_confirm"], 1);
         $order_item_info["order_item_remain"] = round($order_item_info["order_item_remain"], 1);
+        $order_item_info["order_item_arrange"] = round($order_item_info["order_item_arrange"], 1);
+        $order_item_info["order_item_confirm"] = round($order_item_info["order_item_confirm"], 1);
         foreach ($achieve_order_item_info as $member_id => $achieve_info) {
             $achieve_order_item_info[$member_id]["achieve_amount"] = round($order_item_info["order_item_amount"] * $order_item_info["order_item_trans_price"] * $achieve_info["achieve_ratio"] / 100, 2);
         }

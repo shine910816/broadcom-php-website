@@ -67,17 +67,30 @@ class BroadcomData_IncomeInfoAction extends BroadcomDataActionBase
                 "amount" => 0
             );
         }
+        $multi_course_id_list = array();
         if (isset($course_income_info[$school_id])) {
+            $audition_list = array(
+                BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO,
+                BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO,
+                BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD
+            );
             foreach ($course_income_info[$school_id] as $course_tmp) {
-                if ($course_tmp["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
-                    $course_data["5"]["amount"] += $course_tmp["course_hours"];
-                    $course_data["5"]["count"] += 1;
+                $course_type = $course_tmp["item_method"];
+                if (in_array($course_tmp["course_type"], $audition_list)) {
+                    $course_data["5"]["amount"] += $course_tmp["course_trans_price"];
+                    $course_type = "5";
                 } elseif ($course_tmp["item_type"] == BroadcomItemEntity::ITEM_TYPE_PRESENT) {
-                    $course_data["6"]["amount"] += $course_tmp["course_hours"];
-                    $course_data["6"]["count"] += 1;
+                    $course_data["6"]["amount"] += $course_tmp["course_trans_price"];
+                    $course_type = "6";
+                }
+                $course_data[$course_type]["amount"] += $course_tmp["course_trans_price"];
+                if ($course_tmp["multi_course_id"]) {
+                    if (!isset($multi_course_id_list[$course_tmp["multi_course_id"]])) {
+                        $multi_course_id_list[$course_tmp["multi_course_id"]] = "1";
+                        $course_data[$course_type]["count"] += $course_tmp["actual_course_hours"];
+                    }
                 } else {
-                    $course_data[$course_tmp["item_method"]]["amount"] += $course_tmp["course_hours"];
-                    $course_data[$course_tmp["item_method"]]["count"] += 1;
+                    $course_data[$course_type]["count"] += $course_tmp["actual_course_hours"];
                 }
             }
         }

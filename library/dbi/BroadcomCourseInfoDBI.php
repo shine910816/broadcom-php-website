@@ -8,10 +8,57 @@
 class BroadcomCourseInfoDBI
 {
 
-    public static function selectCourseInfo($course_id)
+    public static function selectCourseInfo($course_id, $multi_flg = false)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT * FROM course_info WHERE del_flg = 0 AND course_id = " . $course_id . " LIMIT 1";
+        $sql = "SELECT c.course_id," .
+               " c.multi_course_id," .
+               " c.course_type," .
+               " c.audition_type," .
+               " c.school_id," .
+               " c.student_id," .
+               " s.student_name," .
+               " s.student_mobile_number," .
+               " s.student_entrance_year," .
+               " s.audition_hours," .
+               " s.follow_status," .
+               " c.order_item_id," .
+               " oi.contract_number," .
+               " oi.order_item_amount," .
+               " oi.order_item_status," .
+               " oi.order_item_remain," .
+               " oi.order_item_arrange," .
+               " oi.order_item_confirm," .
+               " oi.assign_member_id AS `order_assign_member_id`," .
+               " c.item_id," .
+               " i.item_name," .
+               " c.teacher_member_id," .
+               " c.subject_id," .
+               " c.course_trans_price," .
+               " c.course_start_date," .
+               " c.course_expire_date," .
+               " c.course_hours," .
+               " c.actual_start_date," .
+               " c.actual_expire_date," .
+               " c.actual_course_hours," .
+               " c.confirm_flg," .
+               " c.confirm_member_id," .
+               " c.confirm_date," .
+               " c.assign_member_id," .
+               " c.assign_date," .
+               " c.operated_by," .
+               " c.insert_date" .
+               " FROM course_info c" .
+               " LEFT OUTER JOIN student_info s ON s.student_id = c.student_id" .
+               " LEFT OUTER JOIN order_item_info oi ON oi.order_item_id = c.order_item_id" .
+               " LEFT OUTER JOIN item_info i ON i.item_id = c.item_id" .
+               " WHERE c.del_flg = 0" .
+               " AND s.del_flg = 0";
+        if ($multi_flg) {
+            $sql .= " AND c.multi_course_id = " . $dbi->quote($course_id);
+        } else {
+            $sql .= " AND c.course_id = " . $course_id;
+        }
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
@@ -22,9 +69,6 @@ class BroadcomCourseInfoDBI
             $data[] = $row;
         }
         $result->free();
-        if (count($data) == 1) {
-            return $data[0];
-        }
         return $data;
     }
 
@@ -59,6 +103,7 @@ class BroadcomCourseInfoDBI
         $sql = "SELECT c.course_id," .
                " c.course_type," .
                " c.audition_type," .
+               " c.multi_course_id," .
                " c.student_id," .
                " c.school_id," .
                " c.assign_member_id," .
@@ -66,6 +111,11 @@ class BroadcomCourseInfoDBI
                " i.item_name," .
                " c.order_item_id," .
                " o.contract_number," .
+               " o.order_item_amount," .
+               " o.order_item_status," .
+               " o.order_item_remain," .
+               " o.order_item_arrange," .
+               " o.order_item_confirm," .
                " o.assign_member_id AS `order_assign_member_id`," .
                " c.confirm_flg," .
                " c.course_start_date," .

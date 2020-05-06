@@ -4,9 +4,9 @@ require_once SRC_PATH . "/menu/Education/lib/BroadcomEducationActionBase.php";
 /**
  * 学员教务画面
  * @author Kinsama
- * @version 2020-02-09
+ * @version 2020-02-29
  */
-class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
+class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBase
 {
 
     /**
@@ -95,18 +95,10 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
         if ($confirm_flg != "2") {
             $post_data["confirm_flg"] = $confirm_flg;
         }
-        $repond_course_list = Utility::getJsonResponse("?t=D4F1FA27-76D2-3029-4FB9-2FD91B0057B8&m=" . $user->member()->targetObjectId(), $post_data);
+        $repond_course_list = Utility::getJsonResponse("?t=F7F62619-C98C-58BB-FC98-871B2C7E31FB&m=" . $user->member()->targetObjectId(), $post_data);
         if ($controller->isError($repond_course_list)) {
             $repond_course_list->setPos(__FILE__, __LINE__);
             return $repond_course_list;
-        }
-        $course_list = $repond_course_list["course_list"];
-        if (!empty($course_list)) {
-            foreach ($course_list as $course_id => $course_info) {
-                if ($course_info["multi_course_id"]) {
-                    unset($course_list[$course_id]);
-                }
-            }
         }
         $output_param_array = array(
             "menu" => $request->current_menu,
@@ -123,7 +115,7 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
         $request->setAttribute("period_start_date", $course_date_from);
         $request->setAttribute("period_end_date", $course_date_to);
         $request->setAttribute("period_type", $period_type);
-        $request->setAttribute("course_list", $course_list);
+        $request->setAttribute("course_list", $repond_course_list["course_list"]);
         $request->setAttribute("assign_member_list_flg", $assign_member_list_flg);
         $request->setAttribute("teacher_member_list_flg", $teacher_member_list_flg);
         $request->setAttribute("student_id", $student_id);
@@ -182,44 +174,48 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
     private function _doOutputExecute(Controller $controller, User $user, Request $request)
     {
         $course_list = $request->getAttribute("course_list");
-        $file_context = "学生姓名,电话,教务,合同号,订单所属人,课程名称,课程性质,确认收入,消课状态,年级,排课类型,科目,上课时间,下课时间,消课课时,任课教师,兼职/全职,教师所属校区,消课人,消课时间" . "\n";
+        $file_context = "学生姓名,电话,年级,教务,合同号,订单所属人,确认收入,课程名称,课程性质,消课状态,排课类型,科目,上课时间,下课时间,消课课时,任课教师,兼职/全职,教师所属校区,消课人,消课时间" . "\n";
         foreach ($course_list as $course_info) {
-            $file_cols = array();
-            $file_cols[] = $course_info["student_name"];
-            $file_cols[] = $course_info["student_mobile_number"];
-            $file_cols[] = $course_info["assign_member_name"];
-            $file_cols[] = $course_info["contract_number"];
-            $file_cols[] = $course_info["order_assign_member_name"];
-            $file_cols[] = $course_info["item_name"];
-            $file_cols[] = $course_info["course_type_name"];
-            $file_cols[] = $course_info["course_trans_price"];
-            $file_cols[] = $course_info["confirm_flg"] ? "已消课" : "未消课";
-            $file_cols[] = $course_info["student_grade_name"];
-            $file_cols[] = $course_info["course_detail_type_name"];
-            $file_cols[] = $course_info["subject_name"];
-            if ($course_info["confirm_flg"]) {
-                $file_cols[] = substr($course_info["actual_start_date"], 0, 16);
-                $file_cols[] = substr($course_info["actual_expire_date"], 0, 16);
-                $file_cols[] = $course_info["actual_course_hours"];
-            } else {
-                $file_cols[] = substr($course_info["course_start_date"], 0, 16);
-                $file_cols[] = substr($course_info["course_expire_date"], 0, 16);
-                $file_cols[] = $course_info["course_hours"];
+            foreach ($course_info["course_info"] as $student_idx => $course_item) {
+                $file_cols = array();
+                $file_cols[] = $course_item["student_name"];
+                $file_cols[] = $course_item["student_mobile_number"];
+                $file_cols[] = $course_item["student_grade_name"];
+                $file_cols[] = $course_item["assign_member_name"];
+                $file_cols[] = $course_item["contract_number"];
+                $file_cols[] = $course_item["order_assign_member_name"];
+                $file_cols[] = $course_item["course_trans_price"];
+                if ($student_idx == "0") {
+                    $file_cols[] = $course_info["item_name"];
+                    $file_cols[] = $course_info["course_type_name"];
+                    $file_cols[] = $course_info["confirm_flg"] ? "已消课" : "未消课";
+                    $file_cols[] = $course_info["course_detail_type_name"];
+                    $file_cols[] = $course_info["subject_name"];
+                    if ($course_info["confirm_flg"]) {
+                        $file_cols[] = substr($course_info["actual_start_date"], 0, 16);
+                        $file_cols[] = substr($course_info["actual_expire_date"], 0, 16);
+                        $file_cols[] = $course_info["actual_course_hours"];
+                    } else {
+                        $file_cols[] = substr($course_info["course_start_date"], 0, 16);
+                        $file_cols[] = substr($course_info["course_expire_date"], 0, 16);
+                        $file_cols[] = $course_info["course_hours"];
+                    }
+                    $file_cols[] = $course_info["teacher_member_name"];
+                    if ($course_info["teacher_member_name"] == BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER) {
+                        $file_cols[] = "兼职";
+                    } else {
+                        $file_cols[] = "全职";
+                    }
+                    $file_cols[] = $course_info["teacher_school_name"];
+                    $file_cols[] = $course_info["confirm_member_name"];
+                    if ($course_info["confirm_flg"]) {
+                        $file_cols[] = substr($course_info["confirm_date"], 0, 16);
+                    } else {
+                        $file_cols[] = "";
+                    }
+                }
+                $file_context .= implode(",", $file_cols) . "\n";
             }
-            $file_cols[] = $course_info["teacher_member_name"];
-            if ($course_info["teacher_member_name"] == BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER) {
-                $file_cols[] = "兼职";
-            } else {
-                $file_cols[] = "全职";
-            }
-            $file_cols[] = $course_info["teacher_school_name"];
-            $file_cols[] = $course_info["confirm_member_name"];
-            if ($course_info["confirm_flg"]) {
-                $file_cols[] = substr($course_info["confirm_date"], 0, 16);
-            } else {
-                $file_cols[] = "";
-            }
-            $file_context .= implode(",", $file_cols) . "\n";
         }
         
         header("Content-Type: application/vnd.ms-excel");

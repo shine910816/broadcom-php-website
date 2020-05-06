@@ -138,6 +138,8 @@ class BroadcomCourse_ListAction extends ActionBase
                 }
                 if (isset($member_list[$course_info["assign_member_id"]])) {
                     $course_list[$course_id]["assign_member_name"] = $member_list[$course_info["assign_member_id"]]["m_name"];
+                } else {
+                    $course_list[$course_id]["assign_member_name"] = "";
                 }
                 if (isset($member_list[$course_info["order_assign_member_id"]])) {
                     $course_list[$course_id]["order_assign_member_name"] = $member_list[$course_info["order_assign_member_id"]]["m_name"];
@@ -154,13 +156,19 @@ class BroadcomCourse_ListAction extends ActionBase
                 } else {
                     $course_list[$course_id]["confirm_member_name"] = "";
                 }
-                if ($course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO || $course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
+                if ($course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO || $course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO || $course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD) {
+                    $course_type_list = BroadcomCourseEntity::getCourseTypeList();
+                    $course_list[$course_id]["item_name"] = $course_type_list[$course_info["course_type"]];
                     $course_list[$course_id]["course_type_name"] = "试听课";
                     $audition_type_list = BroadcomCourseEntity::getAuditionTypeList();
                     $course_list[$course_id]["course_detail_type_name"] = $audition_type_list[$course_info["audition_type"]];
                 } else {
                     $course_list[$course_id]["course_type_name"] = "正课";
                     $course_list[$course_id]["course_detail_type_name"] = "学员排课";
+                }
+                $course_list[$course_id]["course_hours"] = round($course_list[$course_id]["course_hours"], 1);
+                if (!is_null($course_list[$course_id]["actual_course_hours"])) {
+                    $course_list[$course_id]["actual_course_hours"] = round($course_list[$course_id]["actual_course_hours"], 1);
                 }
                 $course_list[$course_id]["subject_name"] = $subject_list[$course_info["subject_id"]];
             }

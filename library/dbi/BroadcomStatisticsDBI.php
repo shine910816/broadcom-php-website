@@ -71,6 +71,7 @@ class BroadcomStatisticsDBI
         $sql = "SELECT c.actual_start_date," .
                " c.teacher_member_id," .
                " c.course_type," .
+               " c.multi_course_id," .
                " MAX(c.actual_course_hours) AS course_hours," .
                " c.course_type," .
                " i.item_type," .
@@ -79,8 +80,8 @@ class BroadcomStatisticsDBI
                " LEFT OUTER JOIN item_info i ON i.item_id = c.item_id" .
                " WHERE c.del_flg = 0" .
                " AND c.confirm_flg = 1" .
-               " AND c.reset_flg = 0" .
-               " AND c.reset_examine_flg = 0" .
+               //" AND c.reset_flg = 0" .
+               //" AND c.reset_examine_flg = 0" .
                " AND c.actual_start_date >= " . $dbi->quote($start_date) .
                " AND c.actual_start_date <= " . $dbi->quote($end_date) .
                " AND c.school_id = " . $school_id;
@@ -110,6 +111,7 @@ class BroadcomStatisticsDBI
         $dbi = Database::getInstance();
         $sql = "SELECT c.course_id," .
                " c.school_id," .
+               " c.multi_course_id," .
                " c.actual_course_hours," .
                " c.course_trans_price," .
                " c.course_type," .
@@ -119,8 +121,8 @@ class BroadcomStatisticsDBI
                " LEFT OUTER JOIN item_info i ON i.item_id = c.item_id" .
                " WHERE c.del_flg = 0" .
                " AND c.confirm_flg = 1" .
-               " AND c.reset_flg = 0" .
-               " AND c.reset_examine_flg = 0" .
+               //" AND c.reset_flg = 0" .
+               //" AND c.reset_examine_flg = 0" .
                " AND c.actual_start_date >= " . $dbi->quote($start_date) .
                " AND c.actual_start_date <= " . $dbi->quote($end_date) .
                " AND c.school_id = " . $school_id;

@@ -95,10 +95,10 @@ $(document).ready(function(){
       <thead>
         <tr>
           <th>学员姓名</th>
+          <th>年级</th>
           <th>教务</th>
           <th>课程详情</th>
           <th>消课状态</th>
-          <th>年级</th>
           <th>排课类型</th>
           <th>上课时间</th>
           <th>科目</th>
@@ -111,22 +111,26 @@ $(document).ready(function(){
       </thead>
       <tbody>
 {^foreach from=$course_list item=course_info^}
+{^foreach from=$course_info["course_info"] key=student_idx item=course_item^}
         <tr>
-          <td>{^$course_info["student_name"]^}</td>
-          <td>{^$course_info["assign_member_name"]^}</td>
-          <td><span title="{^$course_info["contract_number"]^}">{^$course_info["item_name"]^}</span></td>
-          <td>{^if $course_info["confirm_flg"]^}已{^else^}未{^/if^}消课</td>
-          <td>{^$course_info["student_grade_name"]^}</td>
-          <td>{^$course_info["course_detail_type_name"]^}</td>
-          <td>{^if $course_info["confirm_flg"]^}{^$course_info["actual_start_date"]|date_format:"%Y-%m-%d %H:%M"^}~{^$course_info["actual_expire_date"]|date_format:"%H:%M"^}{^else^}{^$course_info["course_start_date"]|date_format:"%Y-%m-%d %H:%M"^}~{^$course_info["course_expire_date"]|date_format:"%H:%M"^}{^/if^}</td>
-          <td>{^$course_info["subject_name"]^}</td>
-          <td>{^if $course_info["confirm_flg"]^}{^$course_info["actual_course_hours"]^}{^else^}{^$course_info["course_hours"]^}{^/if^}小时</td>
-          <td>{^$course_info["teacher_member_name"]^}</td>
-          <td>{^$course_info["confirm_member_name"]^}</td>
-          <td>{^$course_info["confirm_date"]|date_format:"%Y-%m-%d %H:%M"^}</td>
-          <td><a href="./?menu=education&act=course_confirm&course_id={^$course_info["course_id"]^}" class="button-field ui-btn-orange" target="_blank">详细</a></td>
-        </tr>
+          <td>{^$course_item["student_name"]^}</td>
+          <td>{^$course_item["student_grade_name"]^}</td>
+          <td>{^$course_item["assign_member_name"]^}</td>
+          <td><span title="{^$course_item["contract_number"]^}">{^$course_info["item_name"]^}</span></td>
+{^if $student_idx eq "0"^}
+          <td rowspan="{^$course_info["course_info"]|count^}">{^if $course_info["confirm_flg"]^}已{^else^}未{^/if^}消课</td>
+          <td rowspan="{^$course_info["course_info"]|count^}">{^$course_info["course_detail_type_name"]^}</td>
+          <td rowspan="{^$course_info["course_info"]|count^}">{^if $course_info["confirm_flg"]^}{^$course_info["actual_start_date"]|date_format:"%Y-%m-%d %H:%M"^}~{^$course_info["actual_expire_date"]|date_format:"%H:%M"^}{^else^}{^$course_info["course_start_date"]|date_format:"%Y-%m-%d %H:%M"^}~{^$course_info["course_expire_date"]|date_format:"%H:%M"^}{^/if^}</td>
+          <td rowspan="{^$course_info["course_info"]|count^}">{^$course_info["subject_name"]^}</td>
+          <td rowspan="{^$course_info["course_info"]|count^}">{^if $course_info["confirm_flg"]^}{^$course_info["actual_course_hours"]^}{^else^}{^$course_info["course_hours"]^}{^/if^}小时</td>
+          <td rowspan="{^$course_info["course_info"]|count^}">{^$course_info["teacher_member_name"]^}</td>
+          <td rowspan="{^$course_info["course_info"]|count^}">{^$course_info["confirm_member_name"]^}</td>
+          <td rowspan="{^$course_info["course_info"]|count^}">{^$course_info["confirm_date"]|date_format:"%Y-%m-%d %H:%M"^}</td>
+          <td rowspan="{^$course_info["course_info"]|count^}"><a href="./?menu=education&act=course_confirm&multi_course_id={^$course_info["multi_course_id"]^}" class="button-field ui-btn-orange" target="_blank">详细</a></td>
+{^/if^}
 {^/foreach^}
+{^/foreach^}
+        </tr>
       </tbody>
     </table>
 {^/if^}

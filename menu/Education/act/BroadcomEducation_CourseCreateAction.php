@@ -257,8 +257,11 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
         $order_item_info = $request->getAttribute("order_item_info");
         $time_info = $request->getAttribute("time_info");
         $audition_flg = $request->getAttribute("audition_flg");
-        $start_date = date("Y-m-d");
-        $end_date = date("Y-m-d", time() + 24 * 60 * 60 * 90);
+        //$start_date = date("Y-m-d");
+        //$end_date = date("Y-m-d", time() + 24 * 60 * 60 * 90);
+        // TODO for create course
+        $start_date = "2020-01-01";
+        $end_date = "2020-06-30";
         $post_data = array(
             "school_id" => $base_course_info["school_id"],
             "start_date" => $start_date,

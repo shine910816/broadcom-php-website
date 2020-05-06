@@ -43,7 +43,7 @@ class Config
         $result["education"]["schedule_create"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["schedule_info"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["course_create"] = SYSTEM_AUTH_LOGIN;
-        $result["education"]["my_course_list"] = SYSTEM_AUTH_LOGIN;
+        $result["education"]["multi_course_list"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["course_list"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["course_confirm"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["reset_list"] = SYSTEM_AUTH_LOGIN;
@@ -103,8 +103,8 @@ class Config
         $result["education"]["schedule_create"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=schedule_list">班课课程管理</a>', "添加课表");
         $result["education"]["schedule_info"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=schedule_list">班课课程管理</a>', "课表详情");
         $result["education"]["course_create"] = array('<a href="./?menu=education&act=top">学员教务</a>', "课程安排");
-        $result["education"]["my_course_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "我的排课列表");
-        $result["education"]["course_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "校区排课列表");
+        $result["education"]["multi_course_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "一对多排课列表");
+        $result["education"]["course_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "一对一排课列表");
         $result["education"]["course_confirm"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=my_course_list">我的排课列表</a>', "排课确认");
         $result["education"]["reset_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "返课列表");
         $result["education"]["reset_confirm"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=reset_list">返课列表</a>', "返课确认");

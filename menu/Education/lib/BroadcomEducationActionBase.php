@@ -19,11 +19,11 @@ class BroadcomEducationActionBase extends ActionBase
     {
         $result = array();
         $result[] = array("my_student_list", "我的学员管理");
-        $result[] = array("my_course_list", "我的排课列表");
-        $result[] = array("schedule_list", "校区课表管理");
+        //$result[] = array("schedule_list", "校区课表管理");
         $result[] = array("student_list", "校区学员列表");
-        $result[] = array("course_list", "校区排课列表");
-        $result[] = array("reset_list", "校区返课列表");
+        $result[] = array("course_list", "一对一排课列表");
+        $result[] = array("multi_course_list", "一对多排课列表");
+        //$result[] = array("reset_list", "校区返课列表");
         $request->setAttribute("left_content", $result);
         return VIEW_DONE;
     }

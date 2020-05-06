@@ -1,4 +1,5 @@
 <?php
+require_once SRC_PATH . "/library/member/MemberAuthority.php";
 
 /**
  * 员工数据包
@@ -113,6 +114,11 @@ class MemberRequest
     public function employedStatus()
     {
         return $this->member_employed_status;
+    }
+
+    public function auth()
+    {
+        return new MemberAuthority($this->member_position);
     }
 
     public static function getInstance($target_object_id)
