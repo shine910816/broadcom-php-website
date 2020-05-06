@@ -12,8 +12,9 @@ $(document).ready(function(){
     });
 });
 </script>
+{^include file=$period_select_file^}
 <div class="main-table pb_15">
-  <h2>部门员工选择</h2>
+  <h2>业绩数据</h2>
   <form action="./" method="get">
     <input type="hidden" name="menu" value="{^$current_menu^}" />
     <input type="hidden" name="act" value="{^$current_act^}" />
@@ -61,11 +62,8 @@ $(document).ready(function(){
     <div class="table-line" style="height:40px;">
       <button type="submit" class="button-field ui-btn-green ui-btn-big">确认</button>
     </div>
+    <div class="table-line"></div>
   </form>
-</div>
-{^include file=$period_select_file^}
-<div class="main-table pb_15">
-  <h2>业绩数据</h2>
   <table class="disp_table">
     <thead>
       <tr>
@@ -100,7 +98,7 @@ $(document).ready(function(){
   </div>
 </div>
 <div class="main-table">
-  <h2>消课时长</h2>
+  <h2>校区消课时长</h2>
   <table class="disp_table">
     <thead>
       <tr>
