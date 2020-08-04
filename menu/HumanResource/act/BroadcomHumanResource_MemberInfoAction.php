@@ -147,15 +147,9 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             $base_name_count = 0;
             if (!Validate::checkNotNull($member_login_name)) {
                 $request->setError("member_login_name", "登录名不能为空");
+            } elseif (!Validate::checkAlpha($member_login_name)) {
+                $request->setError("member_login_name", "登录名仅能为英文字母");
             } else {
-                //$login_info = BroadcomMemberLoginDBI::selectMemberLoginByName($member_login_name);
-                //if ($controller->isError($login_info)) {
-                //    $login_info->setPos(__FILE__, __LINE__);
-                //    return $login_info;
-                //}
-                //if (!empty($login_info)) {
-                //    $request->setError("member_login_name", "登录名已经被注册");
-                //}
                 $base_name_count = BroadcomMemberLoginDBI::selectBaseNameCount($member_login_name);
                 if ($controller->isError($base_name_count)) {
                     $base_name_count->setPos(__FILE__, __LINE__);
@@ -167,7 +161,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
                     return $err;
                 }
             }
-            $request->setAttribute("member_login_name", $member_login_name);
+            $request->setAttribute("member_login_name", strtolower($member_login_name));
             $request->setAttribute("school_id", $school_id);
             $request->setAttribute("base_name_count", $base_name_count);
             $request->setAttribute("member_position", $member_position);
@@ -176,7 +170,11 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
         }
         $content_data = array();
         if (!$edit_mode || ($edit_mode && $getting_member_info["m_name"] != $member_info["m_name"])) {
-            $content_data["m_name"] = strtolower($getting_member_info["m_name"]);
+            if (!Validate::checkNotNull($getting_member_info["m_name"])) {
+                $request->setError("m_name", "姓名不能为空");
+            } else {
+                $content_data["m_name"] = $getting_member_info["m_name"];
+            }
         }
         if (!$edit_mode || ($getting_member_info["m_birthday"] != $member_info["m_birthday"])) {
             $content_data["m_birthday"] = $getting_member_info["m_birthday"];

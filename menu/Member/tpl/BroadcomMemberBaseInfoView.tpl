@@ -18,6 +18,14 @@
       </div>
     </div>
   </div>
+{^if isset($user_err_list["m_name"])^}
+  <div class="table-line">
+    <div class="table-item-b">
+      <div class="table-item-name"></div>
+      <div class="table-item-value">{^if isset($user_err_list["m_name"])^}<span class="error-hint">{^$user_err_list["m_name"]^}</span>{^/if^}</div>
+    </div>
+  </div>
+{^/if^}
   <div class="table-line">
     <div class="table-item-b">
       <div class="table-item-name">手机号</div>
