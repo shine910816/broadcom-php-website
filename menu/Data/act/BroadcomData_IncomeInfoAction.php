@@ -83,7 +83,7 @@ class BroadcomData_IncomeInfoAction extends BroadcomDataActionBase
                     $course_data["6"]["amount"] += $course_tmp["course_trans_price"];
                     $course_type = "6";
                 }
-                $course_data[$course_type]["amount"] += $course_tmp["course_trans_price"];
+                $course_data[$course_type]["amount"] += $course_tmp["course_trans_price"] * $course_tmp["actual_course_hours"];
                 if ($course_tmp["multi_course_id"]) {
                     if (!isset($multi_course_id_list[$course_tmp["multi_course_id"]])) {
                         $multi_course_id_list[$course_tmp["multi_course_id"]] = "1";

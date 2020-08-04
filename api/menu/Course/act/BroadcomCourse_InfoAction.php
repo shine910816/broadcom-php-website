@@ -196,8 +196,6 @@ class BroadcomCourse_InfoAction extends ActionBase
         $expire_ts = strtotime($base_course_info["course_expire_date"]);
         $finish_ts = mktime(0, 0, 0, date("n", $expire_ts), date("j", $expire_ts) + 1, date("Y"));
         $current_ts = time();
-        // TODO 删除误排课
-        //$current_ts = strtotime("2020-03-01 23:59:59");
         if ($this->_confirm_able) {
             if ($request->isAdmin() || $request->member()->auth()->isMst()) {
                 if ($current_ts < $expire_ts) {

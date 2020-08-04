@@ -80,8 +80,6 @@ class BroadcomStatisticsDBI
                " LEFT OUTER JOIN item_info i ON i.item_id = c.item_id" .
                " WHERE c.del_flg = 0" .
                " AND c.confirm_flg = 1" .
-               //" AND c.reset_flg = 0" .
-               //" AND c.reset_examine_flg = 0" .
                " AND c.actual_start_date >= " . $dbi->quote($start_date) .
                " AND c.actual_start_date <= " . $dbi->quote($end_date) .
                " AND c.school_id = " . $school_id;
@@ -121,8 +119,6 @@ class BroadcomStatisticsDBI
                " LEFT OUTER JOIN item_info i ON i.item_id = c.item_id" .
                " WHERE c.del_flg = 0" .
                " AND c.confirm_flg = 1" .
-               //" AND c.reset_flg = 0" .
-               //" AND c.reset_examine_flg = 0" .
                " AND c.actual_start_date >= " . $dbi->quote($start_date) .
                " AND c.actual_start_date <= " . $dbi->quote($end_date) .
                " AND c.school_id = " . $school_id;

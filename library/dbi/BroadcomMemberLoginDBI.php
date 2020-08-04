@@ -93,6 +93,26 @@ class BroadcomMemberLoginDBI
         return $data;
     }
 
+    public static function selectBaseNameCount($base_name)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT COUNT(*) FROM member_login WHERE member_login_name_base = " . $dbi->quote($base_name) . " LIMIT 1";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row["COUNT(*)"];
+        }
+        $result->free();
+        if (count($data) == 1) {
+            return $data[0];
+        }
+        return false;
+    }
+
     public static function insertMemberLogin($insert_data)
     {
         $dbi = Database::getInstance();

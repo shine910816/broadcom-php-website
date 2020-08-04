@@ -144,27 +144,37 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             $member_position = $request->getParameter("member_position");
             $member_employed_status = $request->getParameter("member_employed_status");
             $member_position_level = $request->getParameter("member_position_level");
+            $base_name_count = 0;
             if (!Validate::checkNotNull($member_login_name)) {
                 $request->setError("member_login_name", "登录名不能为空");
+            } elseif (!Validate::checkAlpha($member_login_name)) {
+                $request->setError("member_login_name", "登录名仅能为英文字母");
             } else {
-                $login_info = BroadcomMemberLoginDBI::selectMemberLoginByName($member_login_name);
-                if ($controller->isError($login_info)) {
-                    $login_info->setPos(__FILE__, __LINE__);
-                    return $login_info;
+                $base_name_count = BroadcomMemberLoginDBI::selectBaseNameCount($member_login_name);
+                if ($controller->isError($base_name_count)) {
+                    $base_name_count->setPos(__FILE__, __LINE__);
+                    return $base_name_count;
                 }
-                if (!empty($login_info)) {
-                    $request->setError("member_login_name", "登录名已经被注册");
+                if ($base_name_count === false) {
+                    $err = $controller->raiseError(ERROR_CODE_DATABASE_DISACCEPT);
+                    $err->setPos(__FILE__, __LINE__);
+                    return $err;
                 }
             }
-            $request->setAttribute("member_login_name", $member_login_name);
+            $request->setAttribute("member_login_name", strtolower($member_login_name));
             $request->setAttribute("school_id", $school_id);
+            $request->setAttribute("base_name_count", $base_name_count);
             $request->setAttribute("member_position", $member_position);
             $request->setAttribute("member_employed_status", $member_employed_status);
             $request->setAttribute("member_position_level", $member_position_level);
         }
         $content_data = array();
         if (!$edit_mode || ($edit_mode && $getting_member_info["m_name"] != $member_info["m_name"])) {
-            $content_data["m_name"] = strtolower($getting_member_info["m_name"]);
+            if (!Validate::checkNotNull($getting_member_info["m_name"])) {
+                $request->setError("m_name", "姓名不能为空");
+            } else {
+                $content_data["m_name"] = $getting_member_info["m_name"];
+            }
         }
         if (!$edit_mode || ($getting_member_info["m_birthday"] != $member_info["m_birthday"])) {
             $content_data["m_birthday"] = $getting_member_info["m_birthday"];
@@ -272,6 +282,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
         } else {
             $member_login_name = $request->getAttribute("member_login_name");
             $school_id = $request->getAttribute("school_id");
+            $base_name_count = $request->getAttribute("base_name_count");
             $member_position = $request->getAttribute("member_position");
             $member_position_level = $request->getAttribute("member_position_level");
             $info_insert_data = $request->getAttribute("content_data");
@@ -279,9 +290,14 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             $salt_arr = Utility::transSalt();
             $login_insert_data = array();
             $login_insert_data["member_login_name"] = $member_login_name;
+            if ($base_name_count > 0) {
+                $login_insert_data["member_login_name"] .= $base_name_count + 1;
+            }
+            $login_insert_data["member_login_name_base"] = $member_login_name;
             $login_insert_data["member_login_password"] = md5($salt_arr["salt1"] . $password_context . $salt_arr["salt2"]);
             $login_insert_data["member_login_salt"] = $salt_arr["code"];
             $login_insert_data["member_level"] = "1";
+            $login_insert_data["target_object_id"] = Utility::getObjectId($login_insert_data["member_login_name"] . time());
             $position_insert_data = array();
             $position_insert_data["school_id"] = $school_id;
             $position_insert_data["member_position"] = $member_position;

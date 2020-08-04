@@ -106,9 +106,9 @@ class BroadcomData_TargetInfoAction extends BroadcomDataActionBase
         } else {
             $back_stats = $total_stats;
         }
-        $front_actual_amount = $front_stats["achieve_data"]["4"]["calculate_amount"];
-        $back_actual_amount = $back_stats["achieve_data"]["4"]["calculate_amount"];
-        $total_actual_amount = $total_stats["achieve_data"]["4"]["calculate_amount"];
+        $front_actual_amount = $front_stats["achieve_data"]["5"]["calculate_amount"];
+        $back_actual_amount = $back_stats["achieve_data"]["5"]["calculate_amount"];
+        $total_actual_amount = $total_stats["achieve_data"]["5"]["calculate_amount"];
         $course_actual_amount = 0;
         foreach ($total_stats["course_data"] as $course_amount) {
             $course_actual_amount += $course_amount;
