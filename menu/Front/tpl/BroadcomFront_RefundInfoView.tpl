@@ -16,7 +16,7 @@
       </div>
       <div class="table-item-b">
         <div class="table-item-name">课时余量</div>
-        <div class="table-item-value">{^$refund_info["order_item_remain"]^}</div>
+        <div class="table-item-value">{^$refund_info["refund_amount"]^}</div>
       </div>
     </div>
     <div class="table-line">

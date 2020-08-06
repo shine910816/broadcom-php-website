@@ -37,10 +37,10 @@
           <th style="width:200px;">课程类型</th>
           <th style="width:300px;">课程名</th>
           <th style="width:300px;">时间</th>
-          <th style="width:200px;">教室</th>
           <th style="width:200px;">教师</th>
           <th style="width:200px;">学科</th>
           <th style="width:200px;">状态</th>
+          <th style="width:100px;">操作</th>
         </tr>
       </thead>
       <tbody>
@@ -49,10 +49,10 @@
           <td>{^if $course_info["course_type"] eq "5" or $course_info["course_type"] eq "6"^}试听课{^else^}{^$course_type_list[$course_info["course_type"]]^}{^/if^}</td>
           <td>{^if $course_info["course_type"] eq "5" or $course_info["course_type"] eq "6"^}{^$course_type_list[$course_info["course_type"]]^}{^else^}{^$item_list[$course_info["item_id"]]["item_name"]^}{^/if^}</td>
           <td>{^$course_info["course_start_date"]|date_format:"%Y-%m-%d %H:%M"^}~{^$course_info["course_expire_date"]|date_format:"%H:%M"^}</td>
-          <td>{^$room_list[$course_info["room_id"]]^}</td>
           <td>{^$teacher_info[$course_info["teacher_member_id"]]["m_name"]^}</td>
           <td>{^$subject_list[$course_info["subject_id"]]^}</td>
-          <td>{^if $course_info["reset_examine_flg"]^}已返课{^else^}{^if $course_info["reset_flg"]^}待返课审核{^else^}{^if $course_info["confirm_flg"]^}已消课{^else^}未消课{^/if^}{^/if^}{^/if^}</td>
+          <td>{^if $course_info["confirm_flg"]^}已{^else^}未{^/if^}消课</td>
+          <td><a href="./?menu=education&act=course_confirm&course_id={^$course_id^}" class="button-field ui-btn-orange" target="_blank">详细</a></td>
         </tr>
 {^/foreach^}
       </tbody>

@@ -106,6 +106,9 @@ class BroadcomOrderDBI
                " i.item_labels," .
                " oi.order_item_trans_price," .
                " oi.order_item_status," .
+               " oi.order_item_amount," .
+               " oi.order_item_arrange," .
+               " oi.order_item_confirm," .
                " oi.order_item_remain," .
                " oi.assign_member_id," .
                " oi.assign_date," .

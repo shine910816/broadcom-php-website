@@ -29,6 +29,8 @@ class BroadcomRefundDBI
                " oi.order_item_payable_amount," .
                " oi.order_item_amount," .
                " oi.order_item_remain," .
+               " oi.order_item_arrange," .
+               " oi.order_item_confirm," .
                " s.student_id," .
                " s.student_name," .
                " s.student_mobile_number" .

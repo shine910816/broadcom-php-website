@@ -39,7 +39,7 @@
       </div>
       <div class="table-item-b">
         <div class="table-item-name">课时余量</div>
-        <div class="table-item-value">{^$order_item_info["order_item_remain"]^}</div>
+        <div class="table-item-value">{^$order_item_info["order_item_amount"] - $order_item_info["order_item_confirm"]^}</div>
       </div>
     </div>
   </div>
