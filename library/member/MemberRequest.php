@@ -21,7 +21,7 @@ class MemberRequest
     public function __construct($target_object_id)
     {
         $member_info = $this->_selectMember($target_object_id);
-        if (!Error::isError($member_info) && !empty($member_info)) {
+        if (!HoisException::isError($member_info) && !empty($member_info)) {
             $this->member_id = $member_info["member_id"];
             $this->m_name = $member_info["m_name"];
             $this->m_mobile_number = $member_info["m_mobile_number"];

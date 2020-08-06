@@ -195,14 +195,14 @@ class Launcher
             $action_path = sprintf("%s/menu/%s/act/%s.php", SRC_PATH, $menu_name, $action_name);
         }
         if (!is_readable($action_path)) {
-            $err = Error::getInstance();
+            $err = HoisException::getInstance();
             $err->raiseError(ERROR_CODE_NONE_ACTION_FILE, $action_path);
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
         require_once $action_path;
         if (!class_exists($action_name)) {
-            $err = Error::getInstance();
+            $err = HoisException::getInstance();
             $err->raiseError(ERROR_CODE_NONE_ACTION_CLASS, $action_path);
             $err->setPos(__FILE__, __LINE__);
             return $err;

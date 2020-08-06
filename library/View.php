@@ -43,7 +43,7 @@ class View
     public function display($user, $request)
     {
         $ret = $this->_setTemplatePath($request->current_menu, $request->current_act);
-        if (Error::isError($ret)) {
+        if (HoisException::isError($ret)) {
             $ret->writeLog();
             $this->errorDisplay($user, $request, $ret);
             return;
@@ -85,7 +85,7 @@ class View
         $current_act = Utility::getFileFormatName($act);
         $tpl_path = sprintf("%s/menu/%s/tpl/%s%s_%sView.tpl", SRC_PATH, $current_menu, SYSTEM_FILE_HEADER, $current_menu, $current_act);
         if (!is_readable($tpl_path)) {
-            $error = Error::getInstance();
+            $error = HoisException::getInstance();
             $error->raiseError(ERROR_CODE_NONE_TPL_FILE, basename($tpl_path));
             $error->setPos(__FILE__, __LINE__);
             return $error;

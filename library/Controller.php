@@ -55,7 +55,7 @@ class Controller
      */
     public function raiseError($err_code = ERROR_CODE_DEFAULT, $err_msg = null)
     {
-        $error = Error::getInstance();
+        $error = HoisException::getInstance();
         $error->raiseError($err_code, $err_msg);
         return $error;
     }
@@ -68,7 +68,7 @@ class Controller
      */
     public function isError($obj)
     {
-        return Error::isError($obj);
+        return HoisException::isError($obj);
     }
 
     /**

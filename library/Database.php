@@ -55,7 +55,7 @@ class Database
     public function insert($tableName, $insertData)
     {
         if (empty($tableName) || !is_array($insertData)) {
-            $error = Error::getInstance();
+            $error = HoisException::getInstance();
             $error->raiseError(ERROR_CODE_DATABASE_PARAM);
             $error->setPos(__FILE__, __LINE__);
             return $error;
@@ -96,7 +96,7 @@ class Database
     public function update($tableName, $updateData, $where)
     {
         if ($tableName == null || !is_array($updateData) || $where == null) {
-            $error = Error::getInstance();
+            $error = HoisException::getInstance();
             $error->raiseError(ERROR_CODE_DATABASE_PARAM);
             $error->setPos(__FILE__, __LINE__);
             return $error;
@@ -121,7 +121,7 @@ class Database
     public function delete($tableName, $where)
     {
         if ($tableName == null || $where == null) {
-            $error = Error::getInstance();
+            $error = HoisException::getInstance();
             $error->raiseError(ERROR_CODE_DATABASE_PARAM);
             $error->setPos(__FILE__, __LINE__);
             return $error;
@@ -194,7 +194,7 @@ class Database
      */
     public function isError($obj)
     {
-        return Error::isError($obj);
+        return HoisException::isError($obj);
     }
 
     /**
@@ -227,7 +227,7 @@ class Database
         $sql = trim($sql, ' ');
         $result = mysqli_query($this->con, $sql);
         if (!$result) {
-            $error = Error::getInstance();
+            $error = HoisException::getInstance();
             $error->raiseError(ERROR_CODE_DATABASE_RESULT, mysqli_error($this->con) . ", the sql text: " . $sql);
             return $error;
         }

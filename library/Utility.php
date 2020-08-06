@@ -203,7 +203,7 @@ class Utility
         $request->setAttribute("max_page", $max_page);
         $data_tmp = array_chunk($data, $per_page, true);
         if (!isset($data_tmp[$request->current_page - 1])) {
-            $err = Error::getInstance();
+            $err = HoisException::getInstance();
             $err->raiseError(ERROR_CODE_USER_FALSIFY, "最大页码为" . $max_page . "，页码参数被窜改为" . $request->current_page);
             $err->setPos(__FILE__, __LINE__);
             return $err;
@@ -318,14 +318,14 @@ class Utility
     {
         $json_header = get_headers($json_path);
         if (strpos($json_header[0], "200 OK") === false) {
-            $err = Error::getInstance();
+            $err = HoisException::getInstance();
             $err->raiseError(ERROR_CODE_THIRD_ERROR_FALSIFY, "地址无效: " . $json_path);
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
         $json_array = json_decode(file_get_contents($json_path), true);
         if (empty($json_array)) {
-            $err = Error::getInstance();
+            $err = HoisException::getInstance();
             $err->raiseError(ERROR_CODE_THIRD_ERROR_FALSIFY, "JSON内容无效: " . $json_path);
             $err->setPos(__FILE__, __LINE__);
             return $err;
@@ -441,7 +441,7 @@ class Utility
         $respond_json = file_get_contents(SYSTEM_API_HOST . $url, false, $stream_context);
         $respond_json_arr = json_decode($respond_json, true);
         if ($respond_json_arr["error_code"]) {
-            $err = Error::getInstance();
+            $err = HoisException::getInstance();
             $err->raiseError($respond_json_arr["error_code"], $respond_json_arr["error_message"]);
             return $err;
         } else {

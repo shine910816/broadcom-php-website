@@ -7,7 +7,7 @@ require_once SRC_PATH . "/library/ActionBase.php";
 require_once SRC_PATH . "/library/Config.php";
 require_once SRC_PATH . "/library/Controller.php";
 require_once SRC_PATH . "/library/Database.php";
-require_once SRC_PATH . "/library/Error.php";
+require_once SRC_PATH . "/library/HoisException.php";
 require_once SRC_PATH . "/library/Utility.php";
 require_once SRC_PATH . "/library/Init.php";
 require_once SRC_PATH . "/library/Launcher.php";
