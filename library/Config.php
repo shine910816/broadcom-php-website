@@ -217,6 +217,9 @@ class Config
         // TODO 全部权限 排课
         $result["education"]["course_create"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,   // 营销主管
+            BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
+            BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
             BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
             BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
         );
@@ -256,6 +259,25 @@ class Config
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
         $result["human_resource"]["reset_password"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
+        $result["data"]["achieve_info"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
+        $result["data"]["target_info"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
+        $result["data"]["target_input"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER         // 校长
+        );
+        $result["data"]["income_info"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
+        $result["data"]["surplus_info"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );

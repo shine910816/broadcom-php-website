@@ -8,6 +8,41 @@
 class BroadcomStatisticsDBI
 {
 
+    public static function selectOrderList($start_date, $end_date, $school_id, $member_list = null)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT order_id," .
+               " order_number," .
+               " achieve_type," .
+               " school_id," .
+               " student_id," .
+               " order_payable," .
+               " order_payment," .
+               " order_debt," .
+               " order_status," .
+               " operated_by," .
+               " insert_date" .
+               " FROM order_info" .
+               " WHERE del_flg = 0" .
+               " AND insert_date >= " . $dbi->quote($start_date) .
+               " AND insert_date <= " . $dbi->quote($end_date) .
+               " AND school_id = " . $school_id;
+        if (!is_null($member_list)) {
+            $sql .= " AND operated_by IN (" . implode(", ", $member_list) . ")";
+        }
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["order_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function selectOrderItemCount($start_date, $end_date, $school_id, $member_list = null)
     {
         $dbi = Database::getInstance();

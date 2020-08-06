@@ -29,6 +29,7 @@ class BroadcomMemberEntity
     const SECTION_2 = "2";
     const SECTION_3 = "3";
     const SECTION_4 = "4";
+    const SECTION_5 = "5";
 
     const POSITION_LEVEL_0 = "0";
     const POSITION_LEVEL_1 = "1";
@@ -108,7 +109,8 @@ class BroadcomMemberEntity
     {
         return array(
             self::SECTION_1 => "校长",
-            self::SECTION_2 => "教务部",
+            self::SECTION_5 => "教务部(营销)",
+            self::SECTION_2 => "教务部(学管)",
             self::SECTION_3 => "教学部",
             self::SECTION_4 => "财务部"
         );
@@ -121,8 +123,6 @@ class BroadcomMemberEntity
                 self::POSITION_HEADMASTER          //校长
             ),
             self::SECTION_2 => array(
-                self::POSITION_ADVISER,            //课程顾问
-                self::POSITION_MARKETING,          //市场专员
                 self::POSITION_ASSISTANT           //教务专员
             ),
             self::SECTION_3 => array(
@@ -132,6 +132,10 @@ class BroadcomMemberEntity
             ),
             self::SECTION_4 => array(
                 self::POSITION_HR_FINANCE          //财务人事
+            ),
+            self::SECTION_5 => array(
+                self::POSITION_ADVISER,            //课程顾问
+                self::POSITION_MARKETING,          //市场专员
             )
         );
     }

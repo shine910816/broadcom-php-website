@@ -19,7 +19,7 @@ define("DATE_DEFAULT_THIS_YEAR", date("Y"));
 /**
  * 系统默认标题
  */
-define("SYSTEM_DEFAULT_TITLE", "教务管理系统 - xxx");
+define("SYSTEM_DEFAULT_TITLE", "教务管理系统 - 易趣学");
 /**
  * 系统默认域名
  */

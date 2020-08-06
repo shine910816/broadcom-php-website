@@ -117,7 +117,8 @@ class BroadcomCourse_ListAction extends ActionBase
             $post_data["section"] = array(
                 BroadcomMemberEntity::SECTION_1,
                 BroadcomMemberEntity::SECTION_2,
-                BroadcomMemberEntity::SECTION_3
+                BroadcomMemberEntity::SECTION_3,
+                BroadcomMemberEntity::SECTION_5
             );
             $repond_member_list = Utility::getJsonResponse("?t=589049D8-F35C-2E6A-E792-D576E8002A2C&m=" . $request->member()->targetObjectId(), $post_data);
             if ($controller->isError($repond_member_list)) {

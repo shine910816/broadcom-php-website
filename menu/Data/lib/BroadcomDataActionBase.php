@@ -101,51 +101,56 @@ class BroadcomDataActionBase extends ActionBase
 
     protected function _getStatsData(Controller $controller, User $user, Request $request)
     {
+        $school_id = $request->getAttribute("school_id");
         $start_date = $request->getAttribute("period_start_date");
         $end_date = $request->getAttribute("period_end_date");
-        $school_id = $request->getAttribute("school_id");
         $member_id_list = $request->getAttribute("member_id_list");
-        $teacher_flg = $request->getAttribute("teacher_flg");
+        $post_data = array(
+            "school_id" => $school_id,
+            "start_date" => $start_date,
+            "end_date" => $end_date
+        );
+        if (!empty($member_id_list)) {
+            $post_data["member_text"] = implode(",", $member_id_list);
+        }
+        $repond_order_list = Utility::getJsonResponse("?t=DD6BE1A4-420A-F46D-E42A-F72CACFB1E09&m=" . $user->member()->targetObjectId(), $post_data);
+        if ($controller->isError($repond_order_list)) {
+            $repond_order_list->setPos(__FILE__, __LINE__);
+            return $repond_order_list;
+        }
         // 统计数据分布
         $achieve_type_list = BroadcomOrderEntity::getAchieveTypeList();
         $stats_item = array(
-            "order_count" => 0,
-            "order_amount" => 0,
-            "cancel_order_count" => 0,
-            "cancel_order_amount" => 0,
-            "total_amount" => 0,
-            "calculate_amount" => 0
+            "order_count" => 0,         // 签单数
+            "order_amount" => 0,        // 签单金额
+            "cancel_order_count" => 0,  // 打款退单数
+            "cancel_order_amount" => 0, // 打款退单金额
+            "total_amount" => 0,        // 实收金额
+            "calculate_amount" => 0     // 减退费实收金额
         );
-        $result_data = array();
+        $achieve_data = array();
         foreach ($achieve_type_list as $achieve_type => $achieve_type_name) {
-            $result_data[$achieve_type] = $stats_item;
+            $achieve_data[$achieve_type] = $stats_item;
         }
-        $order_item_stats = BroadcomStatisticsDBI::selectOrderItemCount($start_date, $end_date, $school_id, $member_id_list);
-        if ($controller->isError($order_item_stats)) {
-            $order_item_stats->setPos(__FILE__, __LINE__);
-            return $order_item_stats;
-        }
-        if (!empty($order_item_stats)) {
-            foreach ($order_item_stats as $achieve_type => $stats_tmp) {
-                $result_data[$achieve_type]["order_count"] += $stats_tmp["order_count"];
-                $result_data[$achieve_type]["order_amount"] += $stats_tmp["order_amount"];
-                $result_data[$achieve_type]["total_amount"] += $stats_tmp["order_amount"];
-                $result_data[$achieve_type]["calculate_amount"] += $stats_tmp["order_amount"];
+        foreach ($repond_order_list as $order_id => $order_info) {
+            $achieve_data[$order_info["achieve_type"]]["order_count"] += count($order_info["order_item"]);
+            $achieve_data[$order_info["achieve_type"]]["order_amount"] += $order_info["order_payable"];
+            foreach ($order_info["order_item"] as $order_item_id => $order_item_info) {
+                if ($order_item_info["order_item_status"] == BroadcomOrderEntity::ORDER_ITEM_STATUS_4) {
+                    $achieve_data[$order_info["achieve_type"]]["cancel_order_count"] += 1;
+                }
             }
-        }
-        $cancel_order_item_stats = BroadcomStatisticsDBI::selectCancelOrderItemCount($start_date, $end_date, $school_id, $member_id_list);
-        if ($controller->isError($cancel_order_item_stats)) {
-            $cancel_order_item_stats->setPos(__FILE__, __LINE__);
-            return $cancel_order_item_stats;
-        }
-        if (!empty($cancel_order_item_stats)) {
-            foreach ($cancel_order_item_stats as $stats_tmp) {
-                $result_data[$stats_tmp["achieve_type"]]["cancel_order_count"] += 1;
-                $result_data[$stats_tmp["achieve_type"]]["cancel_order_amount"] += round($stats_tmp["order_item_payable_amount"] - $stats_tmp["order_item_trans_price"] * $stats_tmp["order_item_confirm"] * 1.05, 2);
+            foreach ($order_info["payment_history"] as $payment_amount) {
+                if ($payment_amount > 0) {
+                    $achieve_data[$order_info["achieve_type"]]["total_amount"] += $payment_amount;
+                } else {
+                    $achieve_data[$order_info["achieve_type"]]["cancel_order_amount"] -= $payment_amount;
+                }
+                $achieve_data[$order_info["achieve_type"]]["calculate_amount"] += $payment_amount;
             }
         }
         // 数据整合
-        foreach ($result_data as $achieve_type => $achieve_stats_item) {
+        foreach ($achieve_data as $achieve_type => $achieve_stats_item) {
             $stats_item["order_count"] += $achieve_stats_item["order_count"];
             $stats_item["order_amount"] += $achieve_stats_item["order_amount"];
             $stats_item["cancel_order_count"] += $achieve_stats_item["cancel_order_count"];
@@ -154,13 +159,13 @@ class BroadcomDataActionBase extends ActionBase
             $stats_item["calculate_amount"] += $achieve_stats_item["calculate_amount"];
         }
         $achieve_type_list["5"] = "合计";
-        $result_data["5"] = $stats_item;
+        $achieve_data["5"] = $stats_item;
         $average_amount = 0;
-        if ($result_data["5"]["order_count"] > 0) {
-            $average_amount = round($result_data["5"]["order_amount"] / $result_data["5"]["order_count"], 2);
+        if ($achieve_data["5"]["order_count"] > 0) {
+            $average_amount = round($achieve_data["5"]["total_amount"] / $achieve_data["5"]["order_count"], 2);
         }
         // 消课统计
-        $course_stats = BroadcomStatisticsDBI::selectCourseStatsDetail($start_date, $end_date, $school_id, $member_id_list, $teacher_flg);
+        $course_stats = BroadcomStatisticsDBI::selectCourseStatsDetail($start_date, $end_date, $school_id);
         if ($controller->isError($course_stats)) {
             $course_stats->setPos(__FILE__, __LINE__);
             return $course_stats;
@@ -198,7 +203,7 @@ class BroadcomDataActionBase extends ActionBase
         }
         return array(
             "achieve_type_list" => $achieve_type_list,
-            "achieve_data" => $result_data,
+            "achieve_data" => $achieve_data,
             "average_amount" => $average_amount,
             "course_type_list" => $course_type_list,
             "course_data" => $course_data

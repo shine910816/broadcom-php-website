@@ -39,7 +39,7 @@ class BroadcomHomeActionBase extends BroadcomDataActionBase
             return $week_achieve_info;
         }
         $week_achieve_count = $week_achieve_info["achieve_data"]["5"]["order_count"];
-        $week_achieve_amount = $week_achieve_info["achieve_data"]["5"]["calculate_amount"];
+        $week_achieve_amount = $week_achieve_info["achieve_data"]["5"]["order_amount"];
         $week_course_count = array_sum($week_achieve_info["course_data"]);
         $request->setAttribute("period_type_input", "2");
         $month_date_info = $this->_getStatisticsPeriod($controller, $user, $request);
@@ -54,8 +54,8 @@ class BroadcomHomeActionBase extends BroadcomDataActionBase
             return $month_achieve_info;
         }
         $month_achieve_count = $month_achieve_info["achieve_data"]["5"]["order_count"];
-        $month_achieve_amount = $month_achieve_info["achieve_data"]["5"]["calculate_amount"];
-        $month_actual_amount = $month_achieve_info["achieve_data"]["5"]["total_amount"];
+        $month_achieve_amount = $month_achieve_info["achieve_data"]["5"]["order_amount"];
+        $month_actual_amount = $month_achieve_info["achieve_data"]["5"]["calculate_amount"];
         $month_course_count = array_sum($month_achieve_info["course_data"]);
         $target_info = BroadcomTargetDBI::selectTarget($school_id, date("Ym"));
         if ($controller->isError($target_info)) {

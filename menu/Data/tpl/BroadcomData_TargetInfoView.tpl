@@ -25,8 +25,8 @@
         <td>{^$target_type_list[$target_key]^}</td>
         <td>{^$target_item["target"]^}</td>
         <td>{^$target_item["actual"]^}</td>
-        <td>{^$target_item["percent"]^}</td>
-        <td>{^$target_item["amount"]^}</td>
+        <td{^if $target_item["red"]^} style="color:#F60000;"{^/if^}>{^$target_item["percent"]^}</td>
+        <td{^if $target_item["red"]^} style="color:#F60000;"{^/if^}>{^$target_item["amount"]^}</td>
       </tr>
 {^/foreach^}
     </tbody>

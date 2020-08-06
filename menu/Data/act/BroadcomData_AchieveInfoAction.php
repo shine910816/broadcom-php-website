@@ -65,17 +65,7 @@ class BroadcomData_AchieveInfoAction extends BroadcomDataActionBase
             return $period_info;
         }
         $request->setAttributes($period_info);
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($user->member()->id());
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $school_id = $position_info["school_id"];
+        $school_id = $user->member()->schoolId();
         $section_id = "0";
         $member_id = "0";
         if ($request->hasParameter("school_id")) {
@@ -97,26 +87,19 @@ class BroadcomData_AchieveInfoAction extends BroadcomDataActionBase
             $member_list->setPos(__FILE__, __LINE__);
             return $member_list;
         }
-        $member_id_list = null;
+        $member_id_list = array();
         $teacher_flg = false;
         if ($member_id != "0") {
             $member_id_list = array($member_id);
-            if (isset($member_list["3"]) && in_array($member_id, array_keys($member_list["3"]))) {
-                $teacher_flg = true;
-            }
         } else {
             if ($section_id != "0") {
                 if (isset($member_list[$section_id])) {
                     $member_id_list = array_keys($member_list[$section_id]);
-                    if ($section_id == "3") {
-                        $teacher_flg = true;
-                    }
                 }
             }
         }
         $request->setAttribute("school_id", $school_id);
         $request->setAttribute("member_id_list", $member_id_list);
-        $request->setAttribute("teacher_flg", $teacher_flg);
         $stats_data = $this->_getStatsData($controller, $user, $request);
         if ($controller->isError($stats_data)) {
             $stats_data->setPos(__FILE__, __LINE__);

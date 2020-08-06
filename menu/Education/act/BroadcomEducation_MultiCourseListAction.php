@@ -60,7 +60,7 @@ class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBas
         $section_list = BroadcomMemberEntity::getSectionPositionList();
         if (in_array($member_position, $section_list[BroadcomMemberEntity::SECTION_3])) {
             $teacher_member_list_flg = false;
-        } elseif (in_array($member_position, $section_list[BroadcomMemberEntity::SECTION_2])) {
+        } elseif (in_array($member_position, $section_list[BroadcomMemberEntity::SECTION_2]) || in_array($member_position, $section_list[BroadcomMemberEntity::SECTION_5])) {
             $assign_member_list_flg = false;
         }
         $student_id = "0";
@@ -158,7 +158,8 @@ class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBas
         if ($assign_member_list_flg) {
             $post_data["section"] = array(
                 BroadcomMemberEntity::SECTION_1,
-                BroadcomMemberEntity::SECTION_2
+                BroadcomMemberEntity::SECTION_2,
+                BroadcomMemberEntity::SECTION_5
             );
             $repond_member_list = Utility::getJsonResponse("?t=589049D8-F35C-2E6A-E792-D576E8002A2C&m=" . $user->member()->targetObjectId(), $post_data);
             if ($controller->isError($repond_member_list)) {

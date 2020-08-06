@@ -33,7 +33,7 @@ class MemberAuthority
      */
     public function isAst()
     {
-        return in_array($this->_position, $this->_section_list[BroadcomMemberEntity::SECTION_2]);
+        return in_array($this->_position, $this->_section_list[BroadcomMemberEntity::SECTION_2]) || in_array($this->_position, $this->_section_list[BroadcomMemberEntity::SECTION_5]);
     }
 
     /**

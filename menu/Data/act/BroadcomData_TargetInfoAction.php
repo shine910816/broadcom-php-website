@@ -61,17 +61,7 @@ class BroadcomData_TargetInfoAction extends BroadcomDataActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-        $position_info = BroadcomMemberPositionDBI::selectMemberPosition($user->member()->id());
-        if ($controller->isError($position_info)) {
-            $position_info->setPos(__FILE__, __LINE__);
-            return $position_info;
-        }
-        if (empty($position_info)) {
-            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $school_id = $position_info["school_id"];
+        $school_id = $user->member()->schoolId();
         $request->setAttribute("school_id", $school_id);
         $request->setAttribute("teacher_flg", false);
         $member_list = BroadcomMemberPositionDBI::selectMemberListBySchoolGroupPosition($school_id);
@@ -81,34 +71,35 @@ class BroadcomData_TargetInfoAction extends BroadcomDataActionBase
         }
         $member_id_list = null;
         $request->setAttribute("member_id_list", $member_id_list);
+        $front_actual_amount = 0;
+        $back_actual_amount = 0;
+        $total_actual_amount = 0;
         $total_stats = $this->_getStatsData($controller, $user, $request);
         if ($controller->isError($total_stats)) {
             $total_stats->setPos(__FILE__, __LINE__);
             return $total_stats;
         }
-        if (isset($member_list["1"])) {
-            $request->setAttribute("member_id_list", array_keys($member_list["1"]));
+        if (isset($member_list[BroadcomMemberEntity::SECTION_5])) {
+            $request->setAttribute("member_id_list", array_keys($member_list[BroadcomMemberEntity::SECTION_5]));
             $front_stats = $this->_getStatsData($controller, $user, $request);
             if ($controller->isError($front_stats)) {
                 $front_stats->setPos(__FILE__, __LINE__);
                 return $front_stats;
             }
-        } else {
-            $front_stats = $total_stats;
+            $front_actual_amount = $front_stats["achieve_data"]["5"]["calculate_amount"];
         }
-        if (isset($member_list["2"])) {
-            $request->setAttribute("member_id_list", array_keys($member_list["2"]));
+        if (isset($member_list[BroadcomMemberEntity::SECTION_2])) {
+            $request->setAttribute("member_id_list", array_keys($member_list[BroadcomMemberEntity::SECTION_2]));
             $back_stats = $this->_getStatsData($controller, $user, $request);
             if ($controller->isError($back_stats)) {
                 $back_stats->setPos(__FILE__, __LINE__);
                 return $back_stats;
             }
-        } else {
-            $back_stats = $total_stats;
+            $back_actual_amount = $back_stats["achieve_data"]["5"]["calculate_amount"];
         }
-        $front_actual_amount = $front_stats["achieve_data"]["5"]["calculate_amount"];
-        $back_actual_amount = $back_stats["achieve_data"]["5"]["calculate_amount"];
-        $total_actual_amount = $total_stats["achieve_data"]["5"]["calculate_amount"];
+        if ($front_actual_amount > 0 || $back_actual_amount > 0) {
+            $total_actual_amount = $front_actual_amount + $back_actual_amount;
+        }
         $course_actual_amount = 0;
         foreach ($total_stats["course_data"] as $course_amount) {
             $course_actual_amount += $course_amount;
@@ -132,37 +123,81 @@ class BroadcomData_TargetInfoAction extends BroadcomDataActionBase
             "4" => "消课课时"
         );
         $target_result = array(
-            "1" => $target_item,
-            "2" => $target_item,
-            "3" => $target_item,
-            "4" => $target_item
+            "1" => array(
+                "target" => "-",
+                "actual" => $front_actual_amount,
+                "percent" => "-",
+                "amount" => "-",
+                "red" => false
+            ),
+            "2" => array(
+                "target" => "-",
+                "actual" => $back_actual_amount,
+                "percent" => "-",
+                "amount" => "-",
+                "red" => false
+            ),
+            "3" => array(
+                "target" => "-",
+                "actual" => $total_actual_amount,
+                "percent" => "-",
+                "amount" => "-",
+                "red" => false
+            ),
+            "4" => array(
+                "target" => "-",
+                "actual" => $course_actual_amount,
+                "percent" => "-",
+                "amount" => "-",
+                "red" => false
+            )
         );
-        $target_result["1"]["actual"] = $front_actual_amount;
-        $target_result["2"]["actual"] = $back_actual_amount;
-        $target_result["3"]["actual"] = $total_actual_amount;
-        $target_result["4"]["actual"] = $course_actual_amount;
         if (!empty($target_info)) {
             if ($target_info["front_target"] > 0) {
                 $target_result["1"]["target"] = $target_info["front_target"];
-                $target_result["1"]["percent"] = sprintf("%.1f", $target_result["1"]["actual"] / $target_result["1"]["target"] * 100) . "%";
+                $target_result["1"]["percent"] = number_format($target_result["1"]["actual"] / $target_result["1"]["target"] * 100, 1) . "%";
                 $target_result["1"]["amount"] = $target_result["1"]["actual"] - $target_result["1"]["target"];
+                if ($target_result["1"]["amount"] < 0) {
+                    $target_result["1"]["red"] = true;
+                }
+                $target_result["1"]["target"] = number_format($target_result["1"]["target"], 2) . "元";
+                $target_result["1"]["amount"] = number_format($target_result["1"]["amount"], 2) . "元";
             }
             if ($target_info["back_target"] > 0) {
                 $target_result["2"]["target"] = $target_info["back_target"];
-                $target_result["2"]["percent"] = sprintf("%.1f", $target_result["2"]["actual"] / $target_result["2"]["target"] * 100) . "%";
+                $target_result["2"]["percent"] = number_format($target_result["2"]["actual"] / $target_result["2"]["target"] * 100, 1) . "%";
                 $target_result["2"]["amount"] = $target_result["2"]["actual"] - $target_result["2"]["target"];
+                if ($target_result["2"]["amount"] < 0) {
+                    $target_result["2"]["red"] = true;
+                }
+                $target_result["2"]["target"] = number_format($target_result["2"]["target"], 2) . "元";
+                $target_result["2"]["amount"] = number_format($target_result["2"]["amount"], 2) . "元";
             }
             if ($target_info["total_target"] > 0) {
                 $target_result["3"]["target"] = $target_info["total_target"];
-                $target_result["3"]["percent"] = sprintf("%.1f", $target_result["3"]["actual"] / $target_result["3"]["target"] * 100) . "%";
+                $target_result["3"]["percent"] = number_format($target_result["3"]["actual"] / $target_result["3"]["target"] * 100, 1) . "%";
                 $target_result["3"]["amount"] = $target_result["3"]["actual"] - $target_result["3"]["target"];
+                if ($target_result["3"]["amount"] < 0) {
+                    $target_result["3"]["red"] = true;
+                }
+                $target_result["3"]["target"] = number_format($target_result["3"]["target"], 2) . "元";
+                $target_result["3"]["amount"] = number_format($target_result["3"]["amount"], 2) . "元";
             }
             if ($target_info["course_target"] > 0) {
                 $target_result["4"]["target"] = $target_info["course_target"];
-                $target_result["4"]["percent"] = sprintf("%.1f", $target_result["4"]["actual"] / $target_result["4"]["target"] * 100) . "%";
+                $target_result["4"]["percent"] = number_format($target_result["4"]["actual"] / $target_result["4"]["target"] * 100, 1) . "%";
                 $target_result["4"]["amount"] = $target_result["4"]["actual"] - $target_result["4"]["target"];
+                if ($target_result["4"]["amount"] < 0) {
+                    $target_result["4"]["red"] = true;
+                }
+                $target_result["4"]["target"] = number_format($target_result["4"]["target"], 1) . "小时";
+                $target_result["4"]["amount"] = number_format($target_result["4"]["amount"], 1) . "小时";
             }
         }
+        $target_result["1"]["actual"] = number_format($target_result["1"]["actual"], 2) . "元";
+        $target_result["2"]["actual"] = number_format($target_result["2"]["actual"], 2) . "元";
+        $target_result["3"]["actual"] = number_format($target_result["3"]["actual"], 2) . "元";
+        $target_result["4"]["actual"] = number_format($target_result["4"]["actual"], 1) . "小时";
         $request->setAttribute("target_type_list", $target_type_list);
         $request->setAttribute("target_data", $target_result);
         return VIEW_DONE;
