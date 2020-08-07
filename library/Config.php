@@ -39,21 +39,21 @@ class Config
         $result["education"]["my_student_list"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["student_list"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["student_info"] = SYSTEM_AUTH_LOGIN;
-        $result["education"]["schedule_list"] = SYSTEM_AUTH_LOGIN;
-        $result["education"]["schedule_create"] = SYSTEM_AUTH_LOGIN;
-        $result["education"]["schedule_info"] = SYSTEM_AUTH_LOGIN;
+        //$result["education"]["schedule_list"] = SYSTEM_AUTH_LOGIN;
+        //$result["education"]["schedule_create"] = SYSTEM_AUTH_LOGIN;
+        //$result["education"]["schedule_info"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["course_create"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["multi_course_list"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["course_list"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["course_confirm"] = SYSTEM_AUTH_LOGIN;
-        $result["education"]["reset_list"] = SYSTEM_AUTH_LOGIN;
-        $result["education"]["reset_confirm"] = SYSTEM_AUTH_LOGIN;
+        //$result["education"]["reset_list"] = SYSTEM_AUTH_LOGIN;
+        //$result["education"]["reset_confirm"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["student_edit"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["student_assign"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["contract_refund"] = SYSTEM_AUTH_LOGIN;
         $result["admin"]["top"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["school_list"] = SYSTEM_AUTH_ADMIN;
-        $result["admin"]["room_info"] = SYSTEM_AUTH_ADMIN;
+        //$result["admin"]["room_info"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["item_list"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["item_input"] = SYSTEM_AUTH_ADMIN;
         $result["data"]["top"] = SYSTEM_AUTH_LOGIN;
@@ -117,6 +117,10 @@ class Config
         $result["admin"]["item_list"] = array('<a href="./?menu=admin&act=top">后台管理</a>', "课程管理");
         $result["admin"]["item_input"] = array('<a href="./?menu=admin&act=top">后台管理</a>', '<a href="./?menu=admin&act=item_list">课程管理</a>', "课程信息");
         $result["data"]["achieve_info"] = array('<a href="./?menu=data&act=top">数据统计</a>', "业绩数据");
+        $result["data"]["target_info"] = array('<a href="./?menu=data&act=top">数据统计</a>', "目标进度");
+        $result["data"]["target_input"] = array('<a href="./?menu=data&act=top">数据统计</a>','<a href="./?menu=data&act=target_info">目标进度</a>', "目标录入");
+        $result["data"]["income_info"] = array('<a href="./?menu=data&act=top">数据统计</a>', "确认收入");
+        $result["data"]["surplus_info"] = array('<a href="./?menu=data&act=top">数据统计</a>', "剩余价值");
         return $result;
     }
 
@@ -152,89 +156,98 @@ class Config
         // 我的意向客户
         $result["front"]["my_leads"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
-            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,   // 营销主管
             BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
-            BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
-            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
-            BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
+            BroadcomMemberEntity::POSITION_MARKETING          // 市场专员
         );
         // 添加意向客户
         $result["front"]["create_leads"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
-            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,   // 营销主管
             BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
-            BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
-            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
-            BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
+            BroadcomMemberEntity::POSITION_MARKETING          // 市场专员
         );
         // 校区意向客户
         $result["front"]["school_leads"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
-            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,   // 营销主管
-            BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
-            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
         // 订单管理
         $result["front"]["order_list"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
-            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,   // 营销主管
             BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
             BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
-            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
             BroadcomMemberEntity::POSITION_ASSISTANT,         // 学管
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
+        // 订单详细
+        $result["front"]["order_info"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
+            BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
+            BroadcomMemberEntity::POSITION_ASSISTANT,         // 学管
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
+        // 课程购入-添加购物车
         $result["front"]["cart_fill"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
-            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,   // 营销主管
             BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
             BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
-            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
             BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
         );
+        // 课程购入-购物车信息
         $result["front"]["cart_info"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
-            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,   // 营销主管
             BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
             BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
-            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
             BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
         );
+        // 课程购入-创建订单
         $result["front"]["order_create"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
-            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,   // 营销主管
             BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
             BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
-            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
             BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
         );
-        // 添加课表
-        $result["education"]["schedule_create"] = array(
-            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
-            BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
+        // 合同退转一览
+        $result["front"]["refund_list"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
+            BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
+            BroadcomMemberEntity::POSITION_ASSISTANT,         // 学管
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
-        // TODO 全部权限 排课
+        // 合同退转审核
+        $result["front"]["refund_info"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
+            BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
+            BroadcomMemberEntity::POSITION_ASSISTANT,         // 学管
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
+        // 排课
         $result["education"]["course_create"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
-            BroadcomMemberEntity::POSITION_ADVISER_MANAGER,   // 营销主管
             BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
             BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
-            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
             BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
         );
         // 消课
         $result["education"]["course_confirm"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
-            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
             BroadcomMemberEntity::POSITION_ASSISTANT,         // 学管
             BroadcomMemberEntity::POSITION_TEACH_MANAGER,     // 教学主管
             BroadcomMemberEntity::POSITION_TEACHER,           // 教师
-            BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER,// 兼职教师
-            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+            BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER // 兼职教师
         );
-        // 返课确认
-        $result["education"]["reset_confirm"] = array(
+        // 我的学员管理
+        $result["education"]["my_student_list"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
+            BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
+            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
+            BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
+        );
+        // 校区学员列表
+        $result["education"]["student_list"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
@@ -258,25 +271,31 @@ class Config
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
+        // 强行重置员工密码
         $result["human_resource"]["reset_password"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
+        // 业绩数据
         $result["data"]["achieve_info"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
+        // 目标进度
         $result["data"]["target_info"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
+        // 目标录入
         $result["data"]["target_input"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER         // 校长
         );
+        // 确认收入
         $result["data"]["income_info"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
+        // 剩余价值
         $result["data"]["surplus_info"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事

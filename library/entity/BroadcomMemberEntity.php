@@ -98,7 +98,7 @@ class BroadcomMemberEntity
             self::POSITION_MARKETING => "市场专员",
             //self::POSITION_ASSIST_MANAGER => "学管主管",
             self::POSITION_ASSISTANT => "教务专员",
-            self::POSITION_TEACH_MANAGER => "教学校长",
+            self::POSITION_TEACH_MANAGER => "教学主管",
             self::POSITION_TEACHER => "教师",
             self::POSITION_CONCURRENT_TEACHER => "兼职教师",
             self::POSITION_HR_FINANCE => "财务人事"
