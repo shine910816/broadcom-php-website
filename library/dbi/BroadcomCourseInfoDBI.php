@@ -302,5 +302,20 @@ class BroadcomCourseInfoDBI
         }
         return $result;
     }
+
+    public static function deleteMultiCourse($student_id, $order_item_id)
+    {
+        $dbi = Database::getInstance();
+        $result = $dbi->update(
+            "course_info",
+            array("del_flg" => "1"),
+            "order_item_id = " . $order_item_id . " AND student_id = " . $student_id . " AND confirm_flg = 0"
+        );
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        return $result;
+    }
 }
 ?>

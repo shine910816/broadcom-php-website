@@ -117,6 +117,15 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         if ($request->hasParameter("b")) {
             $back_link = Utility::decodeBackLink($request->getParameter("b"));
         }
+        $post_data = array(
+            "order_id" => $order_id
+        );
+        $repond_order_info = Utility::getJsonResponse("?t=02842FFC-AA6B-91AD-3FCD-78620325C8A6&m=" . $user->member()->targetObjectId(), $post_data);
+        if ($controller->isError($repond_order_info)) {
+            $repond_order_info->setPos(__FILE__, __LINE__);
+            return $repond_order_info;
+        }
+        $payment_detail = $repond_order_info["payment_flow"];
         $request->setAttribute("order_id", $order_id);
         $request->setAttribute("order_info", $order_info);
         $request->setAttribute("order_item_info", $order_item_info);
@@ -132,6 +141,7 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         $request->setAttribute("cancel_able_flg", $cancel_able_flg);
         $request->setAttribute("order_status_list", BroadcomOrderEntity::getOrderStatusList());
         $request->setAttribute("back_link", $back_link);
+        $request->setAttribute("payment_detail", $payment_detail);
         return VIEW_DONE;
     }
 

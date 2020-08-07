@@ -66,8 +66,6 @@ class BroadcomFront_RefundInfoAction extends BroadcomFrontActionBase
             return $err;
         }
         $refund_info = $refund_list[$order_item_id];
-        $refund_info["refund_amount"] = $refund_info["order_item_amount"] - $refund_info["order_item_confirm"];
-Utility::testVariable($refund_info);
         $oppo_student_name = "";
         if ($refund_info["refund_type"] == "2") {
             $student_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id);
@@ -115,7 +113,7 @@ Utility::testVariable($refund_info);
             $payment_insert_data["student_id"] = $refund_info["student_id"];
             $payment_insert_data["order_id"] = $refund_info["order_id"];
             $payment_insert_data["order_item_id"] = $order_item_id;
-            $payment_insert_data["payment_amount"] = 0 - round($refund_info["order_item_payable_amount"] * $refund_info["refund_amount"] / $refund_info["order_item_amount"] * $refund_info["refund_precent"], 2);
+            $payment_insert_data["payment_amount"] = $refund_info["refund_payment_amount"];
             $order_item_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_4;
             $order_item_update_data["order_item_remain"] = "0";
             $order_item_update_data["order_item_arrange"] = "0";
@@ -147,6 +145,12 @@ Utility::testVariable($refund_info);
             $refund_res->setPos(__FILE__, __LINE__);
             $dbi->rollback();
             return $refund_res;
+        }
+        $remove_course_res = BroadcomCourseInfoDBI::deleteMultiCourse($refund_info["student_id"], $order_item_id);
+        if ($controller->isError($remove_course_res)) {
+            $remove_course_res->setPos(__FILE__, __LINE__);
+            $dbi->rollback();
+            return $remove_course_res;
         }
         $commit_res = $dbi->commit();
         if ($controller->isError($commit_res)) {

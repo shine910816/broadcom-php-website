@@ -75,6 +75,31 @@
       </tbody>
     </table>
   </div>
+  <div class="main-table">
+    <h2>账面流水</h2>
+    <table class="disp_table">
+      <thead>
+        <tr>
+          <th>日期</th>
+          <th>订单号</th>
+          <th>合同号</th>
+          <th>金额</th>
+          <th>操作人</th>
+        </tr>
+      </thead>
+      <tbody>
+{^foreach from=$payment_detail key=payment_id item=payment_data^}
+        <tr>
+          <td style="width:200px;">{^$payment_data["insert_date"]^}</td>
+          <td style="width:350px;">{^$payment_data["order_number"]^}</td>
+          <td style="width:350px;">{^$payment_data["contract_number"]^}</td>
+          <td style="width:100px; text-align:right;{^if $payment_data["red_flg"]^} color:#F60000;{^/if^}">{^$payment_data["payment_amount"]^}</td>
+          <td style="width:100px;">{^$payment_data["creater_name"]^}</td>
+        </tr>
+{^/foreach^}
+      </tbody>
+    </table>
+  </div>
   <div class="table-line"></div>
   <div class="table-line">
     <a href="{^$back_link^}" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>

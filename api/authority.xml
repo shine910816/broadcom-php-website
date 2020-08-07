@@ -101,6 +101,16 @@
       <position value="3132" readable="1" editable="0" />
       <position value="3200" readable="1" editable="0" />
     </function>
+    <function token="02842FFC-AA6B-91AD-3FCD-78620325C8A6" menu="order" act="info" name="订单信息">
+      <position value="3100" readable="1" editable="0" />
+      <position value="3111" readable="1" editable="0" />
+      <position value="3112" readable="1" editable="0" />
+      <position value="3121" readable="1" editable="0" />
+      <position value="3130" readable="1" editable="0" />
+      <position value="3131" readable="1" editable="0" />
+      <position value="3132" readable="1" editable="0" />
+      <position value="3200" readable="1" editable="0" />
+    </function>
     <function token="35FF8317-9F11-00B5-FEEF-467C7DA37D71" menu="order_item" act="info" name="合同信息">
       <position value="3100" readable="1" editable="0" />
       <position value="3111" readable="1" editable="0" />

@@ -83,7 +83,7 @@ class Request
     public function setApiParameter()
     {
         if (!isset($_GET['t']) || !isset($_GET['m'])) {
-            $err = Error::getInstance();
+            $err = HoisException::getInstance();
             $err->raiseError(ERROR_CODE_API_GET_FALSIFY, "Necessary parameter is not found");
             $err->setPos(__FILE__, __LINE__);
             return $err;
@@ -102,7 +102,7 @@ class Request
         if (is_null($this->_member_info)) {
             $this->_member_info = MemberRequest::getInstance($api_member);
             if ($this->_member_info->id() === false) {
-                $err = Error::getInstance();
+                $err = HoisException::getInstance();
                 $err->raiseError(ERROR_CODE_API_ERROR_FALSIFY, "User failed: " . $api_member);
                 $err->setPos(__FILE__, __LINE__);
                 return $err;

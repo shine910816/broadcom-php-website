@@ -24,7 +24,7 @@
           <td>{^$refund_info["item_name"]|escape^}</td>
           <td>{^$item_type_list[$refund_info["item_type"]]^}</td>
           <td>{^$item_method_list[$refund_info["item_method"]]^}</td>
-          <td>{^$refund_info["order_item_remain"]^}</td>
+          <td>{^$refund_info["refund_amount"]^}</td>
           <td><a href="./?menu=front&act=refund_info&order_item_id={^$refund_info["order_item_id"]^}" class="button-field ui-btn-orange">详情</a></td>
         </tr>
 {^/foreach^}

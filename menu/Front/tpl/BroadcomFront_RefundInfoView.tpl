@@ -16,7 +16,7 @@
       </div>
       <div class="table-item-b">
         <div class="table-item-name">课时余量</div>
-        <div class="table-item-value">{^$refund_info["refund_amount"]^}</div>
+        <div class="table-item-value">{^$refund_info["refund_amount"]^}小时</div>
       </div>
     </div>
     <div class="table-line">
@@ -54,6 +54,14 @@
         <div class="table-item-value">待审核</div>
       </div>
     </div>
+{^if $refund_info["refund_type"] eq "1"^}
+    <div class="table-line">
+      <div class="table-item-b">
+        <div class="table-item-name">退款额</div>
+        <div class="table-item-value">{^$refund_info["refund_payment_amount"]|number_format^}元</div>
+      </div>
+    </div>
+{^/if^}
   </div>
   <div class="table-line"></div>
   <div class="table-line">

@@ -51,6 +51,8 @@ class BroadcomRefundDBI
         }
         $data = array();
         while ($row = $result->fetch_assoc()) {
+            $row["refund_amount"] = $row["order_item_amount"] - $row["order_item_confirm"];
+            $row["refund_payment_amount"] = 0 - round($row["order_item_payable_amount"] * $row["refund_amount"] / $row["order_item_amount"] * $row["refund_precent"], 2);
             $data[$row["order_item_id"]] = $row;
         }
         $result->free();
