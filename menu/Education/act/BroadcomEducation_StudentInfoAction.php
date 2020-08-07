@@ -49,6 +49,15 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
+        $check_position_option = array(
+            BroadcomMemberEntity::POSITION_ADVISER,
+            BroadcomMemberEntity::POSITION_MARKETING
+        );
+        if (in_array($user->member()->position(), $check_position_option) && $student_info["assign_member_id"] != $user->member()->id()) {
+            $err = $controller->raiseError(ERROR_CODE_NO_AUTH);
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
         $student_level_list = BroadcomStudentEntity::getStudentLevelList();
         $student_info["student_grade"] = BroadcomStudentEntity::getGradeName($student_info["student_entrance_year"]);
         $student_info["student_level_name"] = $student_level_list[$student_info["student_level"]];

@@ -126,6 +126,7 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
             return $repond_order_info;
         }
         $payment_detail = $repond_order_info["payment_flow"];
+        $examine_info = $repond_order_info["examine_info"];
         $request->setAttribute("order_id", $order_id);
         $request->setAttribute("order_info", $order_info);
         $request->setAttribute("order_item_info", $order_item_info);
@@ -142,6 +143,7 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         $request->setAttribute("order_status_list", BroadcomOrderEntity::getOrderStatusList());
         $request->setAttribute("back_link", $back_link);
         $request->setAttribute("payment_detail", $payment_detail);
+        $request->setAttribute("examine_info", $examine_info);
         return VIEW_DONE;
     }
 

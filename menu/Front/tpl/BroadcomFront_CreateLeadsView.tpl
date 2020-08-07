@@ -64,7 +64,7 @@
   <div class="table-line">
     <div class="table-item-b">
       <div class="table-item-name">在读学校</div>
-      <div class="table-item-value"><input type="text" name="student_info[student_school_name]" value="{^$student_info["student_school_name"]|escape^}" class="text-field" /></div>
+      <div class="table-item-value"><input type="text" name="student_info[student_school_name]" value="{^$student_info["student_school_name"]|escape^}" class="text-field hylight-field" /></div>
     </div>
     <div class="table-item-b">
       <div class="table-item-name">家庭住址</div>
@@ -81,6 +81,14 @@
       </div>
     </div>
   </div>
+{^if isset($user_err_list["student_school_name"])^}
+  <div class="table-line">
+    <div class="table-item-b">
+      <div class="table-item-name"></div>
+      <div class="table-item-value"><span class="error-hint">{^$user_err_list["student_school_name"]^}</span></div>
+    </div>
+  </div>
+{^/if^}
   <h1>亲属信息</h1>
   <div class="table-line">
     <div class="table-item-b">

@@ -157,13 +157,15 @@ class Config
         $result["front"]["my_leads"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
-            BroadcomMemberEntity::POSITION_MARKETING          // 市场专员
+            BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
+            BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
         );
         // 添加意向客户
         $result["front"]["create_leads"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
-            BroadcomMemberEntity::POSITION_MARKETING          // 市场专员
+            BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
+            BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
         );
         // 校区意向客户
         $result["front"]["school_leads"] = array(
@@ -243,12 +245,20 @@ class Config
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
             BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
-            BroadcomMemberEntity::POSITION_ASSIST_MANAGER,    // 学管主管
             BroadcomMemberEntity::POSITION_ASSISTANT          // 学管
         );
         // 校区学员列表
         $result["education"]["student_list"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_ASSISTANT,         // 学管
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
+        // 学员信息
+        $result["education"]["student_info"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_ADVISER,           // 课程顾问
+            BroadcomMemberEntity::POSITION_MARKETING,         // 市场专员
+            BroadcomMemberEntity::POSITION_ASSISTANT,         // 学管
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
         // 添加新成员

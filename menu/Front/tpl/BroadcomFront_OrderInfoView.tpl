@@ -42,6 +42,18 @@
       <div class="table-item-value">{^$order_info["order_debt"]^}元</div>
     </div>
   </div>
+{^if $examine_info["order_examine_flg"]^}
+  <div class="table-line">
+    <div class="table-item-b">
+      <div class="table-item-name">审核人</div>
+      <div class="table-item-value">{^$examine_info["order_examiner_name"]^}</div>
+    </div>
+    <div class="table-item-b">
+      <div class="table-item-name">审核日期</div>
+      <div class="table-item-value">{^$examine_info["order_examine_date"]^}</div>
+    </div>
+  </div>
+{^/if^}
   <div class="main-table">
     <h2>订单内课程</h2>
     <table class="disp_table">

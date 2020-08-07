@@ -40,13 +40,25 @@ class BroadcomOrder_InfoAction extends ActionBase
             return $err;
         }
         $order_id = $request->getParameter("order_id");
+        $order_info = BroadcomOrderDBI::selectOrderInfo($order_id);
+        if ($controller->isError($order_info)) {
+            $order_info->setPos(__FILE__, __LINE__);
+            return $order_info;
+        }
+        if (empty($order_info)) {
+            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter failed: order_id");
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
         $request->setAttribute("order_id", $order_id);
+        $request->setAttribute("order_info", $order_info);
         return VIEW_DONE;
     }
 
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
         $order_id = $request->getAttribute("order_id");
+        $order_info = $request->getAttribute("order_info");
         $result = array();
         // TODO Order detail info should be got in here
         // TODO Now only implement the pattern of payment flow
@@ -59,6 +71,22 @@ class BroadcomOrder_InfoAction extends ActionBase
             return $repond_member_list;
         }
         $member_list = $repond_member_list["member_list"];
+        // 审核信息
+        $examine_info = array(
+            "order_examine_flg" => false,
+            "order_examiner_id" => "0",
+            "order_examiner_name" => "",
+            "order_examine_date" => ""
+        );
+        if ($order_info["order_examine_flg"]) {
+            $examine_info["order_examine_flg"] = true;
+            $examine_info["order_examiner_id"] = $order_info["order_examiner_id"];
+            $examine_info["order_examine_date"] = $order_info["order_examine_date"];
+            if (isset($member_list[$examine_info["order_examiner_id"]])) {
+                $examine_info["order_examiner_name"] = $member_list[$examine_info["order_examiner_id"]]["m_name"];
+            }
+        }
+        $result["examine_info"] = $examine_info;
         // 获取账面流水信息
         $payment_info = BroadcomPaymentDBI::selectPaymentDetail($order_id);
         if ($controller->isError($payment_info)) {

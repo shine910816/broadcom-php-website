@@ -76,6 +76,9 @@ class BroadcomFront_CreateLeadsAction extends BroadcomFrontActionBase
                     $request->setError("student_mobile_number", "手机号已被注册");
                 }
             }
+            if (!Validate::checkFullNotNull($student_info["student_school_name"])) {
+                $request->setError("student_school_name", "在读学校不能为空");
+            }
         }
         $request->setAttribute("student_info", $student_info);
         $request->setAttribute("grade_list", BroadcomStudentEntity::getGradeList());
