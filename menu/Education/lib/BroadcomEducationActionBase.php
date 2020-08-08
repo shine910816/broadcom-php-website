@@ -18,12 +18,18 @@ class BroadcomEducationActionBase extends ActionBase
     public function doLeftContent(Controller $controller, User $user, Request $request)
     {
         $result = array();
-        $result[] = array("my_student_list", "我的学员管理");
-        //$result[] = array("schedule_list", "校区课表管理");
-        $result[] = array("student_list", "校区学员列表");
-        $result[] = array("course_list", "一对一排课列表");
-        $result[] = array("multi_course_list", "一对多排课列表");
-        //$result[] = array("reset_list", "校区返课列表");
+        if ($user->checkPositionAble("education", "my_student_list")) {
+            $result[] = array("my_student_list", "我的学员管理");
+        }
+        if ($user->checkPositionAble("education", "student_list")) {
+            $result[] = array("student_list", "校区学员列表");
+        }
+        if ($user->checkPositionAble("education", "course_list")) {
+            $result[] = array("course_list", "一对一排课列表");
+        }
+        if ($user->checkPositionAble("education", "multi_course_list")) {
+            $result[] = array("multi_course_list", "一对多排课列表");
+        }
         $request->setAttribute("left_content", $result);
         return VIEW_DONE;
     }
