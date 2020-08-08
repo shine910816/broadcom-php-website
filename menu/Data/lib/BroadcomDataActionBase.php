@@ -18,10 +18,18 @@ class BroadcomDataActionBase extends ActionBase
     public function doLeftContent(Controller $controller, User $user, Request $request)
     {
         $result = array();
-        $result[] = array("achieve_info", "业绩数据");
-        $result[] = array("target_info", "目标进度");
-        $result[] = array("income_info", "确认收入");
-        $result[] = array("surplus_info", "剩余价值");
+        if ($user->checkPositionAble("data", "achieve_info")) {
+            $result[] = array("achieve_info", "业绩数据");
+        }
+        if ($user->checkPositionAble("data", "target_info")) {
+            $result[] = array("target_info", "目标进度");
+        }
+        if ($user->checkPositionAble("data", "income_info")) {
+            $result[] = array("income_info", "确认收入");
+        }
+        if ($user->checkPositionAble("data", "surplus_info")) {
+            $result[] = array("surplus_info", "剩余价值");
+        }
         $request->setAttribute("left_content", $result);
         $request->setAttribute("period_select_file", SRC_PATH . "/menu/Data/tpl/BroadcomPeriodSelectView.tpl");
         return VIEW_DONE;
