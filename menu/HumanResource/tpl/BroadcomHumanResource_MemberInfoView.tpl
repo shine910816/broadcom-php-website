@@ -26,7 +26,7 @@
     <div class="table-item-b">
       <div class="table-item-name">在职状态</div>
       <div class="table-item-value">
-        <select name="member_position" class="text-field">
+        <select name="member_employed_status" class="text-field">
 {^foreach from=$employed_status_list key=employed_status_key item=employed_status_item^}
           <option value="{^$employed_status_key^}"{^if $member_employed_status eq $employed_status_key^} selected{^/if^}>{^$employed_status_item^}</option>
 {^/foreach^}

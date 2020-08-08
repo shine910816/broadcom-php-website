@@ -285,6 +285,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             $base_name_count = $request->getAttribute("base_name_count");
             $member_position = $request->getAttribute("member_position");
             $member_position_level = $request->getAttribute("member_position_level");
+            $member_employed_status = $request->getAttribute("member_employed_status");
             $info_insert_data = $request->getAttribute("content_data");
             $password_context = substr($info_insert_data["m_mobile_number"], -6, 6);
             $salt_arr = Utility::transSalt();
@@ -302,7 +303,7 @@ class BroadcomHumanResource_MemberInfoAction extends BroadcomHumanResourceAction
             $position_insert_data["school_id"] = $school_id;
             $position_insert_data["member_position"] = $member_position;
             $position_insert_data["member_position_level"] = $member_position_level;
-            $position_insert_data["member_employed_status"] = "1";
+            $position_insert_data["member_employed_status"] = $member_employed_status;
             $dbi = Database::getInstance();
             $begin_res = $dbi->begin();
             if ($controller->isError($begin_res)) {

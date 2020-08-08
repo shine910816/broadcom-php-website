@@ -42,7 +42,7 @@ class BroadcomHumanResource_ResetPasswordAction extends BroadcomHumanResourceAct
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
         if (!$request->hasParameter("member_id")) {
-            $err = $controller->raiseError();
+            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }

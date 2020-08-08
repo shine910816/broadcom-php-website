@@ -23,6 +23,7 @@ class Config
         $result["human_resource"]["teacher_list"] = SYSTEM_AUTH_LOGIN;
         $result["human_resource"]["teacher_info"] = SYSTEM_AUTH_LOGIN;
         $result["human_resource"]["reset_password"] = SYSTEM_AUTH_LOGIN;
+        $result["human_resource"]["change_position"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["top"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["my_leads"] = SYSTEM_AUTH_LOGIN;
         $result["front"]["school_leads"] = SYSTEM_AUTH_LOGIN;
@@ -80,6 +81,7 @@ class Config
         $result["human_resource"]["top"] = array("人力资源");
         $result["human_resource"]["member_list"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', "成员列表");
         $result["human_resource"]["member_info"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', '<a href="./?menu=human_resource&act=member_list">成员列表</a>', "");
+        $result["human_resource"]["change_position"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', '<a href="./?menu=human_resource&act=member_list">成员列表</a>', "岗位变动");
         $result["human_resource"]["teacher_list"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', "教师列表");
         $result["human_resource"]["teacher_info"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', '<a href="./?menu=human_resource&act=teacher_list">教师列表</a>', "教师信息");
         $result["human_resource"]["reset_password"] = array('<a href="./?menu=human_resource&act=top">人力资源</a>', '<a href="./?menu=human_resource&act=member_list">成员列表</a>', "重置密码");
@@ -170,6 +172,7 @@ class Config
         // 校区意向客户
         $result["front"]["school_leads"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_ASSISTANT,         // 学管
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
         // 订单管理
@@ -261,6 +264,11 @@ class Config
             BroadcomMemberEntity::POSITION_ASSISTANT,         // 学管
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
+        // 学员分配
+        $result["education"]["student_assign"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
         // 添加新成员
         $result["human_resource"]["member_info"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
@@ -283,6 +291,11 @@ class Config
         );
         // 强行重置员工密码
         $result["human_resource"]["reset_password"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
+        // 岗位变动
+        $result["human_resource"]["change_position"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );

@@ -281,6 +281,31 @@ class BroadcomCourseInfoDBI
         return $data;
     }
 
+    public static function selectCourseInfoForPositionChange($school_id, $member_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT COUNT(*) AS `count` FROM course_info" .
+               " WHERE del_flg = 0" .
+               " AND teacher_member_id = " . $member_id .
+               " AND school_id = " . $school_id .
+               " AND confirm_flg = 0" .
+               " LIMIT 1";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row["count"];
+        }
+        $result->free();
+        if (count($data) == 1) {
+            return $data[0];
+        }
+        return false;
+    }
+
     public static function insertCourseInfo($insert_data)
     {
         $dbi = Database::getInstance();

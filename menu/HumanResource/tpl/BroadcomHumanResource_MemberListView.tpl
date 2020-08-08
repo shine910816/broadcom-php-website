@@ -10,11 +10,11 @@
     <table class="disp_table">
       <thead>
         <tr>
-          <th>工号</th>
           <th>姓名</th>
           <th>登录名</th>
           <th>手机号</th>
           <th>邮箱地址</th>
+          <th>在职状态</th>
           <th>校区</th>
           <th>岗位</th>
           <th>职级</th>
@@ -24,12 +24,12 @@
       <tbody>
 {^foreach from=$member_list item=member_item^}
         <tr>
-          <td style="width:150px;">{^$member_item["member_id"]|escape^}</td>
           <td style="width:150px;">{^$member_item["m_name"]|escape^}</td>
           <td style="width:150px;">{^$member_item["member_login_name"]|escape^}</td>
           <td style="width:300px;">{^$member_item["m_mobile_number"]|escape^}</td>
           <td style="width:300px;">{^$member_item["m_mail_address"]|escape^}</td>
           <td style="width:150px;">{^$school_list[$member_item["school_id"]]^}</td>
+          <td style="width:150px;">{^$employed_status_list[$member_item["member_employed_status"]]^}</td>
           <td style="width:150px;">{^$position_list[$member_item["member_position"]]^}</td>
           <td style="width:150px;">{^$position_level_list[$member_item["member_position_level"]]^}</td>
           <td style="width:150px;">

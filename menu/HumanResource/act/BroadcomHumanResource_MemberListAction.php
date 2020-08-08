@@ -35,6 +35,7 @@ class BroadcomHumanResource_MemberListAction extends BroadcomHumanResourceAction
     {
         $request->setAttribute("position_list", BroadcomMemberEntity::getPositionList());
         $request->setAttribute("position_level_list", BroadcomMemberEntity::getPositionLevelList());
+        $request->setAttribute("employed_status_list", BroadcomMemberEntity::getEmployedStatusList());
         return VIEW_DONE;
     }
 
