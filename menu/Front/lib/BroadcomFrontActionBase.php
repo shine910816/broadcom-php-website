@@ -18,10 +18,18 @@ class BroadcomFrontActionBase extends ActionBase
     public function doLeftContent(Controller $controller, User $user, Request $request)
     {
         $result = array();
-        $result[] = array("my_leads", "我的意向客户");
-        $result[] = array("school_leads", "校区意向客户");
-        $result[] = array("order_list", "订单审核退款");
-        $result[] = array("refund_list", "合同退转审核");
+        if ($user->checkPositionAble("front", "my_leads")) {
+            $result[] = array("my_leads", "我的意向客户");
+        }
+        if ($user->checkPositionAble("front", "school_leads")) {
+            $result[] = array("school_leads", "校区意向客户");
+        }
+        if ($user->checkPositionAble("front", "order_list")) {
+            $result[] = array("order_list", "订单审核退款");
+        }
+        if ($user->checkPositionAble("front", "refund_list")) {
+            $result[] = array("refund_list", "合同退转审核");
+        }
         $request->setAttribute("left_content", $result);
         return VIEW_DONE;
     }
