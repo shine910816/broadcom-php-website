@@ -71,10 +71,21 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
             $repond_course_info->setPos(__FILE__, __LINE__);
             return $repond_course_info;
         }
+        $back_link_text = "";
+        if ($request->hasParameter("b")) {
+            $back_link_text = $request->getParameter("b");
+        }
+Utility::testVariable($repond_course_info);
+        $back_link = "./?menu=education&act=course_list";
+        if ($back_link_text) {
+            $back_link = Utility::decodeBackLink($back_link_text);
+        }
         $request->setAttribute("course_id", $course_id);
         $request->setAttribute("multi_course_id", $multi_course_id);
         $request->setAttribute("multi_flg", $multi_flg);
         $request->setAttributes($repond_course_info);
+        $request->setAttribute("back_link_text", $back_link_text);
+        $request->setAttribute("back_link", $back_link);
         return VIEW_DONE;
     }
 
@@ -113,6 +124,10 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
         } else {
             $redirect_url .= "&course_id=" . $course_id;
         }
+        $back_link_text = $request->getAttribute("back_link_text");
+        if ($back_link_text) {
+            $redirect_url .= "&b=" . Utility::decodeBackLink($back_link_text);
+        }
         $controller->redirect($redirect_url);
         return VIEW_DONE;
     }
@@ -134,8 +149,12 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
             $repond_course_info->setPos(__FILE__, __LINE__);
             return $repond_course_info;
         }
-        header("Content-type:text/html; charset=utf-8");
-        echo '<script type="text/javascript">alert("排课删除成功");window.location.href="about:blank";window.close();</script>';
+        $back_link_text = $request->getAttribute("back_link_text");
+        $redirect_url = "./?menu=education&act=course_list";
+        if ($back_link_text) {
+            $redirect_url = Utility::decodeBackLink($back_link_text);
+        }
+        $controller->redirect($redirect_url);
         return VIEW_NONE;
     }
 }

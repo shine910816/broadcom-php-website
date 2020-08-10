@@ -87,6 +87,9 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
             $teacher_info->setPos(__FILE__, __LINE__);
             return $teacher_info;
         }
+        $back_link = Utility::encodeBackLink("education", "student_info", array(
+            "student_id" => $student_id
+        ));
         $request->setAttribute("student_id", $student_id);
         $request->setAttribute("student_info", $student_info);
         $request->setAttribute("order_list", $order_list);
@@ -102,6 +105,7 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
         $request->setAttribute("course_type_list", BroadcomCourseEntity::getCourseTypeList());
         $request->setAttribute("teacher_info", $teacher_info);
         $request->setAttribute("subject_list", BroadcomSubjectEntity::getSubjectList());
+        $request->setAttribute("back_link", $back_link);
         return VIEW_DONE;
     }
 
@@ -114,10 +118,6 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-        $back_link = Utility::encodeBackLink("education", "student_info", array(
-            "student_id" => $request->getAttribute("student_id")
-        ));
-        $request->setAttribute("back_link", $back_link);
         return VIEW_DONE;
     }
 }

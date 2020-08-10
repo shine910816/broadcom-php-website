@@ -52,7 +52,7 @@
           <td>{^$teacher_info[$course_info["teacher_member_id"]]["m_name"]^}</td>
           <td>{^$subject_list[$course_info["subject_id"]]^}</td>
           <td>{^if $course_info["confirm_flg"]^}已{^else^}未{^/if^}消课</td>
-          <td><a href="./?menu=education&act=course_confirm&course_id={^$course_id^}" class="button-field ui-btn-orange" target="_blank">详细</a></td>
+          <td><a href="./?menu=education&act=course_confirm&course_id={^$course_id^}&b={^$back_link^}" class="button-field ui-btn-orange">详细</a></td>
         </tr>
 {^/foreach^}
       </tbody>

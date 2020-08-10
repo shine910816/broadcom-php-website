@@ -126,7 +126,7 @@ $(document).ready(function(){
           <td rowspan="{^$course_info["course_info"]|count^}">{^$course_info["teacher_member_name"]^}</td>
           <td rowspan="{^$course_info["course_info"]|count^}">{^$course_info["confirm_member_name"]^}</td>
           <td rowspan="{^$course_info["course_info"]|count^}">{^$course_info["confirm_date"]|date_format:"%Y-%m-%d %H:%M"^}</td>
-          <td rowspan="{^$course_info["course_info"]|count^}"><a href="./?menu=education&act=course_confirm&multi_course_id={^$course_info["multi_course_id"]^}" class="button-field ui-btn-orange" target="_blank">详细</a></td>
+          <td rowspan="{^$course_info["course_info"]|count^}"><a href="./?menu=education&act=course_confirm&multi_course_id={^$course_info["multi_course_id"]^}&b={^$back_link^}" class="button-field ui-btn-orange">详细</a></td>
 {^/if^}
 {^/foreach^}
 {^/foreach^}

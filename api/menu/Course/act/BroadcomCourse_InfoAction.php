@@ -79,6 +79,7 @@ class BroadcomCourse_InfoAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
+Utility::testVariable($course_list);
         $subject_list = BroadcomSubjectEntity::getSubjectList();
         $post_data = array(
             "school_id" => $request->member()->schoolId()
@@ -116,6 +117,8 @@ class BroadcomCourse_InfoAction extends ActionBase
         $base_course_info["delete_msg"] = "";
         $base_course_info["confirm_able"] = $this->_confirm_able;
         $base_course_info["confirm_msg"] = "";
+        $base_course_info["reset_able"] = true;
+        $base_course_info["reset_msg"] = "";
         $audition_list = array(
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO,
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO,
@@ -229,6 +232,9 @@ class BroadcomCourse_InfoAction extends ActionBase
             }
         } else {
             $base_course_info["delete_msg"] = "已消课或超过当天无法删除";
+        }
+        if ($base_course_info["confirm_able"]) {
+            // $base_course_info["reset_able"] = false;
         }
         $request->setAttribute("base_course_info", $base_course_info);
         $request->setAttribute("course_detail_list", $course_detail);

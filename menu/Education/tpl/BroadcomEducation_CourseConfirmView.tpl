@@ -7,6 +7,7 @@
 {^else^}
   <input type="hidden" name="course_id" value="{^$course_id^}" />
 {^/if^}
+  <input type="hidden" name="b" value="{^$back_link_text^}" />
   <div class="main-table pb_15">
     <h2>排课信息</h2>
     <div class="table-line">
@@ -88,7 +89,7 @@
   </div>
   <div class="table-line"></div>
   <div class="table-line">
-    <!--a href="./?menu=education&act=course_list" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a-->
+    <a href="{^$back_link^}" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>
     <button type="submit" name="do_delete" value="1" class="button-field ui-btn-red"{^if !$base_info["delete_able"]^} title="{^$base_info["delete_msg"]^}" disabled{^/if^}><i class="fa fa-close"></i> 删除排课</button>
     <button type="submit" name="do_confirm" value="1" class="button-field ui-btn-green"{^if !$base_info["confirm_able"]^} title="{^$base_info["confirm_msg"]^}" disabled{^/if^}><i class="fa fa-check"></i> 确认消课</button>
   </div>

@@ -112,6 +112,15 @@ class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBas
             "assign_member_id" => $assign_member_id,
             "confirm_flg" => $confirm_flg
         );
+        $back_link = Utility::encodeBackLink("education", "course_list", array(
+            "period_type" => $period_type,
+            "start_date" => $course_date_from,
+            "end_date" => $course_date_to,
+            "student_id" => $student_id,
+            "teacher_member_id" => $teacher_member_id,
+            "assign_member_id" => $assign_member_id,
+            "confirm_flg" => $confirm_flg
+        ));
         $request->setAttribute("period_start_date", $course_date_from);
         $request->setAttribute("period_end_date", $course_date_to);
         $request->setAttribute("period_type", $period_type);
@@ -123,6 +132,7 @@ class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBas
         $request->setAttribute("assign_member_id", $assign_member_id);
         $request->setAttribute("confirm_flg", $confirm_flg);
         $request->setAttribute("output_url", http_build_query($output_param_array));
+        $request->setAttribute("back_link", $back_link);
         return VIEW_DONE;
     }
 
