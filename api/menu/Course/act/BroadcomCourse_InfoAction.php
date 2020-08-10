@@ -79,7 +79,7 @@ class BroadcomCourse_InfoAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
-Utility::testVariable($course_list);
+//Utility::testVariable($course_list);
         $subject_list = BroadcomSubjectEntity::getSubjectList();
         $post_data = array(
             "school_id" => $request->member()->schoolId()

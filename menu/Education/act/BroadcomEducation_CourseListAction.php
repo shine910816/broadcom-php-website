@@ -88,7 +88,7 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
                 $post_data["assign_member_id"] = $assign_member_id;
             }
         }
-        $confirm_flg = "1";
+        $confirm_flg = "2";
         if ($request->hasParameter("confirm_flg")) {
             $confirm_flg = $request->getParameter("confirm_flg");
         }

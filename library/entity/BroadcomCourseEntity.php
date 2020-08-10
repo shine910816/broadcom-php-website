@@ -21,6 +21,7 @@ class BroadcomCourseEntity
 
     const COURSE_RESET_REASON_CODE_1 = "1";
     const COURSE_RESET_REASON_CODE_2 = "2";
+    const COURSE_RESET_REASON_CODE_3 = "3";
 
     public static function getCourseTypeList()
     {
@@ -48,7 +49,8 @@ class BroadcomCourseEntity
     {
         return array(
             self::COURSE_RESET_REASON_CODE_1 => "主动返课",
-            self::COURSE_RESET_REASON_CODE_2 => "被动返课"
+            self::COURSE_RESET_REASON_CODE_2 => "被动返课",
+            self::COURSE_RESET_REASON_CODE_3 => "操作失误"
         );
     }
 }

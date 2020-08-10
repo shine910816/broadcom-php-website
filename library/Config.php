@@ -51,7 +51,6 @@ class Config
         $result["education"]["contract_refund"] = SYSTEM_AUTH_LOGIN;
         $result["admin"]["top"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["school_list"] = SYSTEM_AUTH_ADMIN;
-        //$result["admin"]["room_info"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["item_list"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["item_input"] = SYSTEM_AUTH_ADMIN;
         $result["data"]["top"] = SYSTEM_AUTH_LOGIN;

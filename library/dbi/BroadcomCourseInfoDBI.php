@@ -171,20 +171,7 @@ class BroadcomCourseInfoDBI
     public static function selectResetCourseInfo($course_id, $multi_flg = false)
     {
         $dbi = Database::getInstance();
-        // TODO
-        $sql = "SELECT c.course_id," .
-               " c.order_item_id," .
-               " c.course_hours," .
-               " oi.order_item_trans_price," .
-               " oi.order_item_status," .
-               " oi.order_item_remain" .
-               " FROM course_info c" .
-               " LEFT OUTER JOIN order_item_info oi ON oi.order_item_id = c.order_item_id" .
-               " WHERE c.del_flg = 0" .
-               " AND oi.del_flg = 0" .
-               " AND c.course_type = " . BroadcomCourseEntity::COURSE_TYPE_CLASS .
-               " AND c.schedule_id = " . $schedule_id .
-               " AND c.schedule_index = " . $schedule_index;
+        $sql = "SELECT * FROM course_reset_info WHERE del_flg = 0";
         if ($multi_flg) {
             $sql .= " AND multi_course_id = " . $dbi->quote($course_id);
         } else {
@@ -256,24 +243,6 @@ class BroadcomCourseInfoDBI
         } else {
             $sql .= " AND course_type = " . BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD;
         }
-        $result = $dbi->query($sql);
-        if ($dbi->isError($result)) {
-            $result->setPos(__FILE__, __LINE__);
-            return $result;
-        }
-        $data = array();
-        while ($row = $result->fetch_assoc()) {
-            $data[$row["course_id"]] = $row;
-        }
-        $result->free();
-        return $data;
-    }
-
-    public static function selectResetCourseInfo($school_id)
-    {
-        $dbi = Database::getInstance();
-        $sql = "SELECT * FROM course_info WHERE del_flg = 0" .
-               " AND confirm_flg = 1 AND reset_flg != 0 AND school_id = " . $school_id;
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
