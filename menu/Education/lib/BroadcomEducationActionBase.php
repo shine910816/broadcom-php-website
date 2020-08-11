@@ -30,6 +30,9 @@ class BroadcomEducationActionBase extends ActionBase
         if ($user->checkPositionAble("education", "multi_course_list")) {
             $result[] = array("multi_course_list", "一对多排课列表");
         }
+        if ($user->checkPositionAble("education", "reset_list")) {
+            $result[] = array("reset_list", "返课列表");
+        }
         $request->setAttribute("left_content", $result);
         return VIEW_DONE;
     }

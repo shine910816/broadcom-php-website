@@ -45,41 +45,42 @@ class BroadcomEducation_ResetListAction extends BroadcomEducationActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-        $member_id = $user->member()->id();
+        //$member_id = $user->member()->id();
         $school_id = $user->member()->schoolId();
-        $reset_course_info = BroadcomCourseInfoDBI::selectResetCourseInfo($school_id);
-        if ($controller->isError($reset_course_info)) {
-            $reset_course_info->setPos(__FILE__, __LINE__);
-            return $reset_course_info;
+        $reset_course_list = BroadcomCourseInfoDBI::selectResetCourseList($school_id);
+        if ($controller->isError($reset_course_list)) {
+            $reset_course_list->setPos(__FILE__, __LINE__);
+            return $reset_course_list;
         }
-        $room_list = BroadcomRoomInfoDBI::selectUsableRoomList($school_id);
-        if ($controller->isError($room_list)) {
-            $room_list->setPos(__FILE__, __LINE__);
-            return $room_list;
-        }
-        $teacher_info = BroadcomTeacherDBI::selectTeacherInfoList($school_id);
-        if ($controller->isError($teacher_info)) {
-            $teacher_info->setPos(__FILE__, __LINE__);
-            return $teacher_info;
-        }
-        $student_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id);
-        if ($controller->isError($student_list)) {
-            $student_list->setPos(__FILE__, __LINE__);
-            return $student_list;
-        }
-        $item_list = BroadcomItemInfoDBI::selectItemInfoList();
-        if ($controller->isError($item_list)) {
-            $item_list->setPos(__FILE__, __LINE__);
-            return $item_list;
-        }
-        $request->setAttribute("member_id", $member_id);
-        $request->setAttribute("course_list", $reset_course_info);
+Utility::testVariable($reset_course_list);
+        //$room_list = BroadcomRoomInfoDBI::selectUsableRoomList($school_id);
+        //if ($controller->isError($room_list)) {
+        //    $room_list->setPos(__FILE__, __LINE__);
+        //    return $room_list;
+        //}
+        //$teacher_info = BroadcomTeacherDBI::selectTeacherInfoList($school_id);
+        //if ($controller->isError($teacher_info)) {
+        //    $teacher_info->setPos(__FILE__, __LINE__);
+        //    return $teacher_info;
+        //}
+        //$student_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id);
+        //if ($controller->isError($student_list)) {
+        //    $student_list->setPos(__FILE__, __LINE__);
+        //    return $student_list;
+        //}
+        //$item_list = BroadcomItemInfoDBI::selectItemInfoList();
+        //if ($controller->isError($item_list)) {
+        //    $item_list->setPos(__FILE__, __LINE__);
+        //    return $item_list;
+        //}
+        //$request->setAttribute("member_id", $member_id);
+        //$request->setAttribute("course_list", $reset_course_info);
         $request->setAttribute("course_type_list", BroadcomCourseEntity::getCourseTypeList());
         $request->setAttribute("subject_list", BroadcomSubjectEntity::getSubjectList());
-        $request->setAttribute("room_list", $room_list);
-        $request->setAttribute("teacher_info", $teacher_info);
-        $request->setAttribute("student_list", $student_list);
-        $request->setAttribute("item_list", $item_list);
+        //$request->setAttribute("room_list", $room_list);
+        //$request->setAttribute("teacher_info", $teacher_info);
+        //$request->setAttribute("student_list", $student_list);
+        //$request->setAttribute("item_list", $item_list);
         return VIEW_DONE;
     }
 }

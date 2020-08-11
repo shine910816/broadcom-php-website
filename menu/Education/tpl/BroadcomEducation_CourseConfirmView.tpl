@@ -88,10 +88,29 @@
     </table>
   </div>
   <div class="table-line"></div>
+{^if $base_info["confirm_flg"] and $base_info["reset_able"]^}
+  <div class="table-line">
+    <div class="table-item-b">
+      <div class="table-item-name">撤销消课理由</div>
+      <div class="table-item-value">
+        <select name="reset_reason_code" class="text-field">
+{^foreach from=$course_reset_reason_list key=reason_code item=reason_code_name^}
+          <option value="{^$reason_code^}">{^$reason_code_name^}</option>
+{^/foreach^}
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="table-line"></div>
+{^/if^}
   <div class="table-line">
     <a href="{^$back_link^}" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>
+{^if $base_info["confirm_flg"]^}
+    <button type="submit" name="do_reset" value="1" class="button-field ui-btn-red"{^if !$base_info["reset_able"]^} title="{^$base_info["reset_msg"]^}" disabled{^/if^}><i class="fa fa-reply"></i> 撤销消课</button>
+{^else^}
     <button type="submit" name="do_delete" value="1" class="button-field ui-btn-red"{^if !$base_info["delete_able"]^} title="{^$base_info["delete_msg"]^}" disabled{^/if^}><i class="fa fa-close"></i> 删除排课</button>
     <button type="submit" name="do_confirm" value="1" class="button-field ui-btn-green"{^if !$base_info["confirm_able"]^} title="{^$base_info["confirm_msg"]^}" disabled{^/if^}><i class="fa fa-check"></i> 确认消课</button>
+{^/if^}
   </div>
 </form>
 {^include file=$comfooter_file^}

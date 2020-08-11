@@ -44,8 +44,8 @@ class Config
         $result["education"]["multi_course_list"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["course_list"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["course_confirm"] = SYSTEM_AUTH_LOGIN;
-        //$result["education"]["reset_list"] = SYSTEM_AUTH_LOGIN;
-        //$result["education"]["reset_confirm"] = SYSTEM_AUTH_LOGIN;
+        $result["education"]["reset_list"] = SYSTEM_AUTH_LOGIN;
+        $result["education"]["reset_confirm"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["student_edit"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["student_assign"] = SYSTEM_AUTH_LOGIN;
         $result["education"]["contract_refund"] = SYSTEM_AUTH_LOGIN;
@@ -259,6 +259,16 @@ class Config
         );
         // 学员分配
         $result["education"]["student_assign"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
+        // 返课列表
+        $result["education"]["reset_list"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
+            BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
+        );
+        // 返课确认
+        $result["education"]["reset_confirm"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );

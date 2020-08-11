@@ -79,7 +79,6 @@ class BroadcomCourse_InfoAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
-//Utility::testVariable($course_list);
         $subject_list = BroadcomSubjectEntity::getSubjectList();
         $post_data = array(
             "school_id" => $request->member()->schoolId()
@@ -117,8 +116,8 @@ class BroadcomCourse_InfoAction extends ActionBase
         $base_course_info["delete_msg"] = "";
         $base_course_info["confirm_able"] = $this->_confirm_able;
         $base_course_info["confirm_msg"] = "";
-        $base_course_info["reset_able"] = true;
-        $base_course_info["reset_msg"] = "";
+        $base_course_info["reset_able"] = false;
+        $base_course_info["reset_msg"] = "未消课无法撤销";
         $audition_list = array(
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO,
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO,
@@ -233,8 +232,28 @@ class BroadcomCourse_InfoAction extends ActionBase
         } else {
             $base_course_info["delete_msg"] = "已消课或超过当天无法删除";
         }
-        if ($base_course_info["confirm_able"]) {
-            // $base_course_info["reset_able"] = false;
+        // 返课判断
+        if ($base_course_info["confirm_flg"]) {
+            $course_reset_info = array();
+            if ($this->_multi_flg) {
+                $course_reset_info = BroadcomCourseInfoDBI::selectResetCourseInfo($base_course_info["multi_course_id"], true);
+                if ($controller->isError($course_reset_info)) {
+                    $course_reset_info->setPos(__FILE__, __LINE__);
+                    return $course_reset_info;
+                }
+            } else {
+                $course_reset_info = BroadcomCourseInfoDBI::selectResetCourseInfo($request->getParameter("course_id"));
+                if ($controller->isError($course_reset_info)) {
+                    $course_reset_info->setPos(__FILE__, __LINE__);
+                    return $course_reset_info;
+                }
+            }
+            if (!empty($course_reset_info)) {
+                $base_course_info["reset_msg"] = "已发起消课撤销";
+            } else {
+                $base_course_info["reset_able"] = true;
+                $base_course_info["reset_msg"] = "";
+            }
         }
         $request->setAttribute("base_course_info", $base_course_info);
         $request->setAttribute("course_detail_list", $course_detail);

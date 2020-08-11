@@ -190,6 +190,45 @@ class BroadcomCourseInfoDBI
         return $data;
     }
 
+    public static function selectResetCourseList($school_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT r.course_id," .
+               " c.multi_course_id," .
+               " c.course_type," .
+               " c.audition_type," .
+               " c.student_id," .
+               " c.order_item_id," .
+               " c.item_id," .
+               " i.item_name," .
+               " c.teacher_member_id," .
+               " c.subject_id," .
+               " c.actual_start_date," .
+               " c.actual_expire_date," .
+               " c.confirm_member_id," .
+               " c.confirm_date," .
+               " r.insert_date" .
+               " FROM course_reset_info r" .
+               " LEFT OUTER JOIN course_info c ON c.course_id = r.course_id" .
+               " LEFT OUTER JOIN item_info i ON i.item_id = c.item_id" .
+               " WHERE r.del_flg = 0" .
+               " AND r.school_id = " . $school_id .
+               " AND c.del_flg = 0" .
+               " AND r.reset_confirm_flg = 0" .
+               " ORDER BY r.insert_date ASC";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["course_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function selectAuditionCourseInfoByStudent($student_id)
     {
         $dbi = Database::getInstance();
@@ -311,6 +350,45 @@ class BroadcomCourseInfoDBI
             array("del_flg" => "1"),
             "order_item_id = " . $order_item_id . " AND student_id = " . $student_id . " AND confirm_flg = 0"
         );
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        return $result;
+    }
+
+    public static function deleteMultiCourseById($course_id)
+    {
+        $dbi = Database::getInstance();
+        if (!is_array($course_id)) {
+            $course_id = array($course_id);
+        }
+        $result = $dbi->update("course_info", array("del_flg" => "1"), "course_id IN (" . implode(", ", $course_id) . ")");
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        return $result;
+    }
+
+    public static function insertCourseReset($insert_data)
+    {
+        $dbi = Database::getInstance();
+        $result = $dbi->insert("course_reset_info", $insert_data);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        return $result;
+    }
+
+    public static function updateCourseReset($update_data, $course_id)
+    {
+        $dbi = Database::getInstance();
+        if (!is_array($course_id)) {
+            $course_id = array($course_id);
+        }
+        $result = $dbi->update("course_reset_info", $update_data, "course_id IN (" . implode(", ", $course_id) . ")");
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
             return $result;

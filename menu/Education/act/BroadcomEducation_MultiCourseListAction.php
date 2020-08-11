@@ -112,7 +112,7 @@ class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBas
             "assign_member_id" => $assign_member_id,
             "confirm_flg" => $confirm_flg
         );
-        $back_link = Utility::encodeBackLink("education", "course_list", array(
+        $back_link = Utility::encodeBackLink("education", "multi_course_list", array(
             "period_type" => $period_type,
             "start_date" => $course_date_from,
             "end_date" => $course_date_to,
