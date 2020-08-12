@@ -74,11 +74,12 @@ class BroadcomMemberInfoDBI
                " i.m_junior_star_level," .
                " i.m_senior_star_level," .
                " l.member_login_name," .
-               " l.member_login_name_base," .
-               " l.member_login_password," .
-               " l.member_login_salt," .
+               // TODO remove sensitive content
+               // " l.member_login_name_base," .
+               // " l.member_login_password," .
+               // " l.member_login_salt," .
                " l.member_level," .
-               " l.target_object_id," .
+               // " l.target_object_id," .
                " p.school_id," .
                " p.member_position," .
                " p.member_position_level," .
