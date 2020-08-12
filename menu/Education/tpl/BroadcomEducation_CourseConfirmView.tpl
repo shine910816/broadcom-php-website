@@ -61,7 +61,6 @@
 {^/if^}
     </div>
   </div>
-
   <div class="main-table">
     <h2>学员信息</h2>
     <table class="disp_table">

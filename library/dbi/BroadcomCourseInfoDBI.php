@@ -207,6 +207,7 @@ class BroadcomCourseInfoDBI
                " c.actual_expire_date," .
                " c.confirm_member_id," .
                " c.confirm_date," .
+               " r.reset_reason_code," . 
                " r.insert_date" .
                " FROM course_reset_info r" .
                " LEFT OUTER JOIN course_info c ON c.course_id = r.course_id" .
@@ -389,6 +390,20 @@ class BroadcomCourseInfoDBI
             $course_id = array($course_id);
         }
         $result = $dbi->update("course_reset_info", $update_data, "course_id IN (" . implode(", ", $course_id) . ")");
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        return $result;
+    }
+
+    public static function removeCourseReset($course_id)
+    {
+        $dbi = Database::getInstance();
+        if (!is_array($course_id)) {
+            $course_id = array($course_id);
+        }
+        $result = $dbi->delete("course_reset_info", "course_id IN (" . implode(", ", $course_id) . ")");
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
             return $result;

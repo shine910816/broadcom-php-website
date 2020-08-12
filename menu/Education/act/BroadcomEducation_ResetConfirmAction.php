@@ -47,72 +47,39 @@ class BroadcomEducation_ResetConfirmAction extends BroadcomEducationActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
-        if (!$request->hasParameter("course_id")) {
-            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
+        $course_id = "";
+        $multi_course_id = "";
+        $multi_flg = false;
+        if ($request->hasParameter("course_id")) {
+            $course_id = $request->getParameter("course_id");
+        } elseif ($request->hasParameter("multi_course_id")) {
+            $multi_course_id = $request->getParameter("multi_course_id");
+            $multi_flg = true;
+        } else {
+            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter missed: course_id");
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
-        $course_id = $request->getParameter("course_id");
-        $member_id = $user->member()->id();
-        $school_id = $user->member()->schoolId();
-        $course_info = BroadcomCourseInfoDBI::selectCourseInfo($course_id);;
-        if ($controller->isError($course_info)) {
-            $course_info->setPos(__FILE__, __LINE__);
-            return $course_info;
+        $post_data = array();
+        if ($multi_flg) {
+            $post_data["multi_course_id"] = $multi_course_id;
+        } else {
+            $post_data["course_id"] = $course_id;
         }
-        if (empty($course_info)) {
-            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
+        $repond_course_info = Utility::getJsonResponse("?t=65118860-60BE-028D-5525-E40E18E58CAA&m=" . $user->member()->targetObjectId(), $post_data);
+        if ($controller->isError($repond_course_info)) {
+            $repond_course_info->setPos(__FILE__, __LINE__);
+            return $repond_course_info;
+        }
+        if (!$repond_course_info["base_info"]["has_reset_flg"]) {
+            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter failed: course_id");
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
-        if ($course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD ||
-            $course_info["course_type"] == BroadcomCourseEntity::COURSE_TYPE_CLASS ||
-            !$course_info["confirm_flg"] || !$course_info["reset_flg"]) {
-            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $order_item_info = BroadcomOrderDBI::selectOrderItem($course_info["order_item_id"]);
-        if ($controller->isError($order_item_info)) {
-            $order_item_info->setPos(__FILE__, __LINE__);
-            return $order_item_info;
-        }
-        if (empty($order_item_info)) {
-            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $room_list = BroadcomRoomInfoDBI::selectUsableRoomList($school_id);
-        if ($controller->isError($room_list)) {
-            $room_list->setPos(__FILE__, __LINE__);
-            return $room_list;
-        }
-        $teacher_info = BroadcomTeacherDBI::selectTeacherInfoList($school_id);
-        if ($controller->isError($teacher_info)) {
-            $teacher_info->setPos(__FILE__, __LINE__);
-            return $teacher_info;
-        }
-        $student_list = BroadcomStudentInfoDBI::selectLeadsStudentInfo($school_id);
-        if ($controller->isError($student_list)) {
-            $student_list->setPos(__FILE__, __LINE__);
-            return $student_list;
-        }
-        $item_list = BroadcomItemInfoDBI::selectItemInfoList();
-        if ($controller->isError($item_list)) {
-            $item_list->setPos(__FILE__, __LINE__);
-            return $item_list;
-        }
+        $request->setAttribute("multi_flg", $multi_flg);
         $request->setAttribute("course_id", $course_id);
-        $request->setAttribute("member_id", $member_id);
-        $request->setAttribute("course_info", $course_info);
-        $request->setAttribute("order_item_info", $order_item_info);
-        $request->setAttribute("course_type_list", BroadcomCourseEntity::getCourseTypeList());
-        $request->setAttribute("subject_list", BroadcomSubjectEntity::getSubjectList());
-        $request->setAttribute("room_list", $room_list);
-        $request->setAttribute("teacher_info", $teacher_info);
-        $request->setAttribute("student_list", $student_list);
-        $request->setAttribute("item_list", $item_list);
-        $request->setAttribute("reset_reason_list", BroadcomCourseEntity::getCourseResetReasonCodeList());
+        $request->setAttribute("multi_course_id", $multi_course_id);
+        $request->setAttributes($repond_course_info);
         return VIEW_DONE;
     }
 
@@ -130,61 +97,72 @@ class BroadcomEducation_ResetConfirmAction extends BroadcomEducationActionBase
 
     private function _doConfirmExecute(Controller $controller, User $user, Request $request)
     {
-        $course_id = $request->getAttribute("course_id");
-        $member_id = $request->getAttribute("member_id");
-        $course_info = $request->getAttribute("course_info");
-        $order_item_info = $request->getAttribute("order_item_info");
+        $base_info = $request->getAttribute("base_info");
+        $detail_list = $request->getAttribute("detail_list");
+//Utility::testVariable($base_info);
+Utility::testVariable($detail_list);
         $dbi = Database::getInstance();
         $begin_res = $dbi->begin();
         if ($controller->isError($begin_res)) {
             $begin_res->setPos(__FILE__, __LINE__);
             return $begin_res;
         }
-        $order_item_update_data = array();
-        $order_item_update_data["order_item_remain"] = $order_item_info["order_item_remain"] + $course_info["actual_course_hours"];
-        $order_item_update_data["order_item_confirm"] = $order_item_info["order_item_confirm"] - $course_info["actual_course_hours"];
-        if ($order_item_update_data["order_item_status"] == BroadcomOrderEntity::ORDER_ITEM_STATUS_3) {
-            $order_item_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_2;
+        $reset_hours = $base_info["actual_course_hours"];
+        foreach ($detail_list as $course_info) {
+            if ($base_info["audition_type"]) {
+                $student_update_data = array();
+                $student_update_data["audition_hours"] = $course_info["audition_hours"] + $reset_hours;
+                if ($student_update_data["audition_hours"] > 2) {
+                    $student_update_data["audition_hours"] = 2;
+                }
+                if ($course_info["follow_status"] !== BroadcomStudentEntity::FOLLOW_STATUS_3 && $student_update_data["audition_hours"] >= 2) {
+                    $student_update_data["follow_status"] = BroadcomStudentEntity::FOLLOW_STATUS_1;
+                }
+                $student_update_res = BroadcomStudentInfoDBI::updateStudentInfo($student_update_data, $course_info["student_id"]);
+                if ($controller->isError($student_update_res)) {
+                    $student_update_res->setPos(__FILE__, __LINE__);
+                    $dbi->rollback();
+                    return $student_update_res;
+                }
+            } else {
+                
+            }
         }
-        $order_item_update_res = BroadcomOrderDBI::updateOrderItem($order_item_update_data, $order_item_info["order_item_id"]);
-        if ($controller->isError($order_item_update_res)) {
-            $order_item_update_res->setPos(__FILE__, __LINE__);
+        $course_delete_res = $BroadcomCourseInfoDBI::deleteMultiCourseById(array_keys($detail_list));
+        if ($controller->isError($course_delete_res)) {
+            $course_delete_res->setPos(__FILE__, __LINE__);
             $dbi->rollback();
-            return $order_item_update_res;
+            return $course_delete_res;
         }
-        $course_update_data = array();
-        $course_update_data["reset_examine_flg"] = "1";
-        $course_update_data["reset_examine_member_id"] = $member_id;
-        $course_update_data["reset_examine_date"] = date("Y-m-d H:i:s");
-        $course_update_res = BroadcomCourseInfoDBI::updateCourseInfo($course_update_data, $course_id);
-        if ($controller->isError($course_update_res)) {
-            $course_update_res->setPos(__FILE__, __LINE__);
+        $reset_update_data = array();
+        $reset_update_data["reset_confirm_flg"] = "1";
+        $reset_update_data["reset_confirm_member_id"] = $user->member()->id();
+        $reset_update_data["reset_confirm_date"] = date("Y-m-d H:i:s");
+        $reset_update_res = BroadcomCourseInfoDBI::updateCourseReset($reset_update_data, array_keys($detail_list));
+        if ($controller->isError($reset_update_res)) {
+            $reset_update_res->setPos(__FILE__, __LINE__);
             $dbi->rollback();
-            return $course_update_res;
+            return $reset_update_res;
         }
         $commit_res = $dbi->commit();
         if ($controller->isError($commit_res)) {
             $commit_res->setPos(__FILE__, __LINE__);
             return $commit_res;
         }
-        $controller->redirect("./?menu=education&act=course_list");
+        $controller->redirect("./?menu=education&act=reset_list");
         return VIEW_DONE;
     }
 
     private function _doCancelExecute(Controller $controller, User $user, Request $request)
     {
-        $course_id = $request->getAttribute("course_id");
-        $member_id = $request->getAttribute("member_id");
-        $course_update_data = array();
-        $course_update_data["reset_flg"] = "0";
-        $course_update_data["reset_examine_member_id"] = $member_id;
-        $course_update_data["reset_examine_date"] = date("Y-m-d H:i:s");
-        $course_update_res = BroadcomCourseInfoDBI::updateCourseInfo($course_update_data, $course_id);
-        if ($controller->isError($course_update_res)) {
-            $course_update_res->setPos(__FILE__, __LINE__);
-            return $course_update_res;
+        $base_info = $request->getAttribute("base_info");
+        $detail_list = $request->getAttribute("detail_list");
+        $reset_remove_res = BroadcomCourseInfoDBI::removeCourseReset(array_keys($detail_list));
+        if ($controller->isError($reset_remove_res)) {
+            $reset_remove_res->setPos(__FILE__, __LINE__);
+            return $reset_remove_res;
         }
-        $controller->redirect("./?menu=education&act=course_list");
+        $controller->redirect("./?menu=education&act=reset_list");
         return VIEW_DONE;
     }
 }

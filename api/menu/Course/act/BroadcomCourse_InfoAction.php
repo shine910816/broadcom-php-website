@@ -118,6 +118,7 @@ class BroadcomCourse_InfoAction extends ActionBase
         $base_course_info["confirm_msg"] = "";
         $base_course_info["reset_able"] = false;
         $base_course_info["reset_msg"] = "未消课无法撤销";
+        $base_course_info["has_reset_flg"] = false;
         $audition_list = array(
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO,
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO,
@@ -250,6 +251,7 @@ class BroadcomCourse_InfoAction extends ActionBase
             }
             if (!empty($course_reset_info)) {
                 $base_course_info["reset_msg"] = "已发起消课撤销";
+                $base_course_info["has_reset_flg"] = true;
             } else {
                 $base_course_info["reset_able"] = true;
                 $base_course_info["reset_msg"] = "";
