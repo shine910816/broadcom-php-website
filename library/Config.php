@@ -101,8 +101,8 @@ class Config
         $result["education"]["multi_course_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "一对多排课列表");
         $result["education"]["course_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "一对一排课列表");
         $result["education"]["course_confirm"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=my_course_list">我的排课列表</a>', "排课确认");
-        $result["education"]["reset_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "返课列表");
-        $result["education"]["reset_confirm"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=reset_list">返课列表</a>', "返课确认");
+        $result["education"]["reset_list"] = array('<a href="./?menu=education&act=top">学员教务</a>', "撤销消课申请表");
+        $result["education"]["reset_confirm"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=reset_list">撤销消课申请表</a>', "返课确认");
         $result["education"]["student_edit"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=my_student_list">我的学员管理</a>', "修改学员信息");
         $result["education"]["student_assign"] = array('<a href="./?menu=education&act=top">学员教务</a>', '<a href="./?menu=education&act=my_student_list">我的学员管理</a>', "学员受理分配");
         $result["education"]["contract_refund"] = array('<a href="./?menu=education&act=top">学员教务</a>', "退款转让");

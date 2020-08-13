@@ -16,6 +16,7 @@
           <th style="width:150px;">消课人</th>
           <th style="width:200px;">消课时间</th>
           <th style="width:150px;">撤销理由</th>
+          <th style="width:150px;">确认状态</th>
           <th style="width:100px;">操作</th>
         </tr>
       </thead>
@@ -31,7 +32,8 @@
           <td>{^$course_info["confirm_member_name"]^}</td>
           <td>{^$course_info["confirm_date"]|date_format:"%Y-%m-%d %H:%M"^}</td>
           <td>{^$course_info["reset_reason_name"]^}</td>
-          <td><a href="./?menu=education&act=reset_confirm&{^if $course_info["multi_flg"]^}multi_{^/if^}course_id={^$reset_key^}" class="button-field ui-btn-orange">详细</a></td>
+          <td>{^$course_info["reset_confirm_name"]^}</td>
+          <td>{^if !$course_info["reset_confirm_flg"]^}<a href="./?menu=education&act=reset_confirm&{^if $course_info["multi_flg"]^}multi_{^/if^}course_id={^$reset_key^}" class="button-field ui-btn-orange">详细</a>{^/if^}</td>
         </tr>
 {^/foreach^}
       </tbody>

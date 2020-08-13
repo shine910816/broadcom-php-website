@@ -60,11 +60,36 @@ class BroadcomEducation_ResetConfirmAction extends BroadcomEducationActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
+        $reset_info = array();
         $post_data = array();
         if ($multi_flg) {
             $post_data["multi_course_id"] = $multi_course_id;
+            $reset_info = BroadcomCourseInfoDBI::selectResetCourseInfo($multi_course_id, true);
+            if ($controller->isError($reset_info)) {
+                $reset_info->setPos(__FILE__, __LINE__);
+                return $reset_info;
+            }
         } else {
             $post_data["course_id"] = $course_id;
+            $reset_info = BroadcomCourseInfoDBI::selectResetCourseInfo($course_id);
+            if ($controller->isError($reset_info)) {
+                $reset_info->setPos(__FILE__, __LINE__);
+                return $reset_info;
+            }
+        }
+        if (empty($reset_info)) {
+            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter failed: course_id");
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        $reset_info = array_values($reset_info);
+        $reason_code_list = BroadcomCourseEntity::getCourseResetReasonCodeList();
+        $reason_code_name = $reason_code_list[$reset_info[0]["reset_reason_code"]];
+        $reset_confirm_flg = $reset_info[0]["reset_confirm_flg"];
+        if ($reset_confirm_flg) {
+            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter failed: course_id");
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
         }
         $repond_course_info = Utility::getJsonResponse("?t=65118860-60BE-028D-5525-E40E18E58CAA&m=" . $user->member()->targetObjectId(), $post_data);
         if ($controller->isError($repond_course_info)) {
@@ -80,6 +105,7 @@ class BroadcomEducation_ResetConfirmAction extends BroadcomEducationActionBase
         $request->setAttribute("course_id", $course_id);
         $request->setAttribute("multi_course_id", $multi_course_id);
         $request->setAttributes($repond_course_info);
+        $request->setAttribute("reason_code_name", $reason_code_name);
         return VIEW_DONE;
     }
 
@@ -145,7 +171,7 @@ class BroadcomEducation_ResetConfirmAction extends BroadcomEducationActionBase
             return $course_delete_res;
         }
         $reset_update_data = array();
-        $reset_update_data["reset_confirm_flg"] = "1";
+        $reset_update_data["reset_confirm_flg"] = BroadcomCourseEntity::COURSE_RESET_CFM_CODE_1;
         $reset_update_data["reset_confirm_member_id"] = $user->member()->id();
         $reset_update_data["reset_confirm_date"] = date("Y-m-d H:i:s");
         $reset_update_res = BroadcomCourseInfoDBI::updateCourseReset($reset_update_data, array_keys($detail_list));
@@ -167,10 +193,14 @@ class BroadcomEducation_ResetConfirmAction extends BroadcomEducationActionBase
     {
         $base_info = $request->getAttribute("base_info");
         $detail_list = $request->getAttribute("detail_list");
-        $reset_remove_res = BroadcomCourseInfoDBI::removeCourseReset(array_keys($detail_list));
-        if ($controller->isError($reset_remove_res)) {
-            $reset_remove_res->setPos(__FILE__, __LINE__);
-            return $reset_remove_res;
+        $reset_update_data = array();
+        $reset_update_data["reset_confirm_flg"] = BroadcomCourseEntity::COURSE_RESET_CFM_CODE_2;
+        $reset_update_data["reset_confirm_member_id"] = $user->member()->id();
+        $reset_update_data["reset_confirm_date"] = date("Y-m-d H:i:s");
+        $reset_update_res = BroadcomCourseInfoDBI::updateCourseReset($reset_update_data, array_keys($detail_list));
+        if ($controller->isError($reset_update_res)) {
+            $reset_update_res->setPos(__FILE__, __LINE__);
+            return $reset_update_res;
         }
         $controller->redirect("./?menu=education&act=reset_list");
         return VIEW_DONE;

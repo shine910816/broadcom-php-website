@@ -208,15 +208,15 @@ class BroadcomCourseInfoDBI
                " c.confirm_member_id," .
                " c.confirm_date," .
                " r.reset_reason_code," . 
+               " r.reset_confirm_flg," .
                " r.insert_date" .
                " FROM course_reset_info r" .
                " LEFT OUTER JOIN course_info c ON c.course_id = r.course_id" .
                " LEFT OUTER JOIN item_info i ON i.item_id = c.item_id" .
                " WHERE r.del_flg = 0" .
                " AND r.school_id = " . $school_id .
-               " AND c.del_flg = 0" .
-               " AND r.reset_confirm_flg = 0" .
-               " ORDER BY r.insert_date ASC";
+               //" AND c.del_flg = 0" .
+               " ORDER BY r.reset_confirm_flg ASC, r.insert_date ASC";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
@@ -397,18 +397,18 @@ class BroadcomCourseInfoDBI
         return $result;
     }
 
-    public static function removeCourseReset($course_id)
-    {
-        $dbi = Database::getInstance();
-        if (!is_array($course_id)) {
-            $course_id = array($course_id);
-        }
-        $result = $dbi->delete("course_reset_info", "course_id IN (" . implode(", ", $course_id) . ")");
-        if ($dbi->isError($result)) {
-            $result->setPos(__FILE__, __LINE__);
-            return $result;
-        }
-        return $result;
-    }
+    //public static function removeCourseReset($course_id)
+    //{
+    //    $dbi = Database::getInstance();
+    //    if (!is_array($course_id)) {
+    //        $course_id = array($course_id);
+    //    }
+    //    $result = $dbi->delete("course_reset_info", "course_id IN (" . implode(", ", $course_id) . ")");
+    //    if ($dbi->isError($result)) {
+    //        $result->setPos(__FILE__, __LINE__);
+    //        return $result;
+    //    }
+    //    return $result;
+    //}
 }
 ?>

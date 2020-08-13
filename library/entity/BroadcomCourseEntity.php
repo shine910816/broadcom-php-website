@@ -23,6 +23,10 @@ class BroadcomCourseEntity
     const COURSE_RESET_REASON_CODE_2 = "2";
     const COURSE_RESET_REASON_CODE_3 = "3";
 
+    const COURSE_RESET_CFM_CODE_0 = "0";
+    const COURSE_RESET_CFM_CODE_1 = "1";
+    const COURSE_RESET_CFM_CODE_2 = "2";
+
     public static function getCourseTypeList()
     {
         return array(
@@ -51,6 +55,15 @@ class BroadcomCourseEntity
             self::COURSE_RESET_REASON_CODE_1 => "主动返课",
             self::COURSE_RESET_REASON_CODE_2 => "被动返课",
             self::COURSE_RESET_REASON_CODE_3 => "操作失误"
+        );
+    }
+
+    public static function getCourseResetConfirmCodeList()
+    {
+        return array(
+            self::COURSE_RESET_CFM_CODE_0 => "未确认",
+            self::COURSE_RESET_CFM_CODE_1 => "已撤回",
+            self::COURSE_RESET_CFM_CODE_2 => "已驳回"
         );
     }
 }

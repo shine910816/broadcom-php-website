@@ -59,6 +59,12 @@
       </div>
 {^/if^}
     </div>
+    <div class="table-line">
+      <div class="table-item-b">
+        <div class="table-item-name">撤销理由</div>
+        <div class="table-item-value">{^$reason_code_name^}</div>
+      </div>
+    </div>
   </div>
   <div class="main-table">
     <h2>学员信息</h2>
@@ -88,7 +94,7 @@
   <div class="table-line"></div>
   <div class="table-line">
     <a href="./?menu=education&act=reset_list" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>
-    <button type="submit" name="do_cancel" value="1" class="button-field ui-btn-purple"><i class="fa fa-check"></i> 取消撤销</button>
+    <button type="submit" name="do_cancel" value="1" class="button-field ui-btn-red"><i class="fa fa-close"></i> 驳回撤销</button>
     <button type="submit" name="do_confirm" value="1" class="button-field ui-btn-green"><i class="fa fa-check"></i> 确认撤销</button>
   </div>
 </form>

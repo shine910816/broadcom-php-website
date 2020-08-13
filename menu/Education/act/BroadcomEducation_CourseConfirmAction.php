@@ -186,6 +186,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
                 $insert_data["multi_course_id"] = $multi_course_id;
                 $insert_data["school_id"] = $school_id;
                 $insert_data["reset_reason_code"] = $reset_reason_code;
+                $insert_data["reset_confirm_flg"] = BroadcomCourseEntity::COURSE_RESET_CFM_CODE_0;
                 $insert_res = BroadcomCourseInfoDBI::insertCourseReset($insert_data);
                 if ($controller->isError($insert_res)) {
                     $insert_res->setPos(__FILE__, __LINE__);
@@ -204,6 +205,7 @@ class BroadcomEducation_CourseConfirmAction extends BroadcomEducationActionBase
             $insert_data["multi_course_id"] = "";
             $insert_data["school_id"] = $school_id;
             $insert_data["reset_reason_code"] = $reset_reason_code;
+            $insert_data["reset_confirm_flg"] = BroadcomCourseEntity::COURSE_RESET_CFM_CODE_0;
             $insert_res = BroadcomCourseInfoDBI::insertCourseReset($insert_data);
             if ($controller->isError($insert_res)) {
                 $insert_res->setPos(__FILE__, __LINE__);

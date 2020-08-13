@@ -55,6 +55,7 @@ class BroadcomEducation_ResetListAction extends BroadcomEducationActionBase
         $audition_type_list = BroadcomCourseEntity::getAuditionTypeList();
         $subject_list = BroadcomSubjectEntity::getSubjectList();
         $reset_reason_list = BroadcomCourseEntity::getCourseResetReasonCodeList();
+        $reset_confirm_list = BroadcomCourseEntity::getCourseResetConfirmCodeList();
         $post_data = array(
             "school_id" => $school_id
         );
@@ -89,6 +90,7 @@ class BroadcomEducation_ResetListAction extends BroadcomEducationActionBase
             $course_info["subject_name"] = $subject_list[$course_info["subject_id"]];
             $course_info["confirm_member_name"] = isset($member_list[$course_info["confirm_member_id"]]) ? $member_list[$course_info["confirm_member_id"]]["m_name"] : "";
             $course_info["reset_reason_name"] = $reset_reason_list[$course_info["reset_reason_code"]];
+            $course_info["reset_confirm_name"] = $reset_confirm_list[$course_info["reset_confirm_flg"]];
             $course_info["multi_flg"] = $multi_flg;
             if (!isset($result_data_list[$result_key])) {
                 $result_data_list[$result_key] = $course_info;
