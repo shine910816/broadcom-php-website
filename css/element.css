@@ -89,8 +89,8 @@ div.table-item-value label.ui-btn-check {
   line-height:35px;
   text-decoration:none!important;
   transition:.3s;
-  background-color:#A0A0A0;
-  color:#FFF;
+  background-color:#D0D0D0;
+  color:#000;
   border-radius:5px;
   display:block;
   float:left;
@@ -115,19 +115,24 @@ div.table-item-value label.ui-btn-check {
   float:none!important;
 }
 .ui-btn-green {
-  background-color:#67BA2F;
+  background-color:#67BA2F!important;
+  color:#FFF;
 }
 .ui-btn-purple {
   background-color:#9E8EE6!important;
+  color:#FFF;
 }
 .ui-btn-orange {
   background-color:#E86940!important;
+  color:#FFF;
 }
 .ui-btn-red {
   background-color:#F60000!important;
+  color:#FFF;
 }
 .ui-btn-black {
   background-color:#000000!important;
+  color:#FFF;
 }
 table.disp_table {
   width:100%;

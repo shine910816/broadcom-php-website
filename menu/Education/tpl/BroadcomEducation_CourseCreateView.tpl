@@ -147,10 +147,10 @@
 {^if $day_info["able"]^}
             <label class="button-field day_button ui-btn-check"><input type="checkbox" name="selected_date[]" value="{^$day_info["date"]^}" />{^$day_info["day"]^}</label>
 {^else^}
-            <input type="button" value="{^$day_info["day"]^}" class="button-field day_button ui-btn-red" />
+            <input type="button" value="{^$day_info["day"]^}" class="button-field day_button" title="时间或教师已被占用" disabled />
 {^/if^}
 {^else^}
-            <input type="button" value="{^$day_info["day"]^}" class="button-field day_button ui-btn-black" />
+            <input type="button" value="{^$day_info["day"]^}" class="button-field day_button" title="超出可排课时间范围" disabled />
 {^/if^}
 {^/if^}
           </td>

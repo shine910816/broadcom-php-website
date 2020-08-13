@@ -41,6 +41,13 @@ class BroadcomHomeActionBase extends BroadcomDataActionBase
         $week_achieve_count = $week_achieve_info["achieve_data"]["5"]["order_count"];
         $week_achieve_amount = $week_achieve_info["achieve_data"]["5"]["order_amount"];
         $week_course_count = array_sum($week_achieve_info["course_data"]);
+        $week_course_count = 0;
+        foreach ($week_achieve_info["course_data"] as $course_type_key => $course_amount) {
+            // TODO 试听课不算在统计范围内
+            if ($course_type_key != "5") {
+                $week_course_count += $course_amount;
+            }
+        }
         $request->setAttribute("period_type_input", "2");
         $month_date_info = $this->_getStatisticsPeriod($controller, $user, $request);
         if ($controller->isError($month_date_info)) {
@@ -56,7 +63,13 @@ class BroadcomHomeActionBase extends BroadcomDataActionBase
         $month_achieve_count = $month_achieve_info["achieve_data"]["5"]["order_count"];
         $month_achieve_amount = $month_achieve_info["achieve_data"]["5"]["order_amount"];
         $month_actual_amount = $month_achieve_info["achieve_data"]["5"]["calculate_amount"];
-        $month_course_count = array_sum($month_achieve_info["course_data"]);
+        $month_course_count = 0;
+        foreach ($month_achieve_info["course_data"] as $course_type_key => $course_amount) {
+            // TODO 试听课不算在统计范围内
+            if ($course_type_key != "5") {
+                $month_course_count += $course_amount;
+            }
+        }
         $target_info = BroadcomTargetDBI::selectTarget($school_id, date("Ym"));
         if ($controller->isError($target_info)) {
             $target_info->setPos(__FILE__, __LINE__);

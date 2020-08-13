@@ -101,8 +101,11 @@ class BroadcomData_TargetInfoAction extends BroadcomDataActionBase
             $total_actual_amount = $front_actual_amount + $back_actual_amount;
         }
         $course_actual_amount = 0;
-        foreach ($total_stats["course_data"] as $course_amount) {
-            $course_actual_amount += $course_amount;
+        foreach ($total_stats["course_data"] as $course_type_key => $course_amount) {
+            // TODO 试听课不算在统计范围内
+            if ($course_type_key != "5") {
+                $course_actual_amount += $course_amount;
+            }
         }
         $target_date = $request->getAttribute("target_date");
         $target_info = BroadcomTargetDBI::selectTarget($school_id, $target_date);

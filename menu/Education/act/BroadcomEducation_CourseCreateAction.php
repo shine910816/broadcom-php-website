@@ -112,6 +112,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
                     return $order_item_info;
                 }
                 $base_course_info["course_trans_price"] = $order_item_info["order_item_trans_price"];
+                $base_course_info["order_item_remain"] = $order_item_info["order_item_remain"];
             }
             $subject_teacher = explode("_", $request->getParameter("subject_teacher"));
             $base_course_info["subject_id"] = $subject_teacher[0];
@@ -257,8 +258,12 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
         $order_item_info = $request->getAttribute("order_item_info");
         $time_info = $request->getAttribute("time_info");
         $audition_flg = $request->getAttribute("audition_flg");
-        $start_date = date("Y-m-d");
-        $end_date = date("Y-m-d", time() + 24 * 60 * 60 * 90);
+        // TODO 日期扩展至前一个月后三个月
+        //$start_date = date("Y-m-d");
+        //$end_date = date("Y-m-d", time() + 24 * 60 * 60 * 90);
+        $current_ts = time();
+        $start_date = date("Y-m-d", mktime(0, 0, 0, date("n", $current_ts) - 1, 1, date("Y", $current_ts)));
+        $end_date = date("Y-m-d", mktime(0, 0, -1, date("n", $current_ts) + 4, 1, date("Y", $current_ts)));
         $post_data = array(
             "school_id" => $base_course_info["school_id"],
             "start_date" => $start_date,
@@ -301,6 +306,11 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
         $time_data = $request->getAttribute("time_data");
         $selected_date = $request->getAttribute("selected_date");
         $selected_info = $request->getAttribute("selected_info");
+        if (isset($base_data["order_item_remain"]) && count($selected_date) * $time_data["course_hours"] > $base_data["order_item_remain"]) {
+            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
         $insert_list = array();
         if ($time_data["time_type"] == "1") {
             if (!empty($selected_date)) {
