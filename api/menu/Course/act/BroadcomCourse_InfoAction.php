@@ -116,9 +116,13 @@ class BroadcomCourse_InfoAction extends ActionBase
         $base_course_info["delete_msg"] = "";
         $base_course_info["confirm_able"] = $this->_confirm_able;
         $base_course_info["confirm_msg"] = "";
-        $base_course_info["reset_able"] = false;
-        $base_course_info["reset_msg"] = "未消课无法撤销";
+        $base_course_info["reset_able"] = true;
+        $base_course_info["reset_msg"] = "";
         $base_course_info["has_reset_flg"] = false;
+        if (!$base_course_info["confirm_flg"]) {
+            $base_course_info["reset_able"] = false;
+            $base_course_info["reset_msg"] = "未消课无法撤销";
+        }
         $audition_list = array(
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_SOLO,
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO,
@@ -151,6 +155,10 @@ class BroadcomCourse_InfoAction extends ActionBase
             $course_tmp["order_item_id"] = $course_item["order_item_id"];
             $course_tmp["contract_number"] = $course_item["contract_number"];
             $course_tmp["order_item_status"] = $course_item["order_item_status"];
+            if ($base_course_info["reset_able"] && $course_item["order_item_status"] == BroadcomOrderEntity::ORDER_ITEM_STATUS_4) {
+                $base_course_info["reset_able"] = false;
+                $base_course_info["reset_msg"] = "已退款的合同无法撤销";
+            }
             $course_tmp["order_item_remain"] = round($course_item["order_item_remain"], 1);
             $course_tmp["order_item_arrange"] = round($course_item["order_item_arrange"], 1);
             $course_tmp["order_item_confirm"] = round($course_item["order_item_confirm"], 1);
@@ -234,7 +242,7 @@ class BroadcomCourse_InfoAction extends ActionBase
             $base_course_info["delete_msg"] = "已消课或超过当天无法删除";
         }
         // 返课判断
-        if ($base_course_info["confirm_flg"]) {
+        if ($base_course_info["confirm_flg"] && $base_course_info["reset_able"]) {
             $course_reset_info = array();
             if ($this->_multi_flg) {
                 $course_reset_info = BroadcomCourseInfoDBI::selectResetCourseInfo($base_course_info["multi_course_id"], true);
@@ -250,11 +258,9 @@ class BroadcomCourse_InfoAction extends ActionBase
                 }
             }
             if (!empty($course_reset_info)) {
+                $base_course_info["reset_able"] = false;
                 $base_course_info["reset_msg"] = "已发起消课撤销";
                 $base_course_info["has_reset_flg"] = true;
-            } else {
-                $base_course_info["reset_able"] = true;
-                $base_course_info["reset_msg"] = "";
             }
         }
         $request->setAttribute("base_course_info", $base_course_info);

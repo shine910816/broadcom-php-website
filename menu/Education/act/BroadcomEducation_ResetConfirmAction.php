@@ -99,8 +99,6 @@ class BroadcomEducation_ResetConfirmAction extends BroadcomEducationActionBase
     {
         $base_info = $request->getAttribute("base_info");
         $detail_list = $request->getAttribute("detail_list");
-//Utility::testVariable($base_info);
-Utility::testVariable($detail_list);
         $dbi = Database::getInstance();
         $begin_res = $dbi->begin();
         if ($controller->isError($begin_res)) {
@@ -125,10 +123,22 @@ Utility::testVariable($detail_list);
                     return $student_update_res;
                 }
             } else {
-                
+                $oi_update_data = array();
+                $oi_update_data["order_item_remain"] = $course_info["order_item_remain"] + $reset_hours;
+                $oi_update_data["order_item_arrange"] = $course_info["order_item_arrange"] - $reset_hours;
+                $oi_update_data["order_item_confirm"] = $course_info["order_item_confirm"] - $reset_hours;
+                if ($course_info["order_item_status"] == BroadcomOrderEntity::ORDER_ITEM_STATUS_3) {
+                    $oi_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_2;
+                }
+                $oi_update_res = BroadcomOrderDBI::updateOrderItem($oi_update_data, $course_info["order_item_id"]);
+                if ($controller->isError($oi_update_res)) {
+                    $oi_update_res->setPos(__FILE__, __LINE__);
+                    $dbi->rollback();
+                    return $oi_update_res;
+                }
             }
         }
-        $course_delete_res = $BroadcomCourseInfoDBI::deleteMultiCourseById(array_keys($detail_list));
+        $course_delete_res = BroadcomCourseInfoDBI::deleteMultiCourseById(array_keys($detail_list));
         if ($controller->isError($course_delete_res)) {
             $course_delete_res->setPos(__FILE__, __LINE__);
             $dbi->rollback();
