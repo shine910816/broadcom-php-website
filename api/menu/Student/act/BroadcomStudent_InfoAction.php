@@ -2,6 +2,7 @@
 
 /**
  * 学员信息画面
+ * @token D2EC2D87-7195-6707-EF12-E55DB18ABF7C
  * @author Kinsama
  * @version 2020-04-16
  */
