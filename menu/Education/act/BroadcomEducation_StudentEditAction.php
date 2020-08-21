@@ -73,11 +73,20 @@ class BroadcomEducation_StudentEditAction extends BroadcomEducationActionBase
                 }
             }
         }
-Utility::testVariable($base_student_info);
+        $request->setAttribute("student_id", $student_id);
         $request->setAttribute("base_student_info", $base_student_info);
         $request->setAttribute("student_info", $student_info);
         $request->setAttribute("student_update_data", $student_update_data);
         $request->setAttribute("student_update_history_data", $student_update_history_data);
+        $request->setAttribute("grade_list", BroadcomStudentEntity::getGradeList());
+        $request->setAttribute("media_channel_list", BroadcomStudentEntity::getMediaChannelList());
+        $request->setAttribute("purpose_level_list", BroadcomStudentEntity::getPurposeLevelList());
+        $request->setAttribute("relatives_type_list", BroadcomStudentEntity::getRelativesTypeList());
+        $request->setAttribute("follow_status_list", BroadcomStudentEntity::getFollowStatusList());
+        $request->setAttribute("adjust_year", BroadcomStudentEntity::getAdjustedYear() + 1);
+if ($request->hasParameter("do_submit")) {
+    Utility::testVariable($request->getAttributes());
+}
         return VIEW_DONE;
     }
 

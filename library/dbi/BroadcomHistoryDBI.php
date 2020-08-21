@@ -31,7 +31,7 @@ class BroadcomHistoryDBI
     private static function _selectHistory($history_type, $temp_id)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT history_id,"
+        $sql = "SELECT history_id," .
                " group_sign," .
                " update_name," .
                " update_old_content," .
