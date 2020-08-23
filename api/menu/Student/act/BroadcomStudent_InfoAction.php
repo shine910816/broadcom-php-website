@@ -86,6 +86,11 @@ class BroadcomStudent_InfoAction extends ActionBase
         $student_result["assign_date"] = $student_info["assign_date"];
         $student_result["operated_by"] = $student_info["operated_by"];
         $student_result["insert_date"] = $student_info["insert_date"];
+        $relatives_type_list = BroadcomStudentEntity::getRelativesTypeList();
+        $student_result["student_relatives_type"] = $student_info["student_relatives_type"];
+        $student_result["relatives_type_name"] = $relatives_type_list[$student_info["student_relatives_type"]];
+        $student_result["student_relatives_name"] = $student_info["student_relatives_name"];
+        $student_result["student_relatives_mobile_number"] = $student_info["student_relatives_mobile_number"];
         return array(
             "student_info" => $student_result
         );

@@ -52,6 +52,23 @@ class BroadcomStudentEntity
     const INREAD_STATUS_2 = "2";
     const INREAD_STATUS_3 = "3";
 
+    public static function getColumnNames()
+    {
+        return array(
+            "student_name" => "学员姓名",
+            "student_gender" => "性别",
+            "student_entrance_year" => "入学年",
+            "student_mobile_number" => "手机号",
+            "media_channel_code" => "一级渠道",
+            "student_school_name" => "在读学校",
+            "student_address" => "家庭住址",
+            "purpose_level" => "意向程度",
+            "student_relatives_type" => "亲属关系",
+            "student_relatives_name" => "家长姓名",
+            "student_relatives_mobile_number" => "家长电话"
+        );
+    }
+
     public static function getAdjustedYear()
     {
         $result = date("Y");
