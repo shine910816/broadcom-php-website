@@ -224,7 +224,8 @@ class BroadcomCourse_InfoAction extends ActionBase
             }
         }
         // 可删除判断
-        if (!$base_course_info["confirm_flg"] && $current_ts < $finish_ts) {
+        //if (!$base_course_info["confirm_flg"] && $current_ts < $finish_ts) {
+        if (!$base_course_info["confirm_flg"]) {
             if (!$request->isAdmin() && !$request->member()->auth()->isMst()) {
                 if ($request->member()->auth()->isAst()) {
                     if (in_array($request->member()->id(), $this->_assign_member_list)) {
@@ -238,8 +239,8 @@ class BroadcomCourse_InfoAction extends ActionBase
             } else {
                 $this->_delete_able = true;
             }
-        } else {
-            $base_course_info["delete_msg"] = "已消课或超过当天无法删除";
+        //} else {
+        //    $base_course_info["delete_msg"] = "已消课或超过当天无法删除";
         }
         // 返课判断
         if ($base_course_info["confirm_flg"] && $base_course_info["reset_able"]) {
