@@ -18,12 +18,29 @@
     <div class="table-line">
       <div class="table-item-b">
         <div class="table-item-name">手机号</div>
-        <div class="table-item-value">{^$student_info["student_mobile_number"]|escape^}</div>
+        <div class="table-item-value">{^$student_info["covered_mobile_number"]|escape^}</div>
       </div>
       <div class="table-item-b">
         <div class="table-item-name">在读学校</div>
         <div class="table-item-value">{^$student_info["student_school_name"]|escape^}</div>
       </div>
+      <div class="table-item-b">
+        <div class="table-item-name">受理人</div>
+        <div class="table-item-value">{^$student_info["assign_member_name"]|escape^}</div>
+      </div>
+    </div>
+    <div class="table-line">
+      <div class="table-item-b">
+        <div class="table-item-name">剩余试听</div>
+        <div class="table-item-value">{^$student_info["audition_hours"]|escape^}小时</div>
+      </div>
+      <div class="table-item-b">
+        <div class="table-item-name">联系人</div>
+        <div class="table-item-value">{^$student_info["relatives_info"]|escape^}</div>
+      </div>
+    </div>
+    <div class="table-line">
+      <a href="./?menu=education&act=student_edit&student_id={^$student_info["student_id"]|escape^}" class="button-field ui-btn-purple" style="margin-left:10px;"><i class="fa fa-pencil"></i> 修改信息</a>
     </div>
   </div>
   <div class="main-table{^if empty($course_list)^} pb_15{^/if^}">
@@ -131,6 +148,17 @@
     </table>
 {^/if^}
   </div>
+{^if !empty($history_list)^}
+  <div class="main-table pb_15">
+    <h2>修改历史记录</h2>
+{^foreach from=$history_list key=his_key item=history_item^}
+    <p style="color:#000;">　{^$history_item["created_name"]^} {^$history_item["date_passed"]^} 修改了{^$history_item["history_count"]^}项信息 ({^$his_key^})</p>
+{^foreach from=$history_item["history_detail"] item=his_detail_item^}
+    <p>　　{^if $his_detail_item["old"]^}修改{^else^}添加{^/if^} {^$his_detail_item["name"]^} {^$his_detail_item["new"]^}{^if $his_detail_item["old"]^} (原为 {^$his_detail_item["old"]^}){^/if^}</p>
+{^/foreach^}
+{^/foreach^}
+  </div>
+{^/if^}
   <div class="table-line"></div>
   <div class="table-line">
     <a href="./?menu=education&act=student_list" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>

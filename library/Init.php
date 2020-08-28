@@ -13,6 +13,8 @@ define("DATE_DEFAULT_TIMEZONE", "Asia/Shanghai");
  * 系统默认今年
  */
 define("DATE_DEFAULT_THIS_YEAR", date("Y"));
+define("DATE_PASSED_LIMIT_MAX", 5 * 24 * 60 * 60);
+define("DATE_PASSED_LIMIT_MIN", 1 * 60);
 // +------------------------------------
 // | 系统默认
 // +------------------------------------

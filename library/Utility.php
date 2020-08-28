@@ -454,6 +454,34 @@ class Utility
         return substr($number, 0, 3) . "****" . substr($number, -4, 4);
     }
 
+    public static function getPassedTime($date_text)
+    {
+        $current_ts = time();
+        $target_ts = strtotime($date_text);
+        $this_year_ts = mktime(0, 0, 0, 1, 1, date("Y", $current_ts));
+        if ($target_ts > $current_ts) {
+            return "Undefined";
+        }
+        $diff_sec = $current_ts - $target_ts;
+        if ($diff_sec <= DATE_PASSED_LIMIT_MIN) {
+            return "刚刚";
+        }
+        if ($diff_sec >= DATE_PASSED_LIMIT_MAX) {
+            if ($target_ts < $this_year_ts) {
+                return sprintf("%s年%s月%s日", date("Y", $target_ts), date("n", $target_ts), date("j", $target_ts));
+            } else {
+                return sprintf("%s月%s日", date("n", $target_ts), date("j", $target_ts));
+            }
+        }
+        if ($diff_sec < 3600) {
+            return ceil($diff_sec / 60) . "分前";
+        }
+        if ($diff_sec >= 24 * 3600) {
+            return ceil($diff_sec / 3600 / 24) . "天前";
+        }
+        return ceil($diff_sec / 3600) . "小时前";
+    }
+
     public static function getContentTypeList()
     {
         return array(

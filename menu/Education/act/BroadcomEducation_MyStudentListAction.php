@@ -64,6 +64,7 @@ class BroadcomEducation_MyStudentListAction extends BroadcomEducationActionBase
         }
         foreach ($student_info_list as $student_id => $student_info) {
             $student_info_list[$student_id]["grade_name"] = BroadcomStudentEntity::getGradeName($student_info["student_entrance_year"]);
+            $student_info_list[$student_id]["covered_mobile_number"] = Utility::coverMobileNumber($student_info["student_mobile_number"]);
         }
         $member_name_list = BroadcomMemberInfoDBI::selectMemberNameList();
         if ($controller->isError($member_name_list)) {

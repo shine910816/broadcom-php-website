@@ -24,7 +24,7 @@
 {^foreach from=$student_info_list item=student_info_item^}
         <tr>
           <td>{^$student_info_item["student_name"]|escape^}</td>
-          <td>{^$student_info_item["student_mobile_number"]|escape^}</td>
+          <td>{^$student_info_item["covered_mobile_number"]|escape^}</td>
           <td>{^$student_level_list[$student_info_item["student_level"]]^}</td>
           <td>{^$student_info_item["grade_name"]^}</td>
           <td>{^$media_channel_list[$student_info_item["media_channel_code"]]^}</td>

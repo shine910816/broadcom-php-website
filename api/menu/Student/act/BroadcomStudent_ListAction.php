@@ -1,7 +1,8 @@
 <?php
 
 /**
- * 新增意向客户画面
+ * 学员列表画面
+ * @token 9B5BB2E7-F483-24CA-A725-55A304F628DE
  * @author Kinsama
  * @version 2020-04-11
  */

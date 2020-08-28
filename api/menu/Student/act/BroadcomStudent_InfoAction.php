@@ -91,8 +91,40 @@ class BroadcomStudent_InfoAction extends ActionBase
         $student_result["relatives_type_name"] = $relatives_type_list[$student_info["student_relatives_type"]];
         $student_result["student_relatives_name"] = $student_info["student_relatives_name"];
         $student_result["student_relatives_mobile_number"] = $student_info["student_relatives_mobile_number"];
+        $student_result["relatives_info"] = sprintf("%s(%s):%s",
+            $student_result["student_relatives_name"],
+            $student_result["relatives_type_name"],
+            $student_result["student_relatives_mobile_number"]
+        );
+        $post_data = array(
+            "school_id" => $student_result["school_id"]
+        );
+        $repond_member_list = Utility::getJsonResponse("?t=589049D8-F35C-2E6A-E792-D576E8002A2C&m=" . $request->member()->targetObjectId(), $post_data);
+        if ($controller->isError($repond_member_list)) {
+            $repond_member_list->setPos(__FILE__, __LINE__);
+            return $repond_member_list;
+        }
+        $member_list = $repond_member_list["member_list"];
+        if (isset($member_list[$student_result["assign_member_id"]])) {
+            $student_result["assign_member_name"] = $member_list[$student_result["assign_member_id"]]["m_name"];
+        } else {
+            $student_result["assign_member_name"] = "";
+        }
+        $history_list = BroadcomHistoryDBI::selectStudentHistory($student_info["student_id"]);
+        if ($controller->isError($history_list)) {
+            $history_list->setPos(__FILE__, __LINE__);
+            return $history_list;
+        }
+        foreach ($history_list as $his_key => $his_info) {
+            $history_list[$his_key]["created_name"] = "";
+            if (isset($member_list[$his_info["created_id"]])) {
+                $history_list[$his_key]["created_name"] = $member_list[$his_info["created_id"]]["m_name"];
+            }
+            $history_list[$his_key]["date_passed"] = Utility::getPassedTime($his_info["created_date"]);
+        }
         return array(
-            "student_info" => $student_result
+            "student_info" => $student_result,
+            "history_list" => $history_list
         );
     }
 }

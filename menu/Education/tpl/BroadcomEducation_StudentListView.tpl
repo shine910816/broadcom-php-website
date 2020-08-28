@@ -20,7 +20,7 @@
 {^foreach from=$student_info_list item=student_info_item^}
         <tr>
           <td><a href="./?menu=education&act=student_info&student_id={^$student_info_item["student_id"]^}" class="text-link">{^$student_info_item["student_name"]|escape^}</a></td>
-          <td>{^$student_info_item["student_mobile_number"]|escape^}</td>
+          <td>{^$student_info_item["covered_mobile_number"]|escape^}</td>
           <td>{^$student_info_item["grade_name"]^}</td>
           <td>{^$student_info_item["student_school_name"]|escape^}</td>
           <td>{^$member_name_list[$student_info_item["assign_member_id"]]^}</td>

@@ -39,16 +39,17 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
             return $err;
         }
         $student_id = $request->getParameter("student_id");
-        $student_info = BroadcomStudentInfoDBI::selectStudentInfo($student_id);
-        if ($controller->isError($student_info)) {
-            $student_info->setPos(__FILE__, __LINE__);
-            return $student_info;
+        $student_id = $request->getParameter("student_id");
+        $post_data = array(
+            "student_id" => $student_id
+        );
+        $repond_student_info = Utility::getJsonResponse("?t=D2EC2D87-7195-6707-EF12-E55DB18ABF7C&m=" . $user->member()->targetObjectId(), $post_data);
+        if ($controller->isError($repond_student_info)) {
+            $repond_student_info->setPos(__FILE__, __LINE__);
+            return $repond_student_info;
         }
-        if (empty($student_info)) {
-            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
+        $student_info = $repond_student_info["student_info"];
+        $history_list = $repond_student_info["history_list"];
         $check_position_option = array(
             BroadcomMemberEntity::POSITION_ADVISER,
             BroadcomMemberEntity::POSITION_MARKETING
@@ -106,6 +107,7 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
         $request->setAttribute("teacher_info", $teacher_info);
         $request->setAttribute("subject_list", BroadcomSubjectEntity::getSubjectList());
         $request->setAttribute("back_link", $back_link);
+        $request->setAttribute("history_list", $history_list);
         return VIEW_DONE;
     }
 
@@ -118,6 +120,7 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
+//Utility::testVariable($request->getAttributes());
         return VIEW_DONE;
     }
 }
