@@ -189,5 +189,31 @@ class BroadcomStatisticsDBI
         $result->free();
         return $data;
     }
+
+    public static function selectPastSurplus($school_id, $past_date)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT student_id," .
+               " student_name," .
+               " student_mobile_number," .
+               " student_grade," .
+               " student_surplus_count," .
+               " student_surplus_amount" .
+               " FROM surplus_info" .
+               " WHERE del_flg = 0" .
+               " AND school_id = " . $school_id .
+               " AND surplus_date = " . $past_date;
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["student_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
 }
 ?>

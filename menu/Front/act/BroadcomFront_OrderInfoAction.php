@@ -227,6 +227,7 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         }
         $student_update_data = array();
         $student_update_data["follow_status"] = BroadcomStudentEntity::FOLLOW_STATUS_3;
+        $student_update_data["student_level"] = BroadcomStudentEntity::STUDENT_LEVEL_1;
         $student_update_res = BroadcomStudentInfoDBI::updateStudentInfo($student_update_data, $student_id);
         if ($controller->isError($student_update_res)) {
             $student_update_res->setPos(__FILE__, __LINE__);

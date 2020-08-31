@@ -1,4 +1,21 @@
 {^include file=$comheader_file^}
+<div class="table-line">
+{^if !$past_flg^}
+  <a href="./?menu=data&act=surplus_info&past=1" class="button-field ui-btn-purple"><i class="fa fa-reply"></i> 查看过去数据</a>
+{^else^}
+  <a href="./?menu=data&act=surplus_info" class="button-field ui-btn-purple"><i class="fa fa-share"></i> 返回当前数据</a>
+  <form method="get" action="./">
+    <input type="hidden" name="menu" value="{^$current_menu^}" />
+    <input type="hidden" name="act" value="{^$current_act^}" />
+    <select name="past_date" class="text-field" style="width:200px;">
+{^foreach from=$past_date_list key=past_key item=past_item^}
+      <option value="{^$past_key^}"{^if $past_key eq $past_date^} selected{^/if^}>{^$past_item^}</option>
+{^/foreach^}
+    </select>
+    <button type="submit" name="past" value="1" class="button-field ui-btn-green"><i class="fa fa-share"></i> 前往</button>
+  </form>
+{^/if^}
+</div>
 <div class="main-table pb_15">
   <h2>学员剩余价值</h2>
   <table class="disp_table">
@@ -7,7 +24,6 @@
         <th style="width:200px;">学员姓名</th>
         <th style="width:400px;">手机号</th>
         <th style="width:200px;">年级</th>
-        <th style="width:200px;">会员类型</th>
         <th style="width:300px;">剩余课时</th>
         <th style="width:300px;">剩余实付金额</th>
       </tr>
@@ -18,9 +34,8 @@
         <td>{^$student_info["student_name"]^}</td>
         <td>{^$student_info["student_mobile_number"]^}</td>
         <td>{^$student_info["student_grade_name"]^}</td>
-        <td>{^$student_info["student_level"]^}</td>
-        <td>{^$student_info["student_surplus_count"]^}小时</td>
-        <td>{^$student_info["student_surplus_amount"]^}元</td>
+        <td style="text-align:right;">{^$student_info["student_surplus_count"]^}小时</td>
+        <td style="text-align:right;">{^$student_info["student_surplus_amount"]^}元</td>
       </tr>
 {^/foreach^}
     </tbody>
