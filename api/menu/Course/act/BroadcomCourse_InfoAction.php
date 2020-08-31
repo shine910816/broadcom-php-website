@@ -159,6 +159,7 @@ class BroadcomCourse_InfoAction extends ActionBase
                 $base_course_info["reset_able"] = false;
                 $base_course_info["reset_msg"] = "已退款的合同无法撤销";
             }
+            $course_tmp["order_item_amount"] = round($course_item["order_item_amount"], 1);
             $course_tmp["order_item_remain"] = round($course_item["order_item_remain"], 1);
             $course_tmp["order_item_arrange"] = round($course_item["order_item_arrange"], 1);
             $course_tmp["order_item_confirm"] = round($course_item["order_item_confirm"], 1);
@@ -175,8 +176,10 @@ class BroadcomCourse_InfoAction extends ActionBase
         if ($this->_confirm_able && !$request->isAdmin() && !$request->member()->auth()->isMst()) {
             if ($this->_multi_flg) {
                 if ($request->member()->auth()->isAst()) {
-                    $this->_confirm_able = false;
-                    $base_course_info["confirm_msg"] = "多人课教务员工无法消课";
+                    if (!in_array($request->member()->id(), $this->_assign_member_list)) {
+                        $this->_confirm_able = false;
+                        $base_course_info["confirm_msg"] = "非受理教务员工无法消课";
+                    }
                 } elseif ($request->member()->auth()->isEdu()) {
                     if ($request->member()->id() != $base_course_info["teacher_member_id"]) {
                         $this->_confirm_able = false;

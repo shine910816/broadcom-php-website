@@ -22,9 +22,10 @@ if (isset($_GET["k"])) {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>关键字转换</title>
-<link type="text/css" rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<!--link type="text/css" rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script-->
+<script type="text/javascript" src="../../js/jquery-2.0.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
     $("#do_trans").click(function(){

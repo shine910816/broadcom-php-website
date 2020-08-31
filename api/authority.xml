@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
   <functions>
+    <function token="2B2ECF74-5AD6-3897-AA2B-42567E035029" menu="common" act="calendar" name="日历索引">
+      <position value="3100" readable="1" editable="0" />
+      <position value="3111" readable="1" editable="0" />
+      <position value="3112" readable="1" editable="0" />
+      <position value="3121" readable="1" editable="0" />
+      <position value="3130" readable="1" editable="0" />
+      <position value="3131" readable="1" editable="0" />
+      <position value="3132" readable="1" editable="0" />
+      <position value="3200" readable="1" editable="0" />
+    </function>
     <function token="B7AA9B79-622B-A31B-FD5C-28B79AFCDF34" menu="school" act="list" name="学校列表">
       <position value="3100" readable="1" editable="0" />
       <position value="3111" readable="1" editable="0" />
@@ -169,6 +179,16 @@
       <position value="3130" readable="1" editable="1" />
       <position value="3131" readable="1" editable="1" />
       <position value="3132" readable="1" editable="1" />
+      <position value="3200" readable="1" editable="0" />
+    </function>
+    <function token="FD8BDE31-4601-DA6B-957C-2C76884C58A3" menu="stats" act="achieve" name="核心业绩统计">
+      <position value="3100" readable="1" editable="0" />
+      <position value="3111" readable="1" editable="0" />
+      <position value="3112" readable="1" editable="0" />
+      <position value="3121" readable="1" editable="0" />
+      <position value="3130" readable="1" editable="0" />
+      <position value="3131" readable="1" editable="0" />
+      <position value="3132" readable="1" editable="0" />
       <position value="3200" readable="1" editable="0" />
     </function>
   </functions>
