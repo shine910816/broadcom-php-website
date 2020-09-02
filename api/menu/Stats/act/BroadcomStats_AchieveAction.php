@@ -33,15 +33,6 @@ class BroadcomStats_AchieveAction extends ActionBase
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {
-        //$err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Target failed: " . $_GET["t"]);
-        //$err->setPos(__FILE__, __LINE__);
-
-        //$school_id = $request->getAttribute("school_id");
-        //$start_date = $request->getAttribute("period_start_date");
-        //$end_date = $request->getAttribute("period_end_date");
-        //$member_id_list = $request->getAttribute("member_id_list");
-
-
         // 必要参数检证
         if (!$request->hasParameter("school_id")) {
             $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter missed: school_id");
@@ -59,8 +50,8 @@ class BroadcomStats_AchieveAction extends ActionBase
             return $err;
         }
         $school_id = $request->getParameter("school_id");
-        $start_date = $request->getParameter("start_date") . " 00:00:00";
-        $end_date = $request->getParameter("end_date") . " 23:59:59";
+        $start_date = $request->getParameter("start_date");
+        $end_date = $request->getParameter("end_date");
         $post_data = array(
             "school_id" => $school_id,
             "start_date" => $start_date,

@@ -18,8 +18,9 @@ class BroadcomCommon_CalendarAction extends ActionBase
     public function doMainExecute(Controller $controller, User $user, Request $request)
     {
         $period_type = $request->getAttribute("period_type");
-        $start_date = "";
-        $end_date = "";
+        $date_format_text = $request->getAttribute("date_format_text");
+        $start_date_ts = 0;
+        $end_date_ts = 0;
         if ($period_type == "4") {
             if (!$request->hasParameter("start") || !$request->hasParameter("end")) {
                 $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY);
@@ -38,9 +39,9 @@ class BroadcomCommon_CalendarAction extends ActionBase
             $end_date_ts = mktime(23, 59, 59, $end_date_array[1], $end_date_array[2], $end_date_array[0]);
             if ($start_date_ts > $end_date_ts) {
                 $period_type == "1";
-            } else {
-                $start_date = date("Y-m-d H:i:s", $start_date_ts);
-                $end_date = date("Y-m-d H:i:s", $end_date_ts);
+            //} else {
+            //    $start_date = date("Y-m-d H:i:s", $start_date_ts);
+            //    $end_date = date("Y-m-d H:i:s", $end_date_ts);
             }
         }
         $current_date_ts = time();
@@ -51,22 +52,22 @@ class BroadcomCommon_CalendarAction extends ActionBase
         if ($period_type == "1") {
             $start_date_ts = mktime(0, 0, 0, $current_month, $current_day - $current_week + 1, $current_year);
             $end_date_ts = mktime(0, 0, -1, $current_month, $current_day - $current_week + 8, $current_year);
-            $start_date = date("Y-m-d H:i:s", $start_date_ts);
-            $end_date = date("Y-m-d H:i:s", $end_date_ts);
+            //$start_date = date("Y-m-d H:i:s", $start_date_ts);
+            //$end_date = date("Y-m-d H:i:s", $end_date_ts);
         } elseif ($period_type == "2") {
             $start_date_ts = mktime(0, 0, 0, $current_month, 1, $current_year);
             $end_date_ts = mktime(0, 0, -1, $current_month + 1, 1, $current_year);
-            $start_date = date("Y-m-d H:i:s", $start_date_ts);
-            $end_date = date("Y-m-d H:i:s", $end_date_ts);
+            //$start_date = date("Y-m-d H:i:s", $start_date_ts);
+            //$end_date = date("Y-m-d H:i:s", $end_date_ts);
         } elseif ($period_type == "3") {
             $start_date_ts = mktime(0, 0, 0, $current_month - 1, 1, $current_year);
             $end_date_ts = mktime(0, 0, -1, $current_month, 1, $current_year);
-            $start_date = date("Y-m-d H:i:s", $start_date_ts);
-            $end_date = date("Y-m-d H:i:s", $end_date_ts);
+            //$start_date = date("Y-m-d H:i:s", $start_date_ts);
+            //$end_date = date("Y-m-d H:i:s", $end_date_ts);
         }
         return array(
-            "start" => $start_date,
-            "end" => $end_date
+            "start" => date($date_format_text, $start_date_ts),
+            "end" => date($date_format_text, $end_date_ts)
         );
     }
 
@@ -88,7 +89,12 @@ class BroadcomCommon_CalendarAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
+        $date_format_text = "Y-m-d";
+        if ($request->hasParameter("time")) {
+            $date_format_text .= " H:i:s";
+        }
         $request->setAttribute("period_type", $period_type);
+        $request->setAttribute("date_format_text", $date_format_text);
         return VIEW_NONE;
     }
 }
