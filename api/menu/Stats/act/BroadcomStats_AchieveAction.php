@@ -67,7 +67,7 @@ class BroadcomStats_AchieveAction extends ActionBase
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
         $post_data = $request->getAttribute("post_data");
-        $repond_order_list = Utility::getJsonResponse("?t=DD6BE1A4-420A-F46D-E42A-F72CACFB1E09&m=" . $user->member()->targetObjectId(), $post_data);
+        $repond_order_list = Utility::getJsonResponse("?t=DD6BE1A4-420A-F46D-E42A-F72CACFB1E09&m=" . $request->member()->targetObjectId(), $post_data);
         if ($controller->isError($repond_order_list)) {
             $repond_order_list->setPos(__FILE__, __LINE__);
             return $repond_order_list;
