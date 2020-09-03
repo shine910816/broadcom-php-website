@@ -23,9 +23,8 @@ class BroadcomHomeActionBase extends BroadcomDataActionBase
 
     protected function _getStatistics(Controller $controller, User $user, Request $request)
     {
-        $school_id = $user->member()->schoolId();
-
         // 周间数据统计
+        $school_id = $user->member()->schoolId();
         $period_post_data = array();
         $period_post_data["period_type"] = "1";
         $repond_week_period = Utility::getJsonResponse("?t=2B2ECF74-5AD6-3897-AA2B-42567E035029&m=" . $user->member()->targetObjectId(), $period_post_data);
@@ -45,7 +44,6 @@ class BroadcomHomeActionBase extends BroadcomDataActionBase
             $repond_week_stats->setPos(__FILE__, __LINE__);
             return $repond_week_stats;
         }
-//Utility::testVariable($repond_week_stats);
         $week_achieve_count = $repond_week_stats["achieve_data"]["5"]["order_count"];
         $week_achieve_amount = $repond_week_stats["achieve_data"]["5"]["order_amount"];
         $week_course_count = 0;
@@ -54,7 +52,6 @@ class BroadcomHomeActionBase extends BroadcomDataActionBase
                 $week_course_count += $course_amount;
             }
         }
-
         // 月间数据统计
         $period_post_data = array();
         $period_post_data["period_type"] = "2";
@@ -64,7 +61,7 @@ class BroadcomHomeActionBase extends BroadcomDataActionBase
             return $repond_month_period;
         }
         $month_start_ts = strtotime($repond_month_period["start"] . "00:00:00");
-        $week_date_text = sprintf("%s年%s月", date("Y", $month_start_ts), date("n", $month_start_ts));
+        $month_date_text = sprintf("%s年%s月", date("Y", $month_start_ts), date("n", $month_start_ts));
         $stats_post_data = array();
         $stats_post_data["school_id"] = $school_id;
         $stats_post_data["start_date"] = $repond_month_period["start"];
@@ -76,13 +73,13 @@ class BroadcomHomeActionBase extends BroadcomDataActionBase
         }
         $month_achieve_count = $repond_month_stats["achieve_data"]["5"]["order_count"];
         $month_achieve_amount = $repond_month_stats["achieve_data"]["5"]["order_amount"];
+        $month_actual_amount = $repond_month_stats["achieve_data"]["5"]["calculate_amount"];
         $month_course_count = 0;
         foreach ($repond_month_stats["course_data"] as $course_type_key => $course_amount) {
             if ($course_type_key != "5") {
                 $month_course_count += $course_amount;
             }
         }
-
         // 目标获取
         $target_info = BroadcomTargetDBI::selectTarget($school_id, date("Ym"));
         if ($controller->isError($target_info)) {
@@ -91,17 +88,18 @@ class BroadcomHomeActionBase extends BroadcomDataActionBase
         }
         $month_course_percent = "-";
         if (!empty($target_info) && $target_info["course_target"] > 0) {
-            $month_course_percent = round($month_course_count / $target_info["course_target"] * 100, 2) . "%";
+            $month_course_percent = number_format($month_course_count / $target_info["course_target"] * 100, 2) . "%";
         }
-
         return array(
-            "week_achieve_count" => $week_achieve_count,
-            "week_achieve_amount" => $week_achieve_amount,
-            "week_course_count" => $week_course_count,
-            "month_achieve_count" => $month_achieve_count,
-            "month_achieve_amount" => $month_achieve_amount,
-            "month_actual_amount" => $month_actual_amount,
-            "month_course_count" => $month_course_count,
+            "week_date_text" => $week_date_text,
+            "week_achieve_count" => number_format($week_achieve_count),
+            "week_achieve_amount" => number_format($week_achieve_amount, 2),
+            "week_course_count" => number_format($week_course_count, 1),
+            "month_date_text" => $month_date_text,
+            "month_achieve_count" => number_format($month_achieve_count),
+            "month_achieve_amount" => number_format($month_achieve_amount, 2),
+            "month_actual_amount" => number_format($month_actual_amount, 2),
+            "month_course_count" => number_format($month_course_count, 1),
             "month_course_percent" => $month_course_percent
         );
     }

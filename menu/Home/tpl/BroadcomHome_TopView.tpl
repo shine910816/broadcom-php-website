@@ -1,6 +1,6 @@
 {^include file=$comheader_file^}
 <div class="main-table">
-  <h2>本周校区数据</h2>
+  <h2>本周校区数据 ({^$week_date_text^})</h2>
   <table class="disp_table">
     <thead>
       <tr>
@@ -19,7 +19,7 @@
   </table>
 </div>
 <div class="main-table">
-  <h2>本月校区数据</h2>
+  <h2>本月校区数据 ({^$month_date_text^})</h2>
   <table class="disp_table">
     <thead>
       <tr>
