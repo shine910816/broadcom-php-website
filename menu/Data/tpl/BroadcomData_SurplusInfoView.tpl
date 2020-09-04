@@ -1,7 +1,7 @@
 {^include file=$comheader_file^}
 {^if $past_flg^}
 <div class="table-line">
-  <a href="./?menu=data&act=surplus_info" class="button-field ui-btn-purple"><i class="fa fa-share"></i> 查看过去数据</a>
+  <a href="./?menu=data&act=surplus_info" class="button-field ui-btn-orange"><i class="fa fa-share"></i> 返回当前数据</a>
 </div>
 <form method="get" action="./">
   <input type="hidden" name="menu" value="{^$current_menu^}" />
