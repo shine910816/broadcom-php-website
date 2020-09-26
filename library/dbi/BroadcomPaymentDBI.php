@@ -64,6 +64,46 @@ class BroadcomPaymentDBI
         return $data;
     }
 
+    public static function selectPaymentByDate($school_id, $start_date, $expire_date)
+    {
+        $dbi = Database::getInstance();
+        
+        $sql = "SELECT p.payment_id," .
+               " p.student_id," .
+               " p.order_id," .
+               " o.order_status," .
+               " o.order_number," .
+               " o.achieve_type," .
+               " o.insert_date AS order_create_date," .
+               " o.order_examine_flg," .
+               " o.order_examine_date," .
+               " p.payment_amount," .
+               " p.operated_by," .
+               " p.insert_date" .
+               " FROM payment_info p" .
+               " LEFT OUTER JOIN order_info o ON o.order_id = p.order_id" .
+               " WHERE p.del_flg = 0" .
+               " AND o.del_flg = 0" .
+               " AND o.school_id = " . $school_id .
+               " AND p.insert_date >= " . $dbi->quote($start_date) .
+               " AND p.insert_date <= " . $dbi->quote($expire_date);
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array(
+            "detail" => array(),
+            "ids" => array()
+        );
+        while ($row = $result->fetch_assoc()) {
+            // TODO
+            //$data["detail"][$row["payment_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function insertPayment($insert_data)
     {
         $dbi = Database::getInstance();
