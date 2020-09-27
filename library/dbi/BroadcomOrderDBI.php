@@ -52,7 +52,7 @@ class BroadcomOrderDBI
         return $data;
     }
 
-    public static function selectOrderItemByOrderId($order_id)
+    public static function selectOrderItemByOrderId($order_id, $order_group_flg = false)
     {
         $dbi = Database::getInstance();
         if (!is_array($order_id)) {
@@ -66,7 +66,11 @@ class BroadcomOrderDBI
         }
         $data = array();
         while ($row = $result->fetch_assoc()) {
-            $data[$row["order_item_id"]] = $row;
+            if ($order_group_flg) {
+                $data[$row["order_id"]][$row["order_item_id"]] = $row;
+            } else {
+                $data[$row["order_item_id"]] = $row;
+            }
         }
         $result->free();
         return $data;
