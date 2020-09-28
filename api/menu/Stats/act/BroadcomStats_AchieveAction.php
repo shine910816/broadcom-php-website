@@ -67,10 +67,15 @@ class BroadcomStats_AchieveAction extends ActionBase
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
         $post_data = $request->getAttribute("post_data");
-        $repond_order_list = Utility::getJsonResponse("?t=DD6BE1A4-420A-F46D-E42A-F72CACFB1E09&m=" . $request->member()->targetObjectId(), $post_data);
-        if ($controller->isError($repond_order_list)) {
-            $repond_order_list->setPos(__FILE__, __LINE__);
-            return $repond_order_list;
+        $school_id = $post_data["school_id"];
+        $start_date = $post_data["start_date"] . " 00:00:00";
+        $end_date = $post_data["end_date"] . " 23:59:59";
+        $start_ts = strtotime($start_date);
+        $end_ts = strtotime($end_date);
+        $payment_info = BroadcomPaymentDBI::selectPaymentByDate($school_id, $start_date, $end_date);
+        if ($controller->isError($payment_info)) {
+            $payment_info->setPos(__FILE__, __LINE__);
+            return $payment_info;
         }
         // 统计数据分布
         $achieve_type_list = BroadcomOrderEntity::getAchieveTypeList();
@@ -86,21 +91,29 @@ class BroadcomStats_AchieveAction extends ActionBase
         foreach ($achieve_type_list as $achieve_type => $achieve_type_name) {
             $achieve_data[$achieve_type] = $stats_item;
         }
-        foreach ($repond_order_list as $order_id => $order_info) {
-            $achieve_data[$order_info["achieve_type"]]["order_count"] += count($order_info["order_item"]);
-            $achieve_data[$order_info["achieve_type"]]["order_amount"] += $order_info["order_payable"];
-            foreach ($order_info["order_item"] as $order_item_id => $order_item_info) {
-                if ($order_item_info["order_item_status"] == BroadcomOrderEntity::ORDER_ITEM_STATUS_4) {
-                    $achieve_data[$order_info["achieve_type"]]["cancel_order_count"] += 1;
-                }
+        foreach ($payment_info as $oi_info) {
+            if (isset($post_data["member_text"]) && !in_array($oi_info["creator_id"], explode(",", $post_data["member_text"]))) {
+                continue;
             }
-            foreach ($order_info["payment_history"] as $payment_amount) {
-                if ($payment_amount > 0) {
-                    $achieve_data[$order_info["achieve_type"]]["total_amount"] += $payment_amount;
-                } else {
-                    $achieve_data[$order_info["achieve_type"]]["cancel_order_amount"] -= $payment_amount;
+            if ($oi_info["order_item_status"] == BroadcomOrderEntity::ORDER_ITEM_STATUS_1) {
+                continue;
+            }
+            $created_date_ts = strtotime($oi_info["created_date"]);
+            if ($created_date_ts >= $start_ts && $created_date_ts <= $end_ts) {
+                $achieve_data[$oi_info["achieve_type"]]["order_count"]++;
+                $achieve_data[$oi_info["achieve_type"]]["order_amount"] += $oi_info["payable_amount"];
+            }
+            if ($oi_info["order_item_status"] == BroadcomOrderEntity::ORDER_ITEM_STATUS_4) {
+                $achieve_data[$oi_info["achieve_type"]]["cancel_order_count"]++;
+            }
+            foreach ($oi_info["payment_detail"] as $detail_info) {
+                if ($detail_info["payment_status"] == BroadcomPaymentEntity::PAYMENT_STATUS_3) {
+                    $achieve_data[$oi_info["achieve_type"]]["total_amount"] += $detail_info["payment_amount"];
                 }
-                $achieve_data[$order_info["achieve_type"]]["calculate_amount"] += $payment_amount;
+                if ($detail_info["payment_status"] == BroadcomPaymentEntity::PAYMENT_STATUS_4) {
+                    $achieve_data[$oi_info["achieve_type"]]["cancel_order_amount"] -= $detail_info["payment_amount"];
+                }
+                $achieve_data[$oi_info["achieve_type"]]["calculate_amount"] += $detail_info["payment_amount"];
             }
         }
         // 数据整合

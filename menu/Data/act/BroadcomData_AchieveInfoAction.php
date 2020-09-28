@@ -59,12 +59,26 @@ class BroadcomData_AchieveInfoAction extends BroadcomDataActionBase
 
     private function _doDefaultValidate(Controller $controller, User $user, Request $request)
     {
-        $period_info = $this->_getStatisticsPeriod($controller, $user, $request);
-        if ($controller->isError($period_info)) {
-            $period_info->setPos(__FILE__, __LINE__);
-            return $period_info;
+        $cal_post_data = array(
+            "period_type" => "1"
+        );
+        if ($request->hasParameter("period_type")) {
+            $cal_post_data["period_type"] = $request->getParameter("period_type");
         }
-        $request->setAttributes($period_info);
+        if ($cal_post_data["period_type"] == "4") {
+            $cal_post_data["start"] = $request->getParameter("start");
+            $cal_post_data["end"] = $request->getParameter("end");
+        }
+        $repond_period = Utility::getJsonResponse("?t=2B2ECF74-5AD6-3897-AA2B-42567E035029&m=" . $user->member()->targetObjectId(), $cal_post_data);
+        if ($controller->isError($repond_period)) {
+            $repond_period->setPos(__FILE__, __LINE__);
+            return $repond_period;
+        }
+        $start_date = $repond_period["start"];
+        $end_date = $repond_period["end"];
+        $request->setAttribute("period_type", $cal_post_data["period_type"]);
+        $request->setAttribute("period_start_date", $start_date);
+        $request->setAttribute("period_end_date", $end_date);
         $school_id = $user->member()->schoolId();
         $section_id = "0";
         $member_id = "0";
@@ -98,19 +112,25 @@ class BroadcomData_AchieveInfoAction extends BroadcomDataActionBase
                 }
             }
         }
-        $request->setAttribute("school_id", $school_id);
-        $request->setAttribute("member_id_list", $member_id_list);
-        $stats_data = $this->_getStatsData($controller, $user, $request);
-        if ($controller->isError($stats_data)) {
-            $stats_data->setPos(__FILE__, __LINE__);
-            return $stats_data;
+        $stats_post_data = array(
+            "school_id" => $school_id,
+            "start_date" => $start_date,
+            "end_date" => $end_date,
+        );
+        if (!empty($member_id_list)) {
+            $stats_post_data["member_text"] = implode(",", $member_id_list);
+        }
+        $repond_stats_info = Utility::getJsonResponse("?t=FD8BDE31-4601-DA6B-957C-2C76884C58A3&m=" . $user->member()->targetObjectId(), $stats_post_data);
+        if ($controller->isError($repond_stats_info)) {
+            $repond_stats_info->setPos(__FILE__, __LINE__);
+            return $repond_stats_info;
         }
         $request->setAttribute("param_list", array(
             "school_id" => $school_id,
             "section_id" => $section_id,
             "member_id" => $member_id
         ));
-        $request->setAttributes($stats_data);
+        $request->setAttributes($repond_stats_info);
         $request->setAttribute("school_list", $school_list);
         $request->setAttribute("section_list", BroadcomMemberEntity::getSectionList());
         $request->setAttribute("member_list", $member_list);

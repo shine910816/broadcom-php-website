@@ -224,6 +224,18 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
                 $dbi->rollback();
                 return $order_item_update_res;
             }
+            $payment_insert_data = array();
+            $payment_insert_data["student_id"] = $order_item_tmp["student_id"];
+            $payment_insert_data["payment_status"] = BroadcomPaymentEntity::PAYMENT_STATUS_3;
+            $payment_insert_data["order_id"] = $order_item_tmp["order_id"];
+            $payment_insert_data["order_item_id"] = $order_item_tmp["order_item_id"];
+            $payment_insert_data["payment_amount"] = $order_item_tmp["order_item_payable_amount"];
+            $payment_insert_res = BroadcomPaymentDBI::insertPayment($payment_insert_data);
+            if ($controller->isError($payment_insert_res)) {
+                $payment_insert_res->setPos(__FILE__, __LINE__);
+                $dbi->rollback();
+                return $payment_insert_res;
+            }
         }
         $student_update_data = array();
         $student_update_data["follow_status"] = BroadcomStudentEntity::FOLLOW_STATUS_3;
@@ -278,6 +290,7 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
         }
         $payment_insert_data = array();
         $payment_insert_data["student_id"] = $student_id;
+        $payment_insert_data["payment_status"] = BroadcomPaymentEntity::PAYMENT_STATUS_2;
         $payment_insert_data["order_id"] = $order_id;
         $payment_insert_data["order_item_id"] = null;
         $payment_insert_data["payment_amount"] = 0 - $payment_amount;

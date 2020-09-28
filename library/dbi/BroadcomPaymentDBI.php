@@ -67,38 +67,51 @@ class BroadcomPaymentDBI
     public static function selectPaymentByDate($school_id, $start_date, $expire_date)
     {
         $dbi = Database::getInstance();
-        
         $sql = "SELECT p.payment_id," .
-               " p.student_id," .
-               " p.order_id," .
-               " o.order_status," .
-               " o.order_number," .
-               " o.achieve_type," .
-               " o.insert_date AS order_create_date," .
-               " o.order_examine_flg," .
-               " o.order_examine_date," .
+               " p.order_item_id," .
+               " oi.achieve_type," .
+               " oi.order_item_status," .
+               " oi.order_item_payable_amount AS `payable_amount`," .
+               " oi.operated_by AS `creator_id`," .
+               " oi.insert_date AS `created_date`," .
+               " p.payment_status," .
                " p.payment_amount," .
-               " p.operated_by," .
-               " p.insert_date" .
+               " p.operated_by AS `payment_operator`," .
+               " p.insert_date AS `payment_date`" .
                " FROM payment_info p" .
-               " LEFT OUTER JOIN order_info o ON o.order_id = p.order_id" .
+               " LEFT OUTER JOIN order_item_info oi ON oi.order_item_id = p.order_item_id" .
                " WHERE p.del_flg = 0" .
-               " AND o.del_flg = 0" .
-               " AND o.school_id = " . $school_id .
+               " AND oi.del_flg = 0" .
+               " AND oi.school_id = " . $school_id .
                " AND p.insert_date >= " . $dbi->quote($start_date) .
-               " AND p.insert_date <= " . $dbi->quote($expire_date);
+               " AND p.insert_date <= " . $dbi->quote($expire_date) .
+               " ORDER BY p.order_item_id ASC," .
+               " p.insert_date ASC";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
             return $result;
         }
-        $data = array(
-            "detail" => array(),
-            "ids" => array()
-        );
+        $data = array();
         while ($row = $result->fetch_assoc()) {
-            // TODO
-            //$data["detail"][$row["payment_id"]] = $row;
+            if (!isset($data[$row["order_item_id"]])) {
+                $data[$row["order_item_id"]] = array(
+                    "order_item_id" => $row["order_item_id"],
+                    "achieve_type" => $row["achieve_type"],
+                    "order_item_status" => $row["order_item_status"],
+                    "payable_amount" => $row["payable_amount"],
+                    "creator_id" => $row["creator_id"],
+                    "created_date" => $row["created_date"],
+                    "payment_detail" => array()
+                );
+            }
+            $data[$row["order_item_id"]]["payment_detail"][$row["payment_id"]] = array(
+                "payment_id" => $row["payment_id"],
+                "payment_status" => $row["payment_status"],
+                "payment_amount" => $row["payment_amount"],
+                "payment_operator" => $row["payment_operator"],
+                "payment_date" => $row["payment_date"]
+            );
         }
         $result->free();
         return $data;

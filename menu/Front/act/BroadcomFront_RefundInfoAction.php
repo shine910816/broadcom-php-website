@@ -111,6 +111,7 @@ class BroadcomFront_RefundInfoAction extends BroadcomFrontActionBase
         $order_item_update_data = array();
         if ($refund_info["refund_type"] == "1") {
             $payment_insert_data["student_id"] = $refund_info["student_id"];
+            $payment_insert_data["payment_status"] = BroadcomPaymentEntity::PAYMENT_STATUS_4;
             $payment_insert_data["order_id"] = $refund_info["order_id"];
             $payment_insert_data["order_item_id"] = $order_item_id;
             $payment_insert_data["payment_amount"] = $refund_info["refund_payment_amount"];

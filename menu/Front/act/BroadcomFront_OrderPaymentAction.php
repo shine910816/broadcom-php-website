@@ -151,6 +151,7 @@ class BroadcomFront_OrderPaymentAction extends BroadcomFrontActionBase
         }
         $payment_insert_data = array();
         $payment_insert_data["student_id"] = $student_id;
+        $payment_insert_data["payment_status"] = BroadcomPaymentEntity::PAYMENT_STATUS_1;
         $payment_insert_data["order_id"] = $order_id;
         $payment_insert_data["order_item_id"] = null;
         $payment_insert_data["payment_amount"] = $payment_amount;

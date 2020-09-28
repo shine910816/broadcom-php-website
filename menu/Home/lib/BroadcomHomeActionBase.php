@@ -32,8 +32,8 @@ class BroadcomHomeActionBase extends BroadcomDataActionBase
             $repond_week_period->setPos(__FILE__, __LINE__);
             return $repond_week_period;
         }
-        $week_start_ts = strtotime($repond_week_period["start"] . "00:00:00");
-        $week_end_ts = strtotime($repond_week_period["end"] . "00:00:00");
+        $week_start_ts = strtotime($repond_week_period["start"] . " 00:00:00");
+        $week_end_ts = strtotime($repond_week_period["end"] . " 00:00:00");
         $week_date_text = sprintf("%s月%s日~%s月%s日", date("n", $week_start_ts), date("j", $week_start_ts), date("n", $week_end_ts), date("j", $week_end_ts));
         $stats_post_data = array();
         $stats_post_data["school_id"] = $school_id;
@@ -60,7 +60,7 @@ class BroadcomHomeActionBase extends BroadcomDataActionBase
             $repond_month_period->setPos(__FILE__, __LINE__);
             return $repond_month_period;
         }
-        $month_start_ts = strtotime($repond_month_period["start"] . "00:00:00");
+        $month_start_ts = strtotime($repond_month_period["start"] . " 00:00:00");
         $month_date_text = sprintf("%s年%s月", date("Y", $month_start_ts), date("n", $month_start_ts));
         $stats_post_data = array();
         $stats_post_data["school_id"] = $school_id;
