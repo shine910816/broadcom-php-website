@@ -262,6 +262,10 @@ class Config
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
             BroadcomMemberEntity::POSITION_HR_FINANCE         // 财务人事
         );
+        // 学员信息编辑
+        $result["education"]["student_edit"] = array(
+            BroadcomMemberEntity::POSITION_HEADMASTER         // 校长
+        );
         // 返课列表
         $result["education"]["reset_list"] = array(
             BroadcomMemberEntity::POSITION_HEADMASTER,        // 校长
