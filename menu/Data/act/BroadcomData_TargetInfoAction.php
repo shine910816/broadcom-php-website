@@ -41,8 +41,8 @@ class BroadcomData_TargetInfoAction extends BroadcomDataActionBase
         $date_text = date("Y", $current_date_ts) . "年" . date("n", $current_date_ts) . "月";
         $date_prev = date("Ym", mktime(0, 0, 0, date("n", $current_date_ts) - 1, 1, date("Y", $current_date_ts)));
         $date_next = date("Ym", mktime(0, 0, 0, date("n", $current_date_ts) + 1, 1, date("Y", $current_date_ts)));
-        $period_start_date = date("Y-m-d H:i:s", mktime(0, 0, 0, date("n", $current_date_ts), 1, date("Y", $current_date_ts)));
-        $period_end_date = date("Y-m-d H:i:s", mktime(0, 0, -1, date("n", $current_date_ts) + 1, 1, date("Y", $current_date_ts)));
+        $period_start_date = date("Y-m-d", mktime(0, 0, 0, date("n", $current_date_ts), 1, date("Y", $current_date_ts)));
+        $period_end_date = date("Y-m-d", mktime(0, 0, -1, date("n", $current_date_ts) + 1, 1, date("Y", $current_date_ts)));
         $request->setAttribute("target_date", $current_date);
         $request->setAttribute("date_text", $date_text);
         $request->setAttribute("date_prev", $date_prev);
@@ -62,50 +62,52 @@ class BroadcomData_TargetInfoAction extends BroadcomDataActionBase
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
         $school_id = $user->member()->schoolId();
-        $request->setAttribute("school_id", $school_id);
-        $request->setAttribute("teacher_flg", false);
+        $start_date = $request->getAttribute("period_start_date");
+        $end_date = $request->getAttribute("period_end_date");
+        // 初始化数据
+        $front_actual_amount = 0;
+        $back_actual_amount = 0;
+        $total_actual_amount = 0;
+        $course_actual_amount = 0;
+        $post_data = array(
+            "school_id" => $school_id,
+            "start_date" => $start_date,
+            "end_date" => $end_date
+        );
+        $repond_total_info = Utility::getJsonResponse("?t=FD8BDE31-4601-DA6B-957C-2C76884C58A3&m=" . $user->member()->targetObjectId(), $post_data);
+        if ($controller->isError($repond_total_info)) {
+            $repond_total_info->setPos(__FILE__, __LINE__);
+            return $repond_total_info;
+        }
+        $total_actual_amount = $repond_total_info["achieve_data"]["5"]["calculate_amount"];
+        foreach ($repond_total_info["course_data"] as $course_type_key => $course_amount) {
+            // TODO 试听课不算在统计范围内
+            if ($course_type_key != "5") {
+                $course_actual_amount += $course_amount;
+            }
+        }
         $member_list = BroadcomMemberPositionDBI::selectMemberListBySchoolGroupPosition($school_id);
         if ($controller->isError($member_list)) {
             $member_list->setPos(__FILE__, __LINE__);
             return $member_list;
         }
-        $member_id_list = null;
-        $request->setAttribute("member_id_list", $member_id_list);
-        $front_actual_amount = 0;
-        $back_actual_amount = 0;
-        $total_actual_amount = 0;
-        $total_stats = $this->_getStatsData($controller, $user, $request);
-        if ($controller->isError($total_stats)) {
-            $total_stats->setPos(__FILE__, __LINE__);
-            return $total_stats;
-        }
         if (isset($member_list[BroadcomMemberEntity::SECTION_5])) {
-            $request->setAttribute("member_id_list", array_keys($member_list[BroadcomMemberEntity::SECTION_5]));
-            $front_stats = $this->_getStatsData($controller, $user, $request);
-            if ($controller->isError($front_stats)) {
-                $front_stats->setPos(__FILE__, __LINE__);
-                return $front_stats;
+            $post_data["member_text"] = implode(",", array_keys($member_list[BroadcomMemberEntity::SECTION_5]));
+            $repond_front_info = Utility::getJsonResponse("?t=FD8BDE31-4601-DA6B-957C-2C76884C58A3&m=" . $user->member()->targetObjectId(), $post_data);
+            if ($controller->isError($repond_front_info)) {
+                $repond_front_info->setPos(__FILE__, __LINE__);
+                return $repond_front_info;
             }
-            $front_actual_amount = $front_stats["achieve_data"]["5"]["calculate_amount"];
+            $front_actual_amount = $repond_front_info["achieve_data"]["5"]["calculate_amount"];
         }
         if (isset($member_list[BroadcomMemberEntity::SECTION_2])) {
-            $request->setAttribute("member_id_list", array_keys($member_list[BroadcomMemberEntity::SECTION_2]));
-            $back_stats = $this->_getStatsData($controller, $user, $request);
-            if ($controller->isError($back_stats)) {
-                $back_stats->setPos(__FILE__, __LINE__);
-                return $back_stats;
+            $post_data["member_text"] = implode(",", array_keys($member_list[BroadcomMemberEntity::SECTION_2]));
+            $repond_back_info = Utility::getJsonResponse("?t=FD8BDE31-4601-DA6B-957C-2C76884C58A3&m=" . $user->member()->targetObjectId(), $post_data);
+            if ($controller->isError($repond_back_info)) {
+                $repond_back_info->setPos(__FILE__, __LINE__);
+                return $repond_back_info;
             }
-            $back_actual_amount = $back_stats["achieve_data"]["5"]["calculate_amount"];
-        }
-        if ($front_actual_amount > 0 || $back_actual_amount > 0) {
-            $total_actual_amount = $front_actual_amount + $back_actual_amount;
-        }
-        $course_actual_amount = 0;
-        foreach ($total_stats["course_data"] as $course_type_key => $course_amount) {
-            // TODO 试听课不算在统计范围内
-            if ($course_type_key != "5") {
-                $course_actual_amount += $course_amount;
-            }
+            $back_actual_amount = $repond_back_info["achieve_data"]["5"]["calculate_amount"];
         }
         $target_date = $request->getAttribute("target_date");
         $target_info = BroadcomTargetDBI::selectTarget($school_id, $target_date);

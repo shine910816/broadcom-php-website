@@ -105,7 +105,7 @@
           <td style="width:200px;">{^$payment_data["insert_date"]^}</td>
           <td style="width:350px;">{^$payment_data["order_number"]^}</td>
           <td style="width:350px;">{^$payment_data["contract_number"]^}</td>
-          <td style="width:100px; text-align:right;{^if $payment_data["red_flg"]^} color:#F60000;{^/if^}">{^$payment_data["payment_amount"]^}</td>
+          <td style="width:100px;{^if $payment_data["red_flg"]^} color:#F60000;{^/if^}">{^$payment_data["payment_amount"]^}</td>
           <td style="width:100px;">{^$payment_data["creater_name"]^}</td>
         </tr>
 {^/foreach^}

@@ -83,7 +83,6 @@ class BroadcomData_TargetInputAction extends BroadcomDataActionBase
         $target_date = $request->getParameter("target_date");
         $front_target = $request->getParameter("front_target");
         $back_target = $request->getParameter("back_target");
-        $total_target = $request->getParameter("total_target");
         $course_target = $request->getParameter("course_target");
         $insert_data = array();
         $insert_data["school_id"] = $school_id;
@@ -91,7 +90,7 @@ class BroadcomData_TargetInputAction extends BroadcomDataActionBase
         $insert_data["target_type"] = "2";
         $insert_data["front_target"] = $front_target;
         $insert_data["back_target"] = $back_target;
-        $insert_data["total_target"] = $total_target;
+        $insert_data["total_target"] = $front_target + $back_target;
         $insert_data["course_target"] = $course_target;
         $insert_res = BroadcomTargetDBI::insertTarget($insert_data);
         if ($controller->isError($insert_res)) {

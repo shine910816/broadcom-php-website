@@ -80,12 +80,12 @@ $(document).ready(function(){
 {^foreach from=$achieve_type_list key=achieve_type item=achieve_type_name^}
       <tr>
         <td>{^$achieve_type_name^}</td>
-        <td>{^$achieve_data[$achieve_type]["order_count"]^}单</td>
-        <td>{^$achieve_data[$achieve_type]["order_amount"]^}元</td>
-        <td>{^$achieve_data[$achieve_type]["cancel_order_count"]^}单</td>
-        <td>{^$achieve_data[$achieve_type]["cancel_order_amount"]^}元</td>
-        <td>{^$achieve_data[$achieve_type]["total_amount"]^}元</td>
-        <td>{^$achieve_data[$achieve_type]["calculate_amount"]^}元</td>
+        <td>{^$achieve_data[$achieve_type]["order_count"]^}</td>
+        <td>{^$achieve_data[$achieve_type]["order_amount"]^}</td>
+        <td>{^$achieve_data[$achieve_type]["cancel_order_count"]^}</td>
+        <td>{^$achieve_data[$achieve_type]["cancel_order_amount"]^}</td>
+        <td>{^$achieve_data[$achieve_type]["total_amount"]^}</td>
+        <td>{^$achieve_data[$achieve_type]["calculate_amount"]^}</td>
       </tr>
 {^/foreach^}
     </tbody>
@@ -93,7 +93,7 @@ $(document).ready(function(){
   <div class="table-line">
     <div class="table-item-a">
       <div class="table-item-name">签单单底/实收单底</div>
-      <div class="table-item-value">{^$average_amount^}元/单</div>
+      <div class="table-item-value" style="text-align:right;">{^$average_amount^}元/单</div>
     </div>
   </div>
 </div>

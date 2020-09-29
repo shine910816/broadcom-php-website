@@ -134,6 +134,7 @@ class BroadcomData_AchieveInfoAction extends BroadcomDataActionBase
         $request->setAttribute("school_list", $school_list);
         $request->setAttribute("section_list", BroadcomMemberEntity::getSectionList());
         $request->setAttribute("member_list", $member_list);
+        $this->_formatNumber($request);
         return VIEW_DONE;
     }
 
@@ -144,6 +145,22 @@ class BroadcomData_AchieveInfoAction extends BroadcomDataActionBase
         $request->setAttribute("school_id", $school_id);
         $request->setAttribute("section_id", $section_id);
         return VIEW_DONE;
+    }
+
+    private function _formatNumber(Request $request)
+    {
+        $achieve_data = $request->getAttribute("achieve_data");
+//Utility::testVariable($achieve_data);
+        $result = array();
+        foreach ($achieve_data as $achieve_type => $temp_data) {
+            $result[$achieve_type]["order_count"] = number_format($temp_data["order_count"]) . "单";
+            $result[$achieve_type]["order_amount"] = number_format($temp_data["order_amount"], 2) . "元";
+            $result[$achieve_type]["cancel_order_count"] = number_format($temp_data["cancel_order_count"]) . "单";
+            $result[$achieve_type]["cancel_order_amount"] = number_format($temp_data["cancel_order_amount"], 2) . "元";
+            $result[$achieve_type]["total_amount"] = number_format($temp_data["total_amount"], 2) . "元";
+            $result[$achieve_type]["calculate_amount"] = number_format($temp_data["calculate_amount"], 2) . "元";
+        }
+        $request->setAttribute("achieve_data", $result);
     }
 
     /**

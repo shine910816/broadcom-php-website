@@ -1,4 +1,13 @@
 {^include file=$comheader_file^}
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".input_value").keyup(function(){
+        var front_val = $("input[name='front_target']").val();
+        var back_val = $("input[name='back_target']").val();
+        $("#total_price").empty().html(parseInt(front_val) + parseInt(back_val) + "元");
+    });
+});
+</script>
 <form action="./" method="post">
   <input type="hidden" name="menu" value="{^$current_menu^}" />
   <input type="hidden" name="act" value="{^$current_act^}" />
@@ -15,23 +24,25 @@
             </select>
           </div>
         </div>
+      </div>
+      <div class="table-line">
         <div class="table-item-b">
           <div class="table-item-name">营销目标</div>
-          <div class="table-item-value"><input type="text" name="front_target" value="0" class="text-field auto-select" /></div>
+          <div class="table-item-value"><input type="text" name="front_target" value="10000" class="text-field auto-select input_value" /></div>
         </div>
         <div class="table-item-b">
           <div class="table-item-name">学管目标</div>
-          <div class="table-item-value"><input type="text" name="back_target" value="0" class="text-field auto-select" /></div>
+          <div class="table-item-value"><input type="text" name="back_target" value="10000" class="text-field auto-select input_value" /></div>
+        </div>
+        <div class="table-item-b">
+          <div class="table-item-name">合计目标</div>
+          <div class="table-item-value" id="total_price">20000元</div>
         </div>
       </div>
       <div class="table-line">
         <div class="table-item-b">
           <div class="table-item-name">消课目标</div>
-          <div class="table-item-value"><input type="text" name="course_target" value="0" class="text-field auto-select" /></div>
-        </div>
-        <div class="table-item-b">
-          <div class="table-item-name">合计目标</div>
-          <div class="table-item-value"><input type="text" name="total_target" value="0" class="text-field auto-select" /></div>
+          <div class="table-item-value"><input type="text" name="course_target" value="100" class="text-field auto-select" /></div>
         </div>
       </div>
   </div>

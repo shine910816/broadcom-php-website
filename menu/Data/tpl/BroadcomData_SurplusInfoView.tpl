@@ -38,23 +38,24 @@
         <td>{^$student_info["student_name"]^}</td>
         <td>{^$student_info["student_mobile_number"]^}</td>
         <td>{^$student_info["student_grade_name"]^}</td>
-        <td style="text-align:right;">{^$student_info["student_surplus_count"]^}小时</td>
-        <td style="text-align:right;">{^$student_info["student_surplus_amount"]^}元</td>
+        <td>{^$student_info["student_surplus_count"]^}小时</td>
+        <td>{^$student_info["student_surplus_amount"]^}元</td>
       </tr>
 {^/foreach^}
     </tbody>
   </table>
+  <p>总计</p>
   <div class="table-line">
     <div class="table-item-b">
-      <div class="table-item-name">学员人数总计</div>
+      <div class="table-item-name">学员人数</div>
       <div class="table-item-value">{^$student_count^}人</div>
     </div>
     <div class="table-item-b">
-      <div class="table-item-name">总计剩余课时</div>
+      <div class="table-item-name">剩余课时</div>
       <div class="table-item-value">{^$total_count^}小时</div>
     </div>
     <div class="table-item-b">
-      <div class="table-item-name">总计实付金额</div>
+      <div class="table-item-name">实付金额</div>
       <div class="table-item-value">{^$total_amount^}元</div>
     </div>
   </div>
