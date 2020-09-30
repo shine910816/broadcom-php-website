@@ -95,9 +95,6 @@ class BroadcomStats_AchieveAction extends ActionBase
             if (isset($post_data["member_text"]) && !in_array($oi_info["creator_id"], explode(",", $post_data["member_text"]))) {
                 continue;
             }
-            if ($oi_info["order_item_status"] == BroadcomOrderEntity::ORDER_ITEM_STATUS_1) {
-                continue;
-            }
             $created_date_ts = strtotime($oi_info["created_date"]);
             if ($created_date_ts >= $start_ts && $created_date_ts <= $end_ts) {
                 $achieve_data[$oi_info["achieve_type"]]["order_count"]++;

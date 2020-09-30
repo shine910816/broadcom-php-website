@@ -69,20 +69,23 @@ class BroadcomPaymentDBI
         $dbi = Database::getInstance();
         $sql = "SELECT p.payment_id," .
                " p.order_item_id," .
-               " oi.achieve_type," .
+               " i.achieve_type," .
+               " i.order_examine_flg," .
+               " i.operated_by AS `creator_id`," .
+               " i.order_examine_date AS `created_date`," .
                " oi.order_item_status," .
                " oi.order_item_payable_amount AS `payable_amount`," .
-               " oi.operated_by AS `creator_id`," .
-               " oi.insert_date AS `created_date`," .
                " p.payment_status," .
                " p.payment_amount," .
                " p.operated_by AS `payment_operator`," .
                " p.insert_date AS `payment_date`" .
                " FROM payment_info p" .
                " LEFT OUTER JOIN order_item_info oi ON oi.order_item_id = p.order_item_id" .
+               " LEFT OUTER JOIN order_info i ON i.order_id = p.order_id" .
                " WHERE p.del_flg = 0" .
+               " AND i.del_flg = 0" .
                " AND oi.del_flg = 0" .
-               " AND oi.school_id = " . $school_id .
+               " AND i.school_id = " . $school_id .
                " AND p.insert_date >= " . $dbi->quote($start_date) .
                " AND p.insert_date <= " . $dbi->quote($expire_date) .
                " ORDER BY p.order_item_id ASC," .

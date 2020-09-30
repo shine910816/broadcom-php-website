@@ -150,7 +150,6 @@ class BroadcomData_AchieveInfoAction extends BroadcomDataActionBase
     private function _formatNumber(Request $request)
     {
         $achieve_data = $request->getAttribute("achieve_data");
-//Utility::testVariable($achieve_data);
         $result = array();
         foreach ($achieve_data as $achieve_type => $temp_data) {
             $result[$achieve_type]["order_count"] = number_format($temp_data["order_count"]) . "单";
