@@ -180,7 +180,8 @@ class BroadcomFront_OrderInfoAction extends BroadcomFrontActionBase
                     $present_hours = $present_hours_list[$order_item_id];
                 }
                 if ($item_list[$order_item_tmp["item_id"]]["item_method"] == BroadcomItemEntity::ITEM_METHOD_CLASS) {
-                    $main_order_trans_price[$order_item_id] = round($order_item_tmp["order_item_payable_amount"] / ($order_item_tmp["order_item_amount"] + $present_hours) / $item_info["item_unit_amount"], 2);
+                    $item_info = $item_list[$order_item_tmp["item_id"]];
+                    $main_order_trans_price[$order_item_id] = round($order_item_tmp["order_item_payable_amount"] * $order_item_tmp["order_item_amount"] / ($item_info["item_unit_amount"] * $item_info["item_unit_hour"] + $present_hours), 2);
                 } else {
                     $main_order_trans_price[$order_item_id] = round($order_item_tmp["order_item_payable_amount"] / ($order_item_tmp["order_item_amount"] + $present_hours), 2);
                 }

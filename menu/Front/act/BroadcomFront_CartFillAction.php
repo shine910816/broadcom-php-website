@@ -161,6 +161,9 @@ class BroadcomFront_CartFillAction extends BroadcomFrontActionBase
             if (!Validate::checkNotNull($item_amount) || !Validate::checkNumber($item_amount, array("min" => "1", "max" => "999"))) {
                 $request->setError("item_amount", "请有效的购买数量");
             }
+            if ($item_info_list[$add_item_id]["item_unit"] == BroadcomItemEntity::ITEM_UNIT_PERIOD && $item_amount > 1) {
+                $request->setError("item_amount", "班课每单购买数量最大为1");
+            }
         }
         $cart_info = BroadcomOrderCartDBI::selectOrderCartInfoList($student_id);
         if ($controller->isError($cart_info)) {
@@ -209,13 +212,16 @@ class BroadcomFront_CartFillAction extends BroadcomFrontActionBase
         $item_amount = $request->getAttribute("item_amount");
         $cart_info = $request->getAttribute("cart_info");
         $add_present_flg = $request->getAttribute("add_present_flg");
+        $item_info_list = $request->getAttribute("item_info_list");
         if (isset($cart_info[$add_item_id])) {
-            $update_data = array();
-            $update_data["item_amount"] = $cart_info[$add_item_id]["item_amount"] + $item_amount;
-            $update_res = BroadcomOrderCartDBI::updateOrderCart($update_data, $student_id, $add_item_id);
-            if ($controller->isError($update_res)) {
-                $update_res->setPos(__FILE__, __LINE__);
-                return $update_res;
+            if ($item_info_list[$add_item_id]["item_unit"] != BroadcomItemEntity::ITEM_UNIT_PERIOD) {
+                $update_data = array();
+                $update_data["item_amount"] = $cart_info[$add_item_id]["item_amount"] + $item_amount;
+                $update_res = BroadcomOrderCartDBI::updateOrderCart($update_data, $student_id, $add_item_id);
+                if ($controller->isError($update_res)) {
+                    $update_res->setPos(__FILE__, __LINE__);
+                    return $update_res;
+                }
             }
         } else {
             $insert_data = array();

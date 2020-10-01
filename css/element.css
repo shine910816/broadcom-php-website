@@ -160,7 +160,7 @@ table.disp_table tbody tr td {
   width:auto;
   height:35px;
   line-height:35px;
-  text-align:right;
+  text-align:left;
   padding:5px;
 }
 div.operate-option {
@@ -201,4 +201,13 @@ div#operate-disp-option a:active {
 }
 .ui-btn-open:active {
   opacity:1!important;
+}
+.ta_l {
+  text-align:left!important;
+}
+.ta_r {
+  text-align:right!important;
+}
+.ta_c {
+  text-align:center!important;
 }
