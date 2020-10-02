@@ -93,6 +93,7 @@ class BroadcomOrder_InfoAction extends ActionBase
             $payment_info->setPos(__FILE__, __LINE__);
             return $payment_info;
         }
+        $payment_status_list = BroadcomPaymentEntity::getPaymentStatusList();
         foreach ($payment_info as $payment_id => $payment_detail) {
             if (isset($member_list[$payment_detail["operated_by"]])) {
                 $payment_info[$payment_id]["creater_name"] = $member_list[$payment_detail["operated_by"]]["m_name"];
@@ -104,6 +105,7 @@ class BroadcomOrder_InfoAction extends ActionBase
                 $payment_info[$payment_id]["red_flg"] = true;
             }
             $payment_info[$payment_id]["payment_amount"] = number_format($payment_detail["payment_amount"], 2) . "元";
+            $payment_info[$payment_id]["payment_status_name"] = $payment_status_list[$payment_detail["payment_status"]];
         }
         $result["payment_flow"] = $payment_info;
         return $result;

@@ -17,6 +17,7 @@ class BroadcomPaymentDBI
                " o.order_number," .
                " p.order_item_id," .
                " oi.contract_number," .
+               " p.payment_status," .
                " p.payment_amount," .
                " p.operated_by," .
                " p.insert_date" .
@@ -26,7 +27,7 @@ class BroadcomPaymentDBI
                " WHERE p.del_flg = 0" .
                " AND p.order_id = " . $order_id .
                " AND o.del_flg = 0" .
-               " ORDER BY p.payment_id ASC";
+               " ORDER BY p.insert_date ASC";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);

@@ -92,21 +92,23 @@
     <table class="disp_table">
       <thead>
         <tr>
-          <th>日期</th>
-          <th>订单号</th>
-          <th>合同号</th>
-          <th>金额</th>
-          <th>操作人</th>
+          <th style="width:200px;">日期</th>
+          <th style="width:350px;">订单号</th>
+          <th style="width:350px;">合同号</th>
+          <th style="width:100px;">操作类型</th>
+          <th style="width:100px;">金额</th>
+          <th style="width:100px;">操作人</th>
         </tr>
       </thead>
       <tbody>
 {^foreach from=$payment_detail key=payment_id item=payment_data^}
         <tr>
-          <td style="width:200px;">{^$payment_data["insert_date"]^}</td>
-          <td style="width:350px;">{^$payment_data["order_number"]^}</td>
-          <td style="width:350px;">{^$payment_data["contract_number"]^}</td>
-          <td style="width:100px;{^if $payment_data["red_flg"]^} color:#F60000;{^/if^}">{^$payment_data["payment_amount"]^}</td>
-          <td style="width:100px;">{^$payment_data["creater_name"]^}</td>
+          <td>{^$payment_data["insert_date"]^}</td>
+          <td>{^$payment_data["order_number"]^}</td>
+          <td>{^$payment_data["contract_number"]^}</td>
+          <td>{^$payment_data["payment_status_name"]^}</td>
+          <td{^if $payment_data["red_flg"]^} style="color:#F60000;"{^/if^}>{^$payment_data["payment_amount"]^}</td>
+          <td>{^$payment_data["creater_name"]^}</td>
         </tr>
 {^/foreach^}
       </tbody>
