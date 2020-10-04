@@ -59,6 +59,10 @@ class Config
         $result["data"]["target_input"] = SYSTEM_AUTH_LOGIN;
         $result["data"]["income_info"] = SYSTEM_AUTH_LOGIN;
         $result["data"]["surplus_info"] = SYSTEM_AUTH_LOGIN;
+        $result["lottery"]["user_top"] = SYSTEM_AUTH_COMMON;
+        $result["lottery"]["number"] = SYSTEM_AUTH_COMMON;
+        $result["lottery"]["open"] = SYSTEM_AUTH_ADMIN;
+        $result["lottery"]["user_list"] = SYSTEM_AUTH_ADMIN;
         $list_data["php"] = $result;
         $result = array();
         $result["student"]["create"] = SYSTEM_AUTH_COMMON;
