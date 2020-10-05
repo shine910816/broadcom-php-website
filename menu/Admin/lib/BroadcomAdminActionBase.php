@@ -20,6 +20,7 @@ class BroadcomAdminActionBase extends ActionBase
         $result = array();
         $result[] = array("school_list", "校区管理");
         $result[] = array("item_list", "课程管理");
+        $result[] = array("lottery_user_list", "抽奖用户管理");
         $request->setAttribute("left_content", $result);
         return VIEW_DONE;
     }

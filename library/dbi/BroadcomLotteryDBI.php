@@ -1,6 +1,23 @@
 <?php
 class BroadcomLotteryDBI
 {
+    public static function selectLotteryList($l_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM lottery_user_info WHERE del_flg = 0 AND l_id = " . $l_id;
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["u_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function selectLotteryInfo($l_id)
     {
         $dbi = Database::getInstance();

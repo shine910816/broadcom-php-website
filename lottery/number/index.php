@@ -2,8 +2,8 @@
 /**
  * 系统主目录
  */
-define("SRC_PATH", "E:/Website");
-//define("SRC_PATH", "/var/www/html");
+//define("SRC_PATH", "E:/Website");
+define("SRC_PATH", "/var/www/html");
 require_once SRC_PATH . "/library/ActionBase.php";
 require_once SRC_PATH . "/library/Config.php";
 require_once SRC_PATH . "/library/Controller.php";

@@ -8,10 +8,10 @@
 class ConnectInfo
 {
 
-    private $_host = "qdm174930477.my3w.com";
-    private $_user = "qdm174930477";
-    private $_pswd = "kinsama317317";
-    private $_name = "qdm174930477_db";
+    private $_host = "127.0.0.1";
+    private $_user = "root";
+    private $_pswd = "";
+    private $_name = "broadcom";
     private $_port = "3306";
 
     public function host()
