@@ -47,8 +47,8 @@ body {
 <script type="text/javascript">
 var resize = function(){
     var bg_option = {
-        width:1440,
-        height:2160
+        width:400,
+        height:600
     };
     var resizeWidth = window.innerWidth;
     var resizeHeight = window.innerWidth * bg_option.height / bg_option.width;
@@ -68,7 +68,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<img src="bg.jpg" id="background-image" />
+<img src="bg.gif" id="background-image" />
 <form action="./" method="post" class="form-box">
   <table>
     <tr>
