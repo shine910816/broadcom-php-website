@@ -218,7 +218,7 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
                 $file_cols[] = $course_info["course_hours"];
             }
             $file_cols[] = $course_info["teacher_member_name"];
-            if ($course_info["teacher_member_name"] == BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER) {
+            if ($course_info["teacher_position"] == BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER) {
                 $file_cols[] = "兼职";
             } else {
                 $file_cols[] = "全职";
@@ -232,11 +232,10 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
             }
             $file_context .= implode(",", $file_cols) . "\n";
         }
-        
         header("Content-Type: application/vnd.ms-excel");
-        header("Content-Disposition: attachment;filename=" . date("排课列表_Y-m-d_H:i:s") . ".csv");
+        header("Content-Disposition: attachment;filename=" . date("排课列表_Y-m-d_H-i-s") . ".csv");
         header("Cache-Control: max-age=0");
-        echo iconv("UTF-8", "GB2312", $file_context);
+        echo $file_context;
         exit;
     }
 }
