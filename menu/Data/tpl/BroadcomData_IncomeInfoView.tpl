@@ -11,11 +11,7 @@
       </tr>
     </thead>
     <tbody>
-{^assign var=total_count value=0^}
-{^assign var=total_amount value=0^}
 {^foreach from=$course_data key=course_type item=course_item^}
-{^assign var=total_count value=$total_count+$course_item["count"]^}
-{^assign var=total_amount value=$total_amount+$course_item["amount"]^}
       <tr>
         <td>{^$course_type_list[$course_type]^}</td>
         <td>{^$course_item["count"]^}小时</td>

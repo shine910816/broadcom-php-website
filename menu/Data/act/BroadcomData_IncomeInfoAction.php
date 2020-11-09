@@ -67,8 +67,6 @@ class BroadcomData_IncomeInfoAction extends BroadcomDataActionBase
                 "amount" => 0
             );
         }
-//Utility::testVAriable(BroadcomItemEntity::ITEM_TYPE_PRESENT);
-Utility::testVAriable($course_income_info);
         $multi_course_id_list = array();
         if (isset($course_income_info[$school_id])) {
             $audition_list = array(
@@ -111,6 +109,20 @@ Utility::testVAriable($course_income_info);
      */
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
+        $course_data = $request->getAttribute("course_data");
+        $total_count = 0;
+        $total_amount = 0;
+        foreach ($course_data as $course_type => $data) {
+            $total_count += $data["count"];
+            $total_amount += $data["amount"];
+            $course_data[$course_type]["count"] = number_format($data["count"], 1);
+            $course_data[$course_type]["amount"] = number_format($data["amount"], 2);
+        }
+        $total_count = number_format($total_count, 1);
+        $total_amount = number_format($total_amount, 2);
+        $request->setAttribute("course_data", $course_data);
+        $request->setAttribute("total_count", $total_count);
+        $request->setAttribute("total_amount", $total_amount);
         return VIEW_DONE;
     }
 }

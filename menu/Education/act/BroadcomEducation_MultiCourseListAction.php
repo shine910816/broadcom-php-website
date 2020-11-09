@@ -195,7 +195,7 @@ class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBas
                 $file_cols[] = $course_item["assign_member_name"];
                 $file_cols[] = $course_item["contract_number"];
                 $file_cols[] = $course_item["order_assign_member_name"];
-                $file_cols[] = $course_item["course_trans_price"];
+                $file_cols[] = number_format($course_item["course_trans_price"] * $course_info["actual_course_hours"], 2);
                 if ($student_idx == "0") {
                     $file_cols[] = $course_info["item_name"];
                     $file_cols[] = $course_info["course_type_name"];
@@ -205,11 +205,11 @@ class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBas
                     if ($course_info["confirm_flg"]) {
                         $file_cols[] = substr($course_info["actual_start_date"], 0, 16);
                         $file_cols[] = substr($course_info["actual_expire_date"], 0, 16);
-                        $file_cols[] = $course_info["actual_course_hours"];
+                        $file_cols[] = number_format($course_info["actual_course_hours"], 1);
                     } else {
                         $file_cols[] = substr($course_info["course_start_date"], 0, 16);
                         $file_cols[] = substr($course_info["course_expire_date"], 0, 16);
-                        $file_cols[] = $course_info["course_hours"];
+                        $file_cols[] = number_format($course_info["course_hours"], 1);
                     }
                     $file_cols[] = $course_info["teacher_member_name"];
                     if ($course_info["teacher_member_name"] == BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER) {
@@ -230,7 +230,7 @@ class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBas
         }
         
         header("Content-Type: application/vnd.ms-excel");
-        header("Content-Disposition: attachment;filename=" . date("排课列表_Y-m-d_H:i:s") . ".csv");
+        header("Content-Disposition: attachment;filename=" . date("排课列表_Y-m-d_H-i-s") . ".csv");
         header("Cache-Control: max-age=0");
         echo iconv("UTF-8", "GB2312", $file_context);
         exit;

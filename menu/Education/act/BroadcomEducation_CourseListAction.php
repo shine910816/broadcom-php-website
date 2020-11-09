@@ -203,7 +203,7 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
             $file_cols[] = $course_info["order_assign_member_name"];
             $file_cols[] = $course_info["item_name"];
             $file_cols[] = $course_info["course_type_name"];
-            $file_cols[] = $course_info["course_trans_price"];
+            $file_cols[] = number_format($course_info["course_trans_price"] * $course_info["actual_course_hours"], 2);
             $file_cols[] = $course_info["confirm_flg"] ? "已消课" : "未消课";
             $file_cols[] = $course_info["student_grade_name"];
             $file_cols[] = $course_info["course_detail_type_name"];
@@ -211,11 +211,11 @@ class BroadcomEducation_CourseListAction extends BroadcomEducationActionBase
             if ($course_info["confirm_flg"]) {
                 $file_cols[] = substr($course_info["actual_start_date"], 0, 16);
                 $file_cols[] = substr($course_info["actual_expire_date"], 0, 16);
-                $file_cols[] = $course_info["actual_course_hours"];
+                $file_cols[] = number_format($course_info["actual_course_hours"], 1);
             } else {
                 $file_cols[] = substr($course_info["course_start_date"], 0, 16);
                 $file_cols[] = substr($course_info["course_expire_date"], 0, 16);
-                $file_cols[] = $course_info["course_hours"];
+                $file_cols[] = number_format($course_info["course_hours"], 1);
             }
             $file_cols[] = $course_info["teacher_member_name"];
             if ($course_info["teacher_position"] == BroadcomMemberEntity::POSITION_CONCURRENT_TEACHER) {
