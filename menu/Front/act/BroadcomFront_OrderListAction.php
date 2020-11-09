@@ -48,6 +48,13 @@ class BroadcomFront_OrderListAction extends BroadcomFrontActionBase
             $order_list->setPos(__FILE__, __LINE__);
             return $order_list;
         }
+        if (!empty($order_list)) {
+            foreach ($order_list as $order_id => $order_info) {
+                $order_list[$order_id]["order_payable"] = number_format($order_info["order_payable"], 2);
+                $order_list[$order_id]["order_payment"] = number_format($order_info["order_payment"], 2);
+                $order_list[$order_id]["order_debt"] = number_format($order_info["order_debt"], 2);
+            }
+        }
         $request->setAttribute("order_status", $order_status);
         $request->setAttribute("order_status_list", $order_status_list);
         $request->setAttribute("order_list", $order_list);
@@ -71,6 +78,7 @@ class BroadcomFront_OrderListAction extends BroadcomFrontActionBase
         }
         foreach ($student_info_list as $student_id => $student_info) {
             $student_info_list[$student_id]["grade_name"] = BroadcomStudentEntity::getGradeName($student_info["student_entrance_year"]);
+            $student_info_list[$student_id]["covered_mobile_number"] = Utility::coverMobileNumber($student_info["student_mobile_number"]);
         }
         $back_link = Utility::encodeBackLink("front", "order_list", array(
             "order_status" => $request->getAttribute("order_status"),

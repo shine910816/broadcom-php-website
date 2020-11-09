@@ -147,7 +147,7 @@ class BroadcomOrderDBI
     public static function selectOrderListByStatus($order_status)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT * FROM order_info WHERE del_flg = 0 AND order_status = " . $order_status;
+        $sql = "SELECT * FROM order_info WHERE del_flg = 0 AND order_status = " . $order_status . " ORDER BY insert_date DESC";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);

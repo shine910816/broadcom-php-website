@@ -19,6 +19,8 @@
           <th>应付款</th>
           <th>已付款</th>
           <th>待付款</th>
+          <th>订单创建日</th>
+          <th>订单审核日</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -27,11 +29,13 @@
         <tr>
           <td><a href="./?menu=front&act=order_info&order_id={^$order_info["order_id"]|escape^}&b={^$back_link^}" class="text-link">{^$order_info["order_number"]|escape^}</a></td>
           <td>{^if isset($student_info_list[$order_info["student_id"]])^}{^$student_info_list[$order_info["student_id"]]["student_name"]|escape^}{^/if^}</td>
-          <td>{^if isset($student_info_list[$order_info["student_id"]])^}{^$student_info_list[$order_info["student_id"]]["student_mobile_number"]|escape^}{^/if^}</td>
+          <td>{^if isset($student_info_list[$order_info["student_id"]])^}{^$student_info_list[$order_info["student_id"]]["covered_mobile_number"]|escape^}{^/if^}</td>
           <td>{^if isset($student_info_list[$order_info["student_id"]])^}{^$student_info_list[$order_info["student_id"]]["grade_name"]|escape^}{^/if^}</td>
           <td>{^$order_info["order_payable"]|escape^}元</td>
           <td>{^$order_info["order_payment"]|escape^}元</td>
           <td>{^$order_info["order_debt"]|escape^}元</td>
+          <td>{^$order_info["insert_date"]|date_format:"%Y-%m-%d"^}</td>
+          <td>{^$order_info["order_examine_date"]|date_format:"%Y-%m-%d"^}</td>
           <td>
             <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
             <div class="operate-option">
