@@ -79,15 +79,14 @@ class BroadcomCourse_CreateAction extends ActionBase
         } else {
             $insert_data["multi_course_id"] = "";
         }
-        if ($request->hasParameter("order_item_id") && $request->hasParameter("item_id")) {
-            $insert_data["order_item_id"] = $request->getParameter("order_item_id");
-            $insert_data["item_id"] = $request->getParameter("item_id");
+        if (!is_null($param_list["order_item_id"]) && !is_null($param_list["item_id"])) {
+            $insert_data["order_item_id"] = $param_list["order_item_id"];
+            $insert_data["item_id"] = $param_list["item_id"];
         }
         $insert_data["confirm_flg"] = "0";
         $insert_data["assign_member_id"] = $request->member()->id();
         $insert_data["assign_date"] = date("Y-m-d H:i:s");
         $insert_data["operated_by"] = $request->member()->id();
-Utility::testVariable($insert_data);
         $student_info = array();
         $order_item_info = array();
         if ($insert_data["audition_type"]) {

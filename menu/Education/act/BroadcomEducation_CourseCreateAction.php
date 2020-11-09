@@ -54,8 +54,8 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
             "school_id" => "0",
             "subject_id" => "0",
             "teacher_member_id" => "0",
-            //"order_item_id" => "",
-            //"item_id" => "",
+            "order_item_id" => null,
+            "item_id" => null,
             "course_trans_price" => "0"
         );
         $student_info = array();
@@ -344,7 +344,6 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
             foreach ($insert_list as $insert_data) {
                 $insert_post_data = array();
                 $insert_post_data["params"] = Utility::encodeCookieInfo($insert_data);
-Utility::testVariable($insert_post_data);
                 $respond_course_id = Utility::getJsonResponse("?t=32FDBB8B-A808-4DB5-C2A6-F87D8DD2F5A2&m=" . $user->member()->targetObjectId(), $insert_post_data);
                 if ($controller->isError($respond_course_id)) {
                     $respond_course_id->setPos(__FILE__, __LINE__);
