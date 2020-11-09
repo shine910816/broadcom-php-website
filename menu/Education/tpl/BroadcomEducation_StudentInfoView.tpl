@@ -66,7 +66,7 @@
           <td>{^if $course_info["audition_type"]^}试听课{^else^}{^$course_type_list[$course_info["course_type"]]^}{^/if^}</td>
           <td>{^if $course_info["audition_type"]^}{^$course_type_list[$course_info["course_type"]]^}{^else^}{^$item_list[$course_info["item_id"]]["item_name"]^}{^/if^}</td>
           <td>{^$course_info["course_start_date"]|date_format:"%Y-%m-%d %H:%M"^}~{^$course_info["course_expire_date"]|date_format:"%H:%M"^}</td>
-          <td>{^$teacher_info[$course_info["teacher_member_id"]]["m_name"]^}</td>
+          <td>{^if isset($teacher_info[$course_info["teacher_member_id"]])^}{^$teacher_info[$course_info["teacher_member_id"]]["m_name"]^}{^/if^}</td>
           <td>{^$subject_list[$course_info["subject_id"]]^}</td>
           <td>{^if $course_info["confirm_flg"]^}已{^else^}未{^/if^}消课</td>
           <td><a href="./?menu=education&act=course_confirm{^if $course_info["multi_course_id"]^}&multi_course_id={^$course_info["multi_course_id"]^}{^else^}&course_id={^$course_id^}{^/if^}&b={^$back_link^}" class="button-field ui-btn-orange">详细</a></td>

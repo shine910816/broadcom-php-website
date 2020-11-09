@@ -2,6 +2,7 @@
 
 /**
  * 排课信息创建画面
+ * @token 32FDBB8B-A808-4DB5-C2A6-F87D8DD2F5A2
  * @author Kinsama
  * @version 2020-04-19
  */
@@ -37,6 +38,12 @@ class BroadcomCourse_CreateAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
+        if (!$request->hasParameter("params")) {
+            $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Create failed: params missed");
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        $param_list = Utility::decodeCookieInfo($request->getParameter("params"));
         // 必要参数检证
         $ness_column_list = array(
             "course_type",
@@ -48,40 +55,39 @@ class BroadcomCourse_CreateAction extends ActionBase
             "course_start_date",
             "course_expire_date",
             "course_hours",
-            "course_trans_price",
+            "course_trans_price"
         );
         $insert_data = array();
         foreach ($ness_column_list as $ness_column) {
-            if (!$request->hasParameter($ness_column)) {
+            if (!isset($param_list[$ness_column])) {
                 $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter missed: " . $ness_column);
                 $err->setPos(__FILE__, __LINE__);
                 return $err;
             } else {
-                $insert_data[$ness_column] = $request->getParameter($ness_column);
+                $insert_data[$ness_column] = $param_list[$ness_column];
             }
         }
-        $audition_allow_list = array(
+        $multi_allow_list = array(
             BroadcomCourseEntity::COURSE_TYPE_DOUBLE,
             BroadcomCourseEntity::COURSE_TYPE_TRIBLE,
             BroadcomCourseEntity::COURSE_TYPE_CLASS,
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_DUO,
             BroadcomCourseEntity::COURSE_TYPE_AUDITION_SQUAD
         );
-        if (in_array($insert_data["course_type"], $audition_allow_list)) {
+        if (in_array($insert_data["course_type"], $multi_allow_list)) {
             $insert_data["multi_course_id"] = md5(sprintf("%s_%s_%s_%s", $insert_data["course_start_date"], $insert_data["course_hours"], $insert_data["subject_id"], $insert_data["teacher_member_id"]));
         } else {
             $insert_data["multi_course_id"] = "";
         }
-        if ($request->hasParameter("order_item_id") && $request->getParameter("order_item_id")) {
+        if ($request->hasParameter("order_item_id") && $request->hasParameter("item_id")) {
             $insert_data["order_item_id"] = $request->getParameter("order_item_id");
-        }
-        if ($request->hasParameter("item_id") && $request->getParameter("item_id")) {
             $insert_data["item_id"] = $request->getParameter("item_id");
         }
         $insert_data["confirm_flg"] = "0";
         $insert_data["assign_member_id"] = $request->member()->id();
         $insert_data["assign_date"] = date("Y-m-d H:i:s");
         $insert_data["operated_by"] = $request->member()->id();
+Utility::testVariable($insert_data);
         $student_info = array();
         $order_item_info = array();
         if ($insert_data["audition_type"]) {

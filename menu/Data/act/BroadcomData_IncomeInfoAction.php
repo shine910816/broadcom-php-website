@@ -67,6 +67,8 @@ class BroadcomData_IncomeInfoAction extends BroadcomDataActionBase
                 "amount" => 0
             );
         }
+//Utility::testVAriable(BroadcomItemEntity::ITEM_TYPE_PRESENT);
+Utility::testVAriable($course_income_info);
         $multi_course_id_list = array();
         if (isset($course_income_info[$school_id])) {
             $audition_list = array(
@@ -82,8 +84,9 @@ class BroadcomData_IncomeInfoAction extends BroadcomDataActionBase
                 } elseif ($course_tmp["item_type"] == BroadcomItemEntity::ITEM_TYPE_PRESENT) {
                     $course_data["6"]["amount"] += $course_tmp["course_trans_price"];
                     $course_type = "6";
+                } else {
+                    $course_data[$course_type]["amount"] += $course_tmp["course_trans_price"] * $course_tmp["actual_course_hours"];
                 }
-                $course_data[$course_type]["amount"] += $course_tmp["course_trans_price"] * $course_tmp["actual_course_hours"];
                 if ($course_tmp["multi_course_id"]) {
                     if (!isset($multi_course_id_list[$course_tmp["multi_course_id"]])) {
                         $multi_course_id_list[$course_tmp["multi_course_id"]] = "1";

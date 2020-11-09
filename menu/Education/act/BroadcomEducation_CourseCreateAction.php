@@ -54,8 +54,8 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
             "school_id" => "0",
             "subject_id" => "0",
             "teacher_member_id" => "0",
-            "order_item_id" => "",
-            "item_id" => "",
+            //"order_item_id" => "",
+            //"item_id" => "",
             "course_trans_price" => "0"
         );
         $student_info = array();
@@ -101,9 +101,11 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
             $base_course_info["audition_type"] = $request->getParameter("audition_type");
             $base_course_info["student_id"] = $request->getParameter("student_id");
             $base_course_info["school_id"] = $request->getParameter("school_id");
-            $base_course_info["order_item_id"] = $request->getParameter("order_item_id");
-            $base_course_info["item_id"] = $request->getParameter("item_id");
-            if (!$base_course_info["order_item_id"]) {
+            if ($request->hasParameter("order_item_id") && $request->hasParameter("item_id")) {
+                $base_course_info["order_item_id"] = $request->getParameter("order_item_id");
+                $base_course_info["item_id"] = $request->getParameter("item_id");
+            }
+            if (!isset($base_course_info["order_item_id"])) {
                 $audition_flg = true;
             } else {
                 $order_item_info = Utility::getJsonResponse("?t=35FF8317-9F11-00B5-FEEF-467C7DA37D71&m=" . $user->member()->targetObjectId(), array("order_item_id" => $base_course_info["order_item_id"]));
@@ -340,7 +342,10 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
         }
         if (!empty($insert_list)) {
             foreach ($insert_list as $insert_data) {
-                $respond_course_id = Utility::getJsonResponse("?t=32FDBB8B-A808-4DB5-C2A6-F87D8DD2F5A2&m=" . $user->member()->targetObjectId(), $insert_data);
+                $insert_post_data = array();
+                $insert_post_data["params"] = Utility::encodeCookieInfo($insert_data);
+Utility::testVariable($insert_post_data);
+                $respond_course_id = Utility::getJsonResponse("?t=32FDBB8B-A808-4DB5-C2A6-F87D8DD2F5A2&m=" . $user->member()->targetObjectId(), $insert_post_data);
                 if ($controller->isError($respond_course_id)) {
                     $respond_course_id->setPos(__FILE__, __LINE__);
                     return $respond_course_id;

@@ -129,11 +129,12 @@ class BroadcomStats_AchieveAction extends ActionBase
             $average_amount = round($achieve_data["5"]["total_amount"] / $achieve_data["5"]["order_count"], 2);
         }
         // 消课统计
-        $course_stats = BroadcomStatisticsDBI::selectCourseStatsDetail($post_data["start_date"], $post_data["end_date"], $post_data["school_id"]);
+        $course_stats = BroadcomStatisticsDBI::selectCourseStatsDetail($start_date, $end_date, $school_id);
         if ($controller->isError($course_stats)) {
             $course_stats->setPos(__FILE__, __LINE__);
             return $course_stats;
         }
+//Utility::testVAriable($course_stats);
         $course_type_list = BroadcomItemEntity::getItemMethodList();
         $course_type_list["5"] = "试听课";
         $course_type_list["6"] = "赠课";

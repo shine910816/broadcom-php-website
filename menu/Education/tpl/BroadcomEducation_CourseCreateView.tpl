@@ -20,8 +20,10 @@
         <div class="table-item-value">{^$student_info["student_grade_name"]|escape^}</div>
       </div>
     </div>
+{^if isset($base_course_info["order_item_id"]) and isset($base_course_info["item_id"])^}
     <input type="hidden" name="order_item_id" value="{^$base_course_info["order_item_id"]^}" />
     <input type="hidden" name="item_id" value="{^$base_course_info["item_id"]^}" />
+{^/if^}
 {^if $audition_flg^}
     <div class="table-line">
       <div class="table-item-b">
