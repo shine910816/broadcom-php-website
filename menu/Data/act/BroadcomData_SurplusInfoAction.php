@@ -103,9 +103,9 @@ class BroadcomData_SurplusInfoAction extends BroadcomDataActionBase
                         "student_surplus_count" => 0,
                         "student_surplus_amount" => 0
                     );
-                    foreach ($student_order_info as $order_item_info) {
-                        $result_data[$student_id]["student_surplus_count"] += $order_item_info["order_item_remain"];
-                        $result_data[$student_id]["student_surplus_amount"] += round($order_item_info["order_item_remain"] * $order_item_info["order_item_trans_price"], 2);
+                    foreach ($student_order_info as $tmp) {
+                        $result_data[$student_id]["student_surplus_count"] += $tmp["order_item_remain"];
+                        $result_data[$student_id]["student_surplus_amount"] += round($tmp["order_item_remain"] * $tmp["order_item_trans_price"], 2);
                     }
                 }
             }
