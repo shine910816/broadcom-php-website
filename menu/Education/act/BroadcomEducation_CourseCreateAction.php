@@ -260,12 +260,8 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
         $order_item_info = $request->getAttribute("order_item_info");
         $time_info = $request->getAttribute("time_info");
         $audition_flg = $request->getAttribute("audition_flg");
-        // TODO 日期扩展至前一个月后三个月
-        //$start_date = date("Y-m-d");
-        //$end_date = date("Y-m-d", time() + 24 * 60 * 60 * 90);
-        $current_ts = time();
-        $start_date = date("Y-m-d", mktime(0, 0, 0, date("n", $current_ts) - 1, 1, date("Y", $current_ts)));
-        $end_date = date("Y-m-d", mktime(0, 0, -1, date("n", $current_ts) + 4, 1, date("Y", $current_ts)));
+        $start_date = date("Y-m-d");
+        $end_date = date("Y-m-d", time() + 24 * 60 * 60 * 90);
         $post_data = array(
             "school_id" => $base_course_info["school_id"],
             "start_date" => $start_date,
