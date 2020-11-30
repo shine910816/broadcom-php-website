@@ -43,6 +43,38 @@
       <a href="./?menu=education&act=student_edit&student_id={^$student_info["student_id"]|escape^}" class="button-field ui-btn-purple" style="margin-left:10px;"><i class="fa fa-pencil"></i> 修改信息</a>
     </div>
   </div>
+  <div class="main-table pb_15" id="course_filter">
+    <h2>排课信息筛选</h2>
+    <form action="./" method="get">
+      <input type="hidden" name="menu" value="{^$current_menu^}" />
+      <input type="hidden" name="act" value="{^$current_act^}" />
+      <input type="hidden" name="student_id" value="{^$student_id^}" />
+      <div class="table-line">
+        <div class="table-item-b">
+          <div class="table-item-name">消课状态</div>
+          <div class="table-item-value">
+            <label class="button-field ui-btn-check{^if $confirm_flg eq "0"^} ui-btn-orange{^/if^}"><input type="radio" name="confirm_flg" value="0"{^if $confirm_flg eq "0"^} checked{^/if^} />未消课</label>
+            <label class="button-field ui-btn-check{^if $confirm_flg eq "1"^} ui-btn-orange{^/if^}"><input type="radio" name="confirm_flg" value="1"{^if $confirm_flg eq "1"^} checked{^/if^} />已消课</label>
+            <label class="button-field ui-btn-check{^if $confirm_flg eq "2"^} ui-btn-orange{^/if^}"><input type="radio" name="confirm_flg" value="2"{^if $confirm_flg eq "2"^} checked{^/if^} />全部</label>
+          </div>
+        </div>
+        <div class="table-item-b">
+          <div class="table-item-name">学科</div>
+          <div class="table-item-value">
+            <select name="subject_id" class="text-field">
+              <option value="10">全部学科</option>
+{^foreach from=$subject_list key=subject_key item=subject_name^}
+              <option value="{^$subject_key^}"{^if $subject_key eq $subject_id^} selected{^/if^}>{^$subject_name^}</option>
+{^/foreach^}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="table-line">
+        <button type="submit" class="button-field ui-btn-green" style="margin-left:10px;"><i class="fa fa-check"></i> 查询</button>
+      </div>
+    </form>
+  </div>
   <div class="main-table{^if empty($course_list)^} pb_15{^/if^}">
     <h2>课程安排</h2>
 {^if empty($course_list)^}
@@ -76,6 +108,7 @@
     </table>
 {^/if^}
   </div>
+{^include file=$compagina_file^}
   <div class="main-table{^if empty($order_item_list)^} pb_15{^/if^}">
     <h2>已购课程</h2>
 {^if empty($order_item_list)^}

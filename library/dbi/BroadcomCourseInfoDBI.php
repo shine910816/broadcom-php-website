@@ -154,7 +154,7 @@ class BroadcomCourseInfoDBI
     {
         $dbi = Database::getInstance();
         $sql = "SELECT * FROM course_info WHERE del_flg = 0 AND student_id = " . $student_id .
-               " ORDER BY confirm_flg ASC, course_start_date ASC";
+               " ORDER BY confirm_flg ASC, course_start_date DESC";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);

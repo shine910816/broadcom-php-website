@@ -191,7 +191,7 @@ class Utility
      * @param int $per_page 每页最大显示条目数
      * @return array or Error Object
      */
-    public static function getPaginationData(Request $request, $data, $url_page, $per_page = DISPLAY_NUMBER_PER_PAGE)
+    public static function getPaginationData(Request $request, $data, $url_page, $per_page = DISPLAY_NUMBER_PER_PAGE, $archor_id = "")
     {
         $max_page = ceil(count($data) / $per_page);
         if ($max_page < 1) {
@@ -201,6 +201,9 @@ class Utility
         }
         $request->setAttribute("url_page", $url_page);
         $request->setAttribute("max_page", $max_page);
+        if ($archor_id != "") {
+            $request->setAttribute("archor_id", $archor_id);
+        }
         $data_tmp = array_chunk($data, $per_page, true);
         if (!isset($data_tmp[$request->current_page - 1])) {
             $err = HoisException::getInstance();

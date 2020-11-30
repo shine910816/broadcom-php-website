@@ -39,7 +39,6 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
             return $err;
         }
         $student_id = $request->getParameter("student_id");
-        $student_id = $request->getParameter("student_id");
         $post_data = array(
             "student_id" => $student_id
         );
@@ -77,7 +76,42 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
             $item_list->setPos(__FILE__, __LINE__);
             return $item_list;
         }
-        $course_list = BroadcomCourseInfoDBI::selectCourseInfoByStudent($student_id);
+        $course_list_tmp = BroadcomCourseInfoDBI::selectCourseInfoByStudent($student_id);
+        if ($controller->isError($course_list_tmp)) {
+            $course_list_tmp->setPos(__FILE__, __LINE__);
+            return $course_list_tmp;
+        }
+        $confirm_flg = "0";
+        if ($request->hasParameter("confirm_flg")) {
+            $confirm_flg = $request->getParameter("confirm_flg");
+        }
+        $subject_id = "10";
+        if ($request->hasParameter("subject_id")) {
+            $subject_id = $request->getParameter("subject_id");
+        }
+        // 排课信息筛选
+        $course_list = array();
+        foreach ($course_list_tmp as $course_id => $tmp_course_info) {
+            if ($subject_id == "10" || ($subject_id != "10" && $tmp_course_info["subject_id"] == $subject_id)) {
+                if ($confirm_flg == "2") {
+                    $course_list[$course_id] = $tmp_course_info;
+                } elseif ($confirm_flg == "1") {
+                    if ($tmp_course_info["confirm_flg"]) {
+                        $course_list[$course_id] = $tmp_course_info;
+                    }
+                } else {
+                    if (!$tmp_course_info["confirm_flg"]) {
+                        $course_list[$course_id] = $tmp_course_info;
+                    }
+                }
+            }
+        }
+        $page_url = "./?menu=" . $request->current_menu .
+                      "&act=" . $request->current_act .
+                      "&student_id=" . $student_id .
+                      "&confirm_flg=" . $confirm_flg .
+                      "&subject_id=" . $subject_id;
+        $course_list = Utility::getPaginationData($request, $course_list, $page_url, 10, "course_filter");
         if ($controller->isError($course_list)) {
             $course_list->setPos(__FILE__, __LINE__);
             return $course_list;
@@ -108,6 +142,8 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
         $request->setAttribute("subject_list", BroadcomSubjectEntity::getSubjectList());
         $request->setAttribute("back_link", $back_link);
         $request->setAttribute("history_list", $history_list);
+        $request->setAttribute("confirm_flg", $confirm_flg);
+        $request->setAttribute("subject_id", $subject_id);
         return VIEW_DONE;
     }
 

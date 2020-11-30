@@ -70,7 +70,7 @@ class BroadcomEducation_CourseCreateAction extends BroadcomEducationActionBase
             "1" => "自定义时间",
             "2" => "其他学员时间",
         );
-        $hours_list = explode(",", "1,1.5,2");
+        $hours_list = explode(",", "0.5,1,1.5,2");
         $teacher_list_content = "";
         if ($request->hasParameter("do_create")) {
             if (!$request->hasParameter("base_data") && !$request->hasParameter("time_data")) {
