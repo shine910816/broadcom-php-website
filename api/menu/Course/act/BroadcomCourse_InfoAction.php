@@ -337,7 +337,7 @@ class BroadcomCourse_InfoAction extends ActionBase
                 $order_update_data = array(
                     "order_item_confirm" => $course_info["order_item_confirm"] + $base_course_info["course_hours"]
                 );
-                if ($order_update_data["order_item_confirm"] == $course_info["order_item_amount"]) {
+                if ($order_update_data["order_item_confirm"] == $course_info["order_item_hours_amount"]) {
                     $order_update_data["order_item_status"] = BroadcomOrderEntity::ORDER_ITEM_STATUS_3;
                 }
                 $order_update_res = BroadcomOrderDBI::updateOrderItem($order_update_data, $course_info["order_item_id"]);

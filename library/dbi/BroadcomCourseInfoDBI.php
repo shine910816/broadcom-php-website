@@ -25,6 +25,7 @@ class BroadcomCourseInfoDBI
                " c.order_item_id," .
                " oi.contract_number," .
                " oi.order_item_amount," .
+               " oi.order_item_hours_amount," .
                " oi.order_item_status," .
                " oi.order_item_remain," .
                " oi.order_item_arrange," .
