@@ -3,6 +3,7 @@
 /**
  * 排课信息列表画面(排课检证用组合条件)
  * @author Kinsama
+ * @token 1A48D380-3B3F-A5AD-F4A6-23F86DC2BFC1
  * @version 2020-04-14
  */
 class BroadcomCourse_CombineListAction extends ActionBase
@@ -65,6 +66,11 @@ class BroadcomCourse_CombineListAction extends ActionBase
         $start_date = $request->getParameter("start_date");
         $end_date = $request->getParameter("end_date");
         $student_id = $request->getParameter("student_id");
+        $post_data = array(
+            "school_id" => $school_id,
+            "start_date" => $start_date,
+            "end_date" => $end_date
+        );
         if ($request->hasParameter("multi")) {
             if (!$request->hasParameter("course_type")) {
                 $err = $controller->raiseError(ERROR_CODE_USER_FALSIFY, "Parameter missed: course_type");
@@ -91,6 +97,7 @@ class BroadcomCourse_CombineListAction extends ActionBase
                     $item_id = $request->getParameter("item_id");
                 }
             }
+            $post_data["confirm_flg"] = "0";
             $request->setAttribute("course_type", $course_type);
             $request->setAttribute("audition_type", $audition_type);
             $request->setAttribute("item_id", $item_id);
@@ -102,12 +109,6 @@ class BroadcomCourse_CombineListAction extends ActionBase
             }
             $request->setAttribute("teacher_member_id", $request->getParameter("teacher_member_id"));
         }
-        $post_data = array(
-            "school_id" => $school_id,
-            "start_date" => $start_date,
-            "end_date" => $end_date,
-            "confirm_flg" => "0"
-        );
         $repond_course_list = Utility::getJsonResponse("?t=D4F1FA27-76D2-3029-4FB9-2FD91B0057B8&m=" . $request->member()->targetObjectId(), $post_data);
         if ($controller->isError($repond_course_list)) {
             $repond_course_list->setPos(__FILE__, __LINE__);

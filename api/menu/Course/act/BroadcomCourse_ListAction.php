@@ -3,6 +3,7 @@
 /**
  * 排课信息列表画面
  * @author Kinsama
+ * @token D4F1FA27-76D2-3029-4FB9-2FD91B0057B8
  * @version 2020-04-08
  */
 class BroadcomCourse_ListAction extends ActionBase

@@ -3,6 +3,7 @@
 /**
  * 排课信息及消课删除画面
  * @author Kinsama
+ * @token 65118860-60BE-028D-5525-E40E18E58CAA
  * @version 2020-04-28
  */
 class BroadcomCourse_InfoAction extends ActionBase
