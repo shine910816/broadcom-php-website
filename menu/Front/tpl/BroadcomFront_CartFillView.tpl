@@ -1,19 +1,21 @@
 {^include file=$comheader_file^}
 {^include file=$usererror_file^}
 <form action="./" method="post">
-  <h1>学员信息</h1>
-  <div class="table-line">
-    <div class="table-item-b">
-      <div class="table-item-name">学员姓名</div>
-      <div class="table-item-value">{^$student_info["student_name"]|escape^}</div>
-    </div>
-    <div class="table-item-b">
-      <div class="table-item-name">当前年级</div>
-      <div class="table-item-value">{^$student_info["student_grade"]|escape^}</div>
-    </div>
-    <div class="table-item-b">
-      <div class="table-item-name">会员级别</div>
-      <div class="table-item-value">{^$student_info["student_level_name"]|escape^}</div>
+  <div class="main-table pb_15">
+    <h2>学员信息</h2>
+    <div class="table-line">
+      <div class="table-item-b">
+        <div class="table-item-name">学员姓名</div>
+        <div class="table-item-value">{^$student_info["student_name"]|escape^}</div>
+      </div>
+      <div class="table-item-b">
+        <div class="table-item-name">当前年级</div>
+        <div class="table-item-value">{^$student_info["student_grade"]|escape^}</div>
+      </div>
+      <div class="table-item-b">
+        <div class="table-item-name">会员级别</div>
+        <div class="table-item-value">{^$student_info["student_level_name"]|escape^}</div>
+      </div>
     </div>
   </div>
 {^if $add_present_flg^}

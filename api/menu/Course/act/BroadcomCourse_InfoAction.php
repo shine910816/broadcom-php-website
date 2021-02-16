@@ -12,6 +12,7 @@ class BroadcomCourse_InfoAction extends ActionBase
     private $_assign_member_list = array();
     private $_confirm_able = true;
     private $_delete_able = false;
+    private $_update_able = false;
 
     /**
      * 执行主程序

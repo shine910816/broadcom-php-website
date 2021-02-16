@@ -60,8 +60,8 @@ class BroadcomEducation_MultiCourseListAction extends BroadcomEducationActionBas
         $section_list = BroadcomMemberEntity::getSectionPositionList();
         if (in_array($member_position, $section_list[BroadcomMemberEntity::SECTION_3])) {
             $teacher_member_list_flg = false;
-        } elseif (in_array($member_position, $section_list[BroadcomMemberEntity::SECTION_2]) || in_array($member_position, $section_list[BroadcomMemberEntity::SECTION_5])) {
-            $assign_member_list_flg = false;
+        //} elseif (in_array($member_position, $section_list[BroadcomMemberEntity::SECTION_2]) || in_array($member_position, $section_list[BroadcomMemberEntity::SECTION_5])) {
+        //    $assign_member_list_flg = false;
         }
         $student_id = "0";
         if ($request->hasParameter("student_id") && $request->getParameter("student_id")) {

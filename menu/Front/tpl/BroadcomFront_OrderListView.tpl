@@ -4,24 +4,30 @@
     <a href="./?menu=front&act=order_list&order_status={^$order_status_key^}" class="button-field{^if $order_status_key eq $order_status^} ui-btn-orange{^/if^}">{^$order_status_name^}</a>
 {^/foreach^}
   </div>
+{^if $order_status eq "4"^}
+  <div class="table-line">
+    <a href="./?menu=front&act=order_list&order_status={^$order_status^}" class="button-field{^if !$order_item_flg^} ui-btn-orange{^/if^}">已退款订单</a>
+    <a href="./?menu=front&act=order_list&order_status={^$order_status^}&order_item=1" class="button-field{^if $order_item_flg^} ui-btn-orange{^/if^}">已退款合同</a>
+  </div>
+{^/if^}
 {^if empty($order_list)^}
-  <p>无{^$order_status_list[$order_status]^}订单</p>
+  <p>无{^$order_status_list[$order_status]^}{^$content_text^}</p>
 {^else^}
   <div class="main-table">
-    <h2>{^$order_status_list[$order_status]^}订单</h2>
+    <h2>{^$order_status_list[$order_status]^}{^$content_text^}</h2>
     <table class="disp_table">
       <thead>
         <tr>
-          <th>订单号</th>
-          <th>学员姓名</th>
-          <th>联系电话</th>
-          <th>年级</th>
-          <th>应付款</th>
-          <th>已付款</th>
-          <th>待付款</th>
-          <th>订单创建日</th>
-          <th>订单审核日</th>
-          <th>操作</th>
+          <th style="width:300px;">{^$content_text^}号</th>
+          <th style="width:200px;">学员姓名</th>
+          <th style="width:200px;">联系电话</th>
+          <th style="width:200px;">年级</th>
+          <th style="width:200px;">应付款</th>
+          <th style="width:200px;">已付款</th>
+          <th style="width:200px;">待付款</th>
+          <th style="width:200px;">订单创建日</th>
+          <th style="width:200px;">订单审核日</th>
+          <th style="width:150px;">操作</th>
         </tr>
       </thead>
       <tbody>
@@ -39,7 +45,7 @@
           <td>
             <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
             <div class="operate-option">
-              <a href="./?menu=front&act=order_info&order_id={^$order_info["order_id"]|escape^}">详情</a>
+              <a href="./?menu=front&act=order_info&order_id={^$order_info["order_id"]|escape^}&b={^$back_link^}">详情</a>
 {^if $order_status eq "1"^}
               <a href="./?menu=front&act=order_payment&order_id={^$order_info["order_id"]|escape^}">付款</a>
 {^/if^}
@@ -50,5 +56,6 @@
       </tbody>
     </table>
   </div>
+{^include file=$compagina_file^}
 {^/if^}
 {^include file=$comfooter_file^}

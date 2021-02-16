@@ -161,6 +161,35 @@ class BroadcomOrderDBI
         return $data;
     }
 
+    public static function selectCanceledOrderItem()
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT oi.order_item_id," .
+               " oi.contract_number," .
+               " oi.order_id," .
+               " oi.student_id," .
+               " oi.order_item_payable_amount," .
+               " o.insert_date," .
+               " o.order_examine_date" .
+               " FROM order_item_info oi" .
+               " LEFT OUTER JOIN order_info o ON o.order_id = oi.order_id" .
+               " WHERE o.del_flg = 0" .
+               " AND oi.del_flg = 0" .
+               " AND oi.order_item_status = " . BroadcomOrderEntity::ORDER_ITEM_STATUS_4 .
+               " ORDER BY oi.order_item_id DESC";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["order_item_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function selectOrderCountForCreate($current_date = null)
     {
         $dbi = Database::getInstance();

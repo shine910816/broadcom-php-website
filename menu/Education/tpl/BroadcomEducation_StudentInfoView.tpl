@@ -43,8 +43,8 @@
       <a href="./?menu=education&act=student_edit&student_id={^$student_info["student_id"]|escape^}" class="button-field ui-btn-purple" style="margin-left:10px;"><i class="fa fa-pencil"></i> 修改信息</a>
     </div>
   </div>
-  <div class="main-table pb_15" id="course_filter">
-    <h2>排课信息筛选</h2>
+  <div class="main-table{^if empty($course_list)^} pb_15{^/if^}" id="course_filter">
+    <h2>课程安排</h2>
     <form action="./" method="get">
       <input type="hidden" name="menu" value="{^$current_menu^}" />
       <input type="hidden" name="act" value="{^$current_act^}" />
@@ -71,14 +71,12 @@
         </div>
       </div>
       <div class="table-line">
-        <button type="submit" class="button-field ui-btn-green" style="margin-left:10px;"><i class="fa fa-check"></i> 查询</button>
+        <button type="submit" class="button-field ui-btn-green ui-btn-big" style="margin-left:10px;"><i class="fa fa-check"></i> 查询</button>
       </div>
     </form>
-  </div>
-  <div class="main-table{^if empty($course_list)^} pb_15{^/if^}">
-    <h2>课程安排</h2>
+    <div class="table-line"></div>
 {^if empty($course_list)^}
-    <p>无已排课程</p>
+    <p style="text-align:center;">无已排课程</p>
 {^else^}
     <table class="disp_table">
       <thead>
@@ -124,6 +122,7 @@
           <th>年级</th>
           <th>状态</th>
           <th>课时余量</th>
+          <th>已消课时</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -137,6 +136,7 @@
           <td>{^$item_grade_list[$item_list[$order_item_data["item_id"]]["item_grade"]]^}</td>
           <td>{^$order_item_status_list[$order_item_data["order_item_status"]]^}</td>
           <td>{^$order_item_data["order_item_remain"]^}</td>
+          <td>{^$order_item_data["order_item_confirm"]^}</td>
           <td>
 {^if $order_item_data["order_item_status"] eq "2"^}
             <a class="button-field operate-button"><i class="fa fa-angle-down"></i> 操作</a>
