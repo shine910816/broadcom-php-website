@@ -71,6 +71,13 @@ class BroadcomEducation_StudentInfoAction extends BroadcomEducationActionBase
             $order_item_list->setPos(__FILE__, __LINE__);
             return $order_item_list;
         }
+        if (!empty($order_item_list)) {
+            foreach ($order_item_list as $order_item_id => $order_item_info) {
+                $order_item_list[$order_item_id]["wait_confirm"] = number_format($order_item_info["order_item_arrange"] - $order_item_info["order_item_confirm"], 1) . "小时";
+                $order_item_list[$order_item_id]["order_item_remain"] = number_format($order_item_info["order_item_remain"], 1) . "小时";
+                $order_item_list[$order_item_id]["order_item_confirm"] = number_format($order_item_info["order_item_confirm"], 1) . "小时";
+            }
+        }
         $item_list = BroadcomItemInfoDBI::selectItemInfoList();
         if ($controller->isError($item_list)) {
             $item_list->setPos(__FILE__, __LINE__);

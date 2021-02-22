@@ -122,6 +122,7 @@
           <th>年级</th>
           <th>状态</th>
           <th>课时余量</th>
+          <th>已排未消课时</th>
           <th>已消课时</th>
           <th>操作</th>
         </tr>
@@ -136,6 +137,7 @@
           <td>{^$item_grade_list[$item_list[$order_item_data["item_id"]]["item_grade"]]^}</td>
           <td>{^$order_item_status_list[$order_item_data["order_item_status"]]^}</td>
           <td>{^$order_item_data["order_item_remain"]^}</td>
+          <td>{^$order_item_data["wait_confirm"]^}</td>
           <td>{^$order_item_data["order_item_confirm"]^}</td>
           <td>
 {^if $order_item_data["order_item_status"] eq "2"^}
