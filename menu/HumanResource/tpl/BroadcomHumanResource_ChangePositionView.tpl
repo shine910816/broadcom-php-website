@@ -60,6 +60,12 @@
       </div>
     </div>
   </div>
+  <div class="table-line">
+    <div class="table-item-b">
+      <div class="table-item-name">备注</div>
+      <div class="table-item-value"><input type="text" name="m[member_note]" value="{^$member_info["member_note"]|escape^}" class="text-field" /></div>
+    </div>
+  </div>
   <div class="table-line"></div>
   <div class="table-line">
     <a href="./?menu={^$current_menu^}&act=member_list" class="button-field"><i class="fa fa-chevron-left"></i> 返回</a>

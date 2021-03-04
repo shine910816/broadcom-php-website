@@ -83,6 +83,7 @@ class BroadcomMemberInfoDBI
                " p.school_id," .
                " p.member_position," .
                " p.member_position_level," .
+               " p.member_note," .
                " p.member_employed_status" .
                " FROM member_login l" .
                " LEFT OUTER JOIN member_position p ON p.member_id = l.member_id" .

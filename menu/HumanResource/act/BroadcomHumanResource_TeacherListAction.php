@@ -65,8 +65,12 @@ class BroadcomHumanResource_TeacherListAction extends BroadcomHumanResourceActio
         $no_subject_teacher_list = array();
         if (!empty($teacher_list)) {
             foreach ($teacher_list as $subject_id => $teacher_tmp_list) {
-                foreach ($teacher_tmp_list as $teacher_member_id) {
-                    $teacher_id_list[$teacher_member_id] = $teacher_member_id;
+                foreach ($teacher_tmp_list as $teacher_tmp_list_index => $teacher_member_id) {
+                    if (isset($teacher_info_list[$teacher_member_id])) {
+                        $teacher_id_list[$teacher_member_id] = $teacher_member_id;
+                    } else {
+                        unset($teacher_list[$subject_id][$teacher_tmp_list_index]);
+                    }
                 }
             }
         }
